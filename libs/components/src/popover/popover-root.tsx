@@ -12,12 +12,21 @@ import {
   useId,
   useSignal,
   useStyles$,
-  useTask$
+  useTask$,
+  useVisibleTask$
 } from "@qwik.dev/core";
 import { Render } from "../render/render";
+import type { AllowedFallbacks } from "../render/render";
 
-export type PopoverRootProps = Omit<PropsOf<"div">, "onChange$"> & {
+export type PopoverRootProps<Fallback extends "div" | "li" = "div"> = Omit<
+  PropsOf<Fallback>,
+  "onChange$"
+> & {
   onChange$?: (open: boolean) => void;
+  _fallback?: string;
+  hover?: boolean;
+  delay?: number;
+  closeDelay?: number;
 } & BindableProps<{ open: boolean }>;
 
 import { type BindableProps, useBindings } from "@kunai-consulting/qwik-utils";
@@ -32,10 +41,18 @@ type PopoverContext = {
   isOpenSig: Signal<boolean>;
   canExternallyChangeSig: Signal<boolean>;
   isHiddenSig: Signal<boolean>;
+  hover: boolean;
 };
 
 export const PopoverRoot = component$((props: PopoverRootProps) => {
-  const { "bind:open": givenOpenSig, onChange$, ...rest } = props;
+  const {
+    onChange$,
+    hover = false,
+    _fallback,
+    delay = hover ? 50 : 0,
+    closeDelay = hover ? 300 : 0,
+    ...rest
+  } = props;
 
   useStyles$(anchorStyles);
 
@@ -43,6 +60,7 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
   const triggerRef = useSignal<HTMLButtonElement>();
   const rootRef = useSignal<HTMLDivElement>();
   const localId = useId();
+  const hoverTimeout = useSignal<number | undefined>(undefined);
 
   const { openSig: isOpenSig } = useBindings(props, {
     open: false
@@ -67,7 +85,8 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
     localId,
     isOpenSig,
     canExternallyChangeSig,
-    isHiddenSig
+    isHiddenSig,
+    hover
   };
 
   useContextProvider(popoverContextId, context);
@@ -84,16 +103,25 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
   });
 
   const handlePolyfill$ = $(async () => {
-    if (isServer) return;
-    if (isPolyfillExecutedSig.value) return;
+    if (isServer || isPolyfillExecutedSig.value) return;
 
-    const isPolyfill = !("anchorName" in document.documentElement.style);
+    const isUsingFixedPosition = contentRef.value
+      ? window.getComputedStyle(contentRef.value).position === "fixed"
+      : false;
 
-    if (isPolyfill) {
-      await polyfill();
+    if (isUsingFixedPosition) {
       isPolyfillExecutedSig.value = true;
+      isHiddenSig.value = false;
+      return;
     }
 
+    const needsAnchorPolyfill = !("anchorName" in document.documentElement.style);
+
+    if (needsAnchorPolyfill) {
+      await polyfill();
+    }
+
+    isPolyfillExecutedSig.value = true;
     isHiddenSig.value = false;
   });
 
@@ -109,6 +137,11 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
     await handleExternalToggle$();
 
     cleanup(() => {
+      if (hoverTimeout.value !== undefined) {
+        clearTimeout(hoverTimeout.value);
+        hoverTimeout.value = undefined;
+      }
+
       if (!isInitialRenderSig.value) return;
       isInitialRenderSig.value = false;
     });
@@ -125,15 +158,73 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
       })
     : undefined;
 
+  /**
+   *  AVOID THIS UNLESS YOU REALLY KNOW WHAT YOU ARE DOING
+   *  In this case there is a perf cost to wanting popover open immediately on render.
+   */
+  if (isInitiallyOpenSig.value) {
+    useVisibleTask$(async () => {
+      await handleOpenOnRender$?.();
+    });
+  }
+
+  const fallback = _fallback ? (_fallback as AllowedFallbacks) : "div";
+
+  const handleHoverIn$ = $(() => {
+    // Clear any existing timeout
+    if (hoverTimeout.value !== undefined) {
+      clearTimeout(hoverTimeout.value);
+    }
+
+    if (delay > 0) {
+      hoverTimeout.value = window.setTimeout(() => {
+        isOpenSig.value = true;
+        hoverTimeout.value = undefined;
+      }, delay);
+    } else {
+      isOpenSig.value = true;
+    }
+  });
+
+  const handleHoverOut$ = $(() => {
+    // Clear any existing timeout
+    if (hoverTimeout.value !== undefined) {
+      clearTimeout(hoverTimeout.value);
+    }
+
+    if (closeDelay > 0) {
+      hoverTimeout.value = window.setTimeout(() => {
+        isOpenSig.value = false;
+        hoverTimeout.value = undefined;
+      }, closeDelay);
+    } else {
+      isOpenSig.value = false;
+    }
+  });
+
+  const handlePointerMove$ = hover
+    ? [handleHoverIn$, props.onPointerOver$]
+    : props.onPointerMove$;
+
+  const handlePointerOut$ = hover
+    ? [handleHoverOut$, props.onPointerOut$]
+    : props.onPointerOut$;
+
+  const handlePointerOver$ = hover
+    ? [handleHoverIn$, props.onPointerOver$]
+    : props.onPointerOver$;
+
   return (
     <Render
+      {...rest}
+      onPointerMove$={handlePointerMove$}
+      onPointerOut$={handlePointerOut$}
+      onPointerOver$={handlePointerOver$}
       data-open={isOpenSig.value}
       data-closed={!isOpenSig.value}
-      onQVisible$={handleOpenOnRender$}
       data-qds-popover-root
       internalRef={rootRef}
-      fallback="div"
-      {...rest}
+      fallback={fallback}
     >
       <Slot />
     </Render>

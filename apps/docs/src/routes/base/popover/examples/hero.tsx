@@ -1,14 +1,22 @@
 import { Popover } from "@kunai-consulting/qwik";
-import { component$, useStyles$ } from "@qwik.dev/core";
+import { component$, useSignal, useStyles$ } from "@qwik.dev/core";
 import styles from "./popover.css?inline";
 
 export default component$(() => {
   useStyles$(styles);
 
+  const isRendered = useSignal(false);
+
   return (
-    <Popover.Root>
-      <Popover.Trigger class="popover-trigger">Open Popover</Popover.Trigger>
-      <Popover.Content class="popover-content">Popover Panel</Popover.Content>
-    </Popover.Root>
+    <>
+      <button type="button" onClick$={() => (isRendered.value = true)}>
+        Render Popover
+      </button>
+      <Popover.Root>
+        <Popover.Trigger class="popover-trigger">Open Popover</Popover.Trigger>
+        <Popover.Content class="popover-content">Popover Panel</Popover.Content>
+      </Popover.Root>
+      <p>isRendered: {isRendered.value ? "true" : "false"}</p>
+    </>
   );
 });

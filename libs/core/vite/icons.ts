@@ -567,7 +567,6 @@ export const icons = (options: IconsPluginOptions = {}): VitePlugin => {
           const childrenCode = extractChildren(elem, source, titleProp);
 
           const kebabName = toKebabCase(iconName);
-          const importVar = generateImportVar(prefix, kebabName, importVars);
 
           // Create virtual module ID (children are now handled in JSX, not virtual module)
           // Use the correct collection name for the virtual ID
@@ -578,9 +577,15 @@ export const icons = (options: IconsPluginOptions = {}): VitePlugin => {
           );
           const virtualId = `virtual:icons/${actualCollectionName}/${kebabName}`;
 
-          if (!usedImports.has(virtualId)) {
+          let importVar: string;
+          if (virtualToVar.has(virtualId)) {
+            importVar = virtualToVar.get(virtualId);
+            debug(`[REUSE_VAR] Reusing existing variable ${importVar} for ${virtualId}`);
+          } else {
+            importVar = generateImportVar(prefix, kebabName, importVars);
             usedImports.add(virtualId);
             virtualToVar.set(virtualId, importVar);
+            debug(`[NEW_VAR] Created new variable ${importVar} for ${virtualId}`);
           }
 
           const svgAttrList: string[] = [];

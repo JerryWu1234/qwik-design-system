@@ -13,9 +13,11 @@ import {
   useContextProvider,
   useId,
   useSignal,
+  useStyles$,
   useTask$
 } from "@qwik.dev/core";
 import { Render } from "../render/render";
+import styles from "./modal.css?inline";
 
 export const modalContextId = createContextId<ModalContext>("qds-modal");
 
@@ -37,6 +39,8 @@ type ModalRootProps = PropsOf<"div"> &
   };
 
 export const ModalRoot = component$((props: ModalRootProps) => {
+  useStyles$(styles);
+
   const contentRef = useSignal<HTMLDialogElement | undefined>();
   const isInitialized = useSignal(false);
   const disablePageScrollFn = useSignal<() => void>();

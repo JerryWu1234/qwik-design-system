@@ -233,6 +233,25 @@ describe("icons", () => {
     expect(result).toBeTruthy();
     const importMatches = result.code.match(/import __qds_i_lucide_check/g);
     expect(importMatches).toHaveLength(1);
+
+    // Both instances should use the SAME variable name
+    const svgMatches = result.code.match(
+      /dangerouslySetInnerHTML=\{(__qds_i_lucide_check(?:_\d+)?)\}/g
+    );
+    expect(svgMatches).toHaveLength(2);
+
+    // Extract the variable names used in both SVG elements
+    const firstMatch = result.code.match(
+      /dangerouslySetInnerHTML=\{(__qds_i_lucide_check(?:_\d+)?)\}/
+    );
+    const allMatches = result.code.matchAll(
+      /dangerouslySetInnerHTML=\{(__qds_i_lucide_check(?:_\d+)?)\}/g
+    );
+    const varNames = Array.from(allMatches).map((m) => m[1]);
+
+    // Both should use the same variable
+    expect(varNames[0]).toBe(varNames[1]);
+    expect(varNames[0]).toBe("__qds_i_lucide_check");
   });
 
   it("should handle multiple different icons", () => {

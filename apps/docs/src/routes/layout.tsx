@@ -13,7 +13,6 @@ import { MDXProvider } from "~/mdx/provider";
 import { NavFooter } from "../docs-widgets/nav-footer/nav-footer";
 import { SearchModal } from "../docs-widgets/search/search";
 import { Sidebar } from "../docs-widgets/sidebar/sidebar";
-import { TOC } from "../docs-widgets/toc/toc";
 import styles from "./layout.css?inline";
 type RootContext = {
   allHeadingsSig: Signal<ContentHeading[]>;
@@ -41,8 +40,8 @@ export default component$(() => {
     allHeadingsSig
   });
 
-  return (
-    <MDXProvider components={components}>
+  const commentedMarkup = (
+    <>
       <NavFooter />
       <SearchModal />
       <div class="svg-bg w-full h-full top-0 left-0 absolute z-[-2]" />
@@ -53,9 +52,15 @@ export default component$(() => {
           <Slot />
         </main>
         <aside class="hidden w-60 xl:block">
-          <TOC headings={headings || []} />
+          {/* <TOC headings={headings || []} /> */}
         </aside>
       </div>
+    </>
+  );
+
+  return (
+    <MDXProvider components={components}>
+      <Slot />
     </MDXProvider>
   );
 });

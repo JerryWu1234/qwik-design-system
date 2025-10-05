@@ -9,7 +9,16 @@ import {
 } from "@qwik.dev/core";
 
 // keyof slows the type server a bunch, instead we use the most common fallbacks
-type AllowedFallbacks = "div" | "span" | "a" | "button" | "label";
+export type AllowedFallbacks =
+  | "div"
+  | "span"
+  | "a"
+  | "button"
+  | "label"
+  | "nav"
+  | "ul"
+  | "li"
+  | "nav";
 
 type RenderInternalProps<T extends AllowedFallbacks> = {
   /** The default element and types if a render prop is not provided */

@@ -1,0 +1,15 @@
+/* Disable anchor positioning on trigger */
+[data-mega-collapsible] {
+  anchor-name: none;
+}
+
+[data-mega-popover] {
+  /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
+  position-anchor: none;
+  position: fixed;
+  top: calc(76px + 24px + 16px); /* navbar height + top offset + gap */
+  left: 50%;
+  translate: -50% 0;
+  width: max-content;
+  margin: 0;
+}
