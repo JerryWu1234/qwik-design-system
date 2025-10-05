@@ -8,6 +8,9 @@ export const RouterHead = component$(() => {
   const head = useDocumentHead();
   const loc = useLocation();
 
+  const ogImageUrl = new URL(loc.url.href);
+  ogImageUrl.pathname = "/meta/og-image.jpg";
+
   return (
     <>
       <title>{head.title}</title>
@@ -19,6 +22,17 @@ export const RouterHead = component$(() => {
       {head.meta.map((m) => (
         <meta key={m.key} {...m} />
       ))}
+
+      <meta property="og:url" content={loc.url.href} />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={head.title} />
+      <meta property="og:image" content={ogImageUrl.href} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/jpeg" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={head.title} />
+      <meta name="twitter:image" content={ogImageUrl.href} />
 
       {head.links.map((l) => (
         <link key={l.key} {...l} />
