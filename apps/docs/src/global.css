@@ -2,6 +2,11 @@
 
 @import "tailwindcss";
 
+:focus-visible {
+  outline: 9px double black;
+  box-shadow: 0 0 0 6px white;
+}
+
 @font-face {
   font-family: "Karmatic Arcade";
   src: url("./assets/fonts/karmatic-arcade/karmatic-arcade.woff2") format("woff2");

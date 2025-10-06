@@ -9,7 +9,7 @@ export const RouterHead = component$(() => {
   const loc = useLocation();
 
   const ogImageUrl = new URL(loc.url.href);
-  ogImageUrl.pathname = "/meta/og-image.jpg";
+  ogImageUrl.pathname = "/meta/og-image.png";
 
   return (
     <>
