@@ -172,7 +172,7 @@ const DesktopNav = component$(() => {
                 >
                   {item.links?.map((link) => {
                     const navLink = link as NavLink;
-                    const imageHeight = navLink.halfHeight ? "h-35" : "h-70";
+                    const imageHeight = navLink.halfHeight ? "h-32" : "h-70";
                     const imageClasses = `w-full ${imageHeight} object-cover group-hover:scale-105 focus-visible:scale-105 transition-transform duration-300 will-change-transform`;
 
                     return (
