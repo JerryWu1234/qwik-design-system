@@ -16,11 +16,14 @@ export const Header = component$(() => {
 
   return (
     <>
-      {/* <div class="absolute inset-0 z-10 bg-light-950/50 transition-colors duration-200 pointer-events-none" /> */}
       <header class="z-[99999] relative flex justify-center">
         <MobileNav />
         <DesktopNav />
       </header>
+      <div
+        class="fixed inset-0 opacity-0 transition-all duration-[500ms] ease pointer-events-none z-[99998] bg-light-950/85"
+        data-navbar-backdrop
+      />
     </>
   );
 });
@@ -150,7 +153,7 @@ const DesktopNav = component$(() => {
         <li>
           <ul class="flex items-center">
             {restOfItems.map((item) => (
-              <Navbar.Item key={item.label} class="relative">
+              <Navbar.Item key={item.label} class="relative" data-navbar-item>
                 {/* "bridge" to make hover possible between the gap */}
                 <div
                   aria-hidden="true"

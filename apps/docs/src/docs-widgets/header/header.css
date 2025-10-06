@@ -13,3 +13,7 @@
   width: max-content;
   margin: 0;
 }
+
+body:has([data-navbar-item][data-open]) [data-navbar-backdrop] {
+  opacity: 1;
+}
