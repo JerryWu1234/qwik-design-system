@@ -68,7 +68,7 @@ describe("icons", () => {
 
   it("should return null for files with icon imports but no usage", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return <div>Hello</div>;
@@ -80,7 +80,7 @@ describe("icons", () => {
 
   it("should transform simple icon usage", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return <Lucide.Check width={24} />;
@@ -99,7 +99,7 @@ describe("icons", () => {
 
   it("should transform icon with class attribute", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return <Lucide.Check class="icon" />;
@@ -112,7 +112,7 @@ describe("icons", () => {
 
   it("should transform icon with kebab-case attributes", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return <Lucide.Check stroke-width={2} />;
@@ -125,7 +125,7 @@ describe("icons", () => {
 
   it("should transform icon with expression props", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         const size = 24;
@@ -140,7 +140,7 @@ describe("icons", () => {
 
   it("should convert title prop to children", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return <Lucide.Check title="Checked item" />;
@@ -155,7 +155,7 @@ describe("icons", () => {
 
   it("should convert title expression prop to children", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         const label = "Checked item";
@@ -171,7 +171,7 @@ describe("icons", () => {
 
   it("should handle title plus existing children", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return (
@@ -190,7 +190,7 @@ describe("icons", () => {
 
   it("should handle self-closing and non-self-closing tags", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return <Lucide.Check width={24}></Lucide.Check>;
@@ -203,7 +203,7 @@ describe("icons", () => {
 
   it("should handle aliased imports", () => {
     const code = `
-      import { Lucide as L } from "@kunai-consulting/qwik";
+      import { Lucide as L } from "@qds.dev/ui";
 
       function App() {
         return <L.Check width={24} />;
@@ -218,7 +218,7 @@ describe("icons", () => {
 
   it("should deduplicate imports for multiple usages of same icon", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return (
@@ -256,7 +256,7 @@ describe("icons", () => {
 
   it("should handle multiple different icons", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return (
@@ -279,7 +279,7 @@ describe("icons", () => {
 
   it("should handle nested icons", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return (
@@ -304,7 +304,7 @@ describe("icons", () => {
 
   it("should skip unknown pack", () => {
     const code = `
-      import { Unknown } from "@kunai-consulting/qwik";
+      import { Unknown } from "@qds.dev/ui";
 
       function App() {
         return <Unknown.Check width={24} />;
@@ -316,7 +316,7 @@ describe("icons", () => {
 
   it("should skip icon not found in collection", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return <Lucide.NonExistentIcon width={24} />;
@@ -328,7 +328,7 @@ describe("icons", () => {
 
   it("should handle boolean attributes", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return <Lucide.Check disabled />;
@@ -341,7 +341,7 @@ describe("icons", () => {
 
   it("should preserve aria and data attributes", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return <Lucide.Check aria-label="Check" data-testid="check-icon" />;
@@ -355,7 +355,7 @@ describe("icons", () => {
 
   it("should handle complex children", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return (
@@ -375,7 +375,7 @@ describe("icons", () => {
 
   it("should generate source maps", () => {
     const code = `
-      import { Lucide } from "@kunai-consulting/qwik";
+      import { Lucide } from "@qds.dev/ui";
 
       function App() {
         return <Lucide.Check width={24} />;
@@ -396,7 +396,7 @@ describe("icons", () => {
       ) => TransformResult;
 
       const code = `
-        import { Lucide } from "@kunai-consulting/qwik";
+        import { Lucide } from "@qds.dev/ui";
 
         function App() {
           return <Lucide.Check width={24} />;
@@ -431,7 +431,7 @@ describe("icons", () => {
   describe("error handling", () => {
     it("should handle parse errors gracefully", () => {
       const code = `
-        import { Lucide } from "@kunai-consulting/qwik";
+        import { Lucide } from "@qds.dev/ui";
 
         function App() {
           return <Lucide.Check unclosed;
@@ -443,7 +443,7 @@ describe("icons", () => {
 
     it("should handle malformed JSX gracefully", () => {
       const code = `
-        import { Lucide } from "@kunai-consulting/qwik";
+        import { Lucide } from "@qds.dev/ui";
 
         function App() {
           return <Lucide.Check />;
@@ -477,7 +477,7 @@ describe("icons", () => {
   describe("real world examples from icon-example.tsx", () => {
     it("should transform Lucide.Check with class attribute", () => {
       const code = `
-        import { Lucide } from "@kunai-consulting/qwik";
+        import { Lucide } from "@qds.dev/ui";
 
         function App() {
           return <Lucide.Check width={24} class="text-green-500" />;
@@ -495,7 +495,7 @@ describe("icons", () => {
 
     it("should transform Lucide.X with class attribute", () => {
       const code = `
-        import { Lucide } from "@kunai-consulting/qwik";
+        import { Lucide } from "@qds.dev/ui";
 
         function App() {
           return <Lucide.X width={24} class="text-red-500" />;
@@ -513,7 +513,7 @@ describe("icons", () => {
 
     it("should transform Lucide.Heart with fill-current class", () => {
       const code = `
-        import { Lucide } from "@kunai-consulting/qwik";
+        import { Lucide } from "@qds.dev/ui";
 
         function App() {
           return <Lucide.Heart width={24} class="text-red-500 fill-current" />;
@@ -531,7 +531,7 @@ describe("icons", () => {
 
     it("should transform multiple different icons", () => {
       const code = `
-        import { Lucide } from "@kunai-consulting/qwik";
+        import { Lucide } from "@qds.dev/ui";
 
         function App() {
           return (
@@ -574,7 +574,7 @@ describe("icons", () => {
 
     it("should transform Heroicons.CheckCircle", () => {
       const code = `
-        import { Heroicons } from "@kunai-consulting/qwik";
+        import { Heroicons } from "@qds.dev/ui";
 
         function App() {
           return <Heroicons.CheckCircle width={24} class="text-green-500" />;
@@ -592,7 +592,7 @@ describe("icons", () => {
 
     it("should transform Tabler.Check", () => {
       const code = `
-        import { Tabler } from "@kunai-consulting/qwik";
+        import { Tabler } from "@qds.dev/ui";
 
         function App() {
           return <Tabler.Check width={24} class="text-green-500" />;
@@ -610,7 +610,7 @@ describe("icons", () => {
 
     it("should transform icon sets with multiple words in name (AkarIcons example)", () => {
       const code = `
-        import { AkarIcons } from "@kunai-consulting/qwik";
+        import { AkarIcons } from "@qds.dev/ui";
 
         function App() {
           return <AkarIcons.Airpods viewBox="0 0 24 24" />;
@@ -634,7 +634,7 @@ describe("icons", () => {
 
     it("should transform icon sets with multiple words in name (MaterialSymbols example)", () => {
       const code = `
-        import { MaterialSymbols } from "@kunai-consulting/qwik";
+        import { MaterialSymbols } from "@qds.dev/ui";
 
         function App() {
           return <MaterialSymbols.AcUnitRounded class="text-blue-500" />;
@@ -658,7 +658,7 @@ describe("icons", () => {
 
     it("should allow consumer props to override icon defaults", () => {
       const code = `
-        import { Lucide } from "@kunai-consulting/qwik";
+        import { Lucide } from "@qds.dev/ui";
 
         function App() {
           return <Lucide.Check viewBox="0 0 32 32" width={32} />;
@@ -676,7 +676,7 @@ describe("icons", () => {
     it("should transform the complete icon-example.tsx content", () => {
       const code = `
         import { component$ } from "@qwik.dev/core";
-        import { Lucide, Heroicons, Tabler, Hugeicons } from "@kunai-consulting/qwik";
+        import { Lucide, Heroicons, Tabler, Hugeicons } from "@qds.dev/ui";
 
         export default component$(() => {
           return (
@@ -777,7 +777,7 @@ describe("JSX Syntax Validation", () => {
 
   it("should generate valid JSX syntax for single icon", () => {
     const code = `
-import { Lucide } from "@kunai-consulting/qwik";
+import { Lucide } from "@qds.dev/ui";
 export default component$(() => {
   return <Lucide.Check width={24} className="text-green-500" />;
 });
@@ -810,7 +810,7 @@ export default component$(() => {
 
   it("should generate valid JSX syntax for multiple icons without conflicts", () => {
     const code = `
-import { Lucide } from "@kunai-consulting/qwik";
+import { Lucide } from "@qds.dev/ui";
 export default component$(() => {
   return (
     <div>
@@ -846,7 +846,7 @@ export default component$(() => {
 
   it("should handle complex props without breaking JSX syntax", () => {
     const code = `
-import { Lucide } from "@kunai-consulting/qwik";
+import { Lucide } from "@qds.dev/ui";
 export default component$(() => {
   return (
     <Lucide.Check
@@ -889,7 +889,7 @@ export default component$(() => {
 
   it("should not generate trailing whitespace that causes parsing errors", () => {
     const code = `
-import { Lucide } from "@kunai-consulting/qwik";
+import { Lucide } from "@qds.dev/ui";
 export default component$(() => {
   return <div><Lucide.Check /></div>;
 });
@@ -919,7 +919,7 @@ export default component$(() => {
 
   it("should handle boolean and undefined props correctly", () => {
     const code = `
-import { Lucide } from "@kunai-consulting/qwik";
+import { Lucide } from "@qds.dev/ui";
 export default component$(() => {
   return (
     <Lucide.Check
@@ -960,7 +960,7 @@ export default component$(() => {
   it("should reproduce the build error with complex JSX structure", () => {
     const code = `
 import { component$ } from "@qwik.dev/core";
-import { Lucide, Heroicons } from "@kunai-consulting/qwik";
+import { Lucide, Heroicons } from "@qds.dev/ui";
 
 export default component$(() => {
   return (
@@ -1000,7 +1000,7 @@ export default component$(() => {
   it("should handle complex nested JSX structures with mixed content", () => {
     const code = `
 import { component$ } from "@qwik.dev/core";
-import { Lucide, Heroicons } from "@kunai-consulting/qwik";
+import { Lucide, Heroicons } from "@qds.dev/ui";
 
 export default component$(() => {
   const isActive = true;
@@ -1067,7 +1067,7 @@ export default component$(() => {
   it("should handle edge cases that could break JSX parsing", () => {
     const code = `
 import { component$ } from "@qwik.dev/core";
-import { Lucide } from "@kunai-consulting/qwik";
+import { Lucide } from "@qds.dev/ui";
 
 export default component$(() => {
   return (
@@ -1105,7 +1105,7 @@ export default component$(() => {
   it("should handle JSX fragments with icons correctly", () => {
     const code = `
 import { component$ } from "@qwik.dev/core";
-import { Lucide } from "@kunai-consulting/qwik";
+import { Lucide } from "@qds.dev/ui";
 
 export default component$(() => {
   return (
@@ -1136,7 +1136,7 @@ export default component$(() => {
   it("should handle conditional rendering with icons", () => {
     const code = `
 import { component$ } from "@qwik.dev/core";
-import { Lucide } from "@kunai-consulting/qwik";
+import { Lucide } from "@qds.dev/ui";
 
 export default component$(() => {
   const isLoading = true;
@@ -1207,7 +1207,7 @@ describe("HMR (Hot Module Replacement)", () => {
       const mockCtx = {
         file: "/test/component.tsx",
         read: vi.fn().mockReturnValue(`
-          import { Lucide } from "@kunai-consulting/qwik";
+          import { Lucide } from "@qds.dev/ui";
           export default function Test() {
             return <Lucide.Check />;
           }
@@ -1229,7 +1229,7 @@ describe("HMR (Hot Module Replacement)", () => {
       const mockCtx = {
         file: "/test/component.jsx",
         read: vi.fn().mockReturnValue(`
-          import { Heroicons } from "@kunai-consulting/qwik";
+          import { Heroicons } from "@qds.dev/ui";
           export default function Test() {
             return <Heroicons.CheckCircle />;
           }
@@ -1273,7 +1273,7 @@ describe("HMR (Hot Module Replacement)", () => {
       const mockCtx = {
         file: "/test/component.tsx",
         read: vi.fn().mockReturnValue(`
-          import { Lucide } from "@kunai-consulting/qwik";
+          import { Lucide } from "@qds.dev/ui";
           import { useState } from "react";
           export default function Test() {
             const [count, setCount] = useState(0);
@@ -1298,7 +1298,7 @@ describe("HMR (Hot Module Replacement)", () => {
       const mockCtx = {
         file: "/test/component.tsx",
         read: vi.fn().mockResolvedValue(`
-          import { Lucide } from "@kunai-consulting/qwik";
+          import { Lucide } from "@qds.dev/ui";
           export default function Test() {
             return <Lucide.Star />;
           }
@@ -1337,7 +1337,7 @@ describe("HMR (Hot Module Replacement)", () => {
       const mockCtx = {
         file: "/test/component.tsx",
         read: vi.fn().mockReturnValue(`
-          import { Lucide } from "@kunai-consulting/qwik";
+          import { Lucide } from "@qds.dev/ui";
           export default function Test() {
             return <Lucide.Check // syntax error
           }
@@ -1359,7 +1359,7 @@ describe("HMR (Hot Module Replacement)", () => {
       const mockCtx = {
         file: "/test/component.js",
         read: vi.fn().mockReturnValue(`
-          import { Lucide } from "@kunai-consulting/qwik";
+          import { Lucide } from "@qds.dev/ui";
           export default function Test() {
             return "Hello";
           }
@@ -1381,7 +1381,7 @@ describe("HMR (Hot Module Replacement)", () => {
       const mockCtx = {
         file: "/test/component.tsx",
         read: vi.fn().mockReturnValue(`
-          import { Lucide, Heroicons, Tabler } from "@kunai-consulting/qwik";
+          import { Lucide, Heroicons, Tabler } from "@qds.dev/ui";
           export default function Test() {
             return (
               <div>
@@ -1409,7 +1409,7 @@ describe("HMR (Hot Module Replacement)", () => {
       const mockCtx = {
         file: "/test/component.tsx",
         read: vi.fn().mockReturnValue(`
-          import { Lucide } from "@kunai-consulting/qwik";
+          import { Lucide } from "@qds.dev/ui";
           export default function Test() {
             return (
               <Lucide.Check

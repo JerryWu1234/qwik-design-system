@@ -1,4 +1,4 @@
-import { Checklist } from "@kunai-consulting/qwik";
+import { Checklist } from "@qds.dev/ui";
 import { component$, useStyles$ } from "@qwik.dev/core";
 import { LuCheck, LuMinus } from "@qwikest/icons/lucide";
 

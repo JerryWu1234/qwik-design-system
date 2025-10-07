@@ -1,6 +1,6 @@
 import { component$ } from "@qwik.dev/core";
 
-import { DateInput } from "@kunai-consulting/qwik";
+import { DateInput } from "@qds.dev/ui";
 
 export default component$(() => {
   return (

@@ -1,5 +1,5 @@
-import { Lucide, Modal } from "@kunai-consulting/qwik";
-import { Navbar } from "@kunai-consulting/qwik";
+import { Lucide, Modal } from "@qds.dev/ui";
+import { Navbar } from "@qds.dev/ui";
 import { component$, useStyles$ } from "@qwik.dev/core";
 import componentsImg from "~/assets/decor/components.webp";
 import compositionImg from "~/assets/decor/composition.webp";
@@ -66,7 +66,7 @@ const DesktopNav = component$(() => {
     const hasMultipleColumns = ["UI", "Tools", "Learn"].includes(label);
     return {
       gridTemplateColumns: hasMultipleColumns ? "1fr 1fr" : "1fr",
-      gridTemplateRows: label === "Tools" ? "1fr 1fr" : "auto"
+      gridTemplateRows: label === "Tools" ? "max-content max-content" : "max-content"
     };
   };
 

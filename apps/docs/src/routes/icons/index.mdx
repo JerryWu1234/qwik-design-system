@@ -28,7 +28,7 @@ Our icon system includes icons from popular libraries:
 Icons are included with the Qwik design system:
 
 ```bash
-npm i @kunai-consulting/qwik
+npm i @qds.dev/ui
 ```
 
 ## Usage
@@ -37,7 +37,7 @@ Import and use icons directly in your components:
 
 ```tsx
 import { component$ } from "@qwik.dev/core";
-import { Lucide, Heroicons, Tabler } from "@kunai-consulting/qwik";
+import { Lucide, Heroicons, Tabler } from "@qds.dev/ui";
 
 export const MyComponent = component$(() => {
   return (
@@ -133,7 +133,7 @@ The Vite plugin transforms icon JSX at build time:
 Full type safety with autocomplete:
 
 ```tsx
-import { Lucide } from "@kunai-consulting/qwik";
+import { Lucide } from "@qds.dev/ui";
 
 // ✅ TypeScript knows this is Component<PropsOf<"svg">>
 const checkIcon = <Lucide.Check />;
@@ -157,15 +157,15 @@ const checkIcon = <Lucide.Check />;
 
 ## Migration from Old System
 
-If you're migrating from the old `@kunai-consulting/qwik-icons`:
+If you're migrating from the old `@qds.dev/ui-icons`:
 
 ```tsx
 // Old way
-import { LuRocket } from "@kunai-consulting/qwik-icons";
+import { LuRocket } from "@qds.dev/ui-icons";
 <LuRocket />
 
 // New way
-import { Lucide } from "@kunai-consulting/qwik";
+import { Lucide } from "@qds.dev/ui";
 <Lucide.Rocket />
 ```
 
@@ -184,7 +184,7 @@ All Iconify-supported packs are available through type declarations. The most co
 You can use any icon pack supported by Iconify. Just import the namespace and use the icons:
 
 ```tsx
-import { CustomPack } from "@kunai-consulting/qwik";
+import { CustomPack } from "@qds.dev/ui";
 <CustomPack.MyIcon />
 ```
 

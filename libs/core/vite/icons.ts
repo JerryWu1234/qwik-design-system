@@ -65,7 +65,7 @@ type LazyIconCache = Map<string, Promise<IconData>>;
  * @returns Vite plugin object
  */
 export const icons = (options: IconsPluginOptions = {}): VitePlugin => {
-  const importSources = options.importSources ?? ["@kunai-consulting/qwik"];
+  const importSources = options.importSources ?? ["@qds.dev/ui"];
   const isDebugMode = !!options.debug;
   const require = createRequire(import.meta.url);
 

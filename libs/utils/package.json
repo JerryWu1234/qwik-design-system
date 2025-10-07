@@ -1,5 +1,5 @@
 {
-  "name": "@kunai-consulting/qwik-utils",
+  "name": "@qds.dev/utils",
   "version": "0.3.0",
   "description": "Create a Qwik library",
   "main": "./lib/index.qwik.mjs",

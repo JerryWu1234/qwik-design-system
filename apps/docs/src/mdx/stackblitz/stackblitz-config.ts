@@ -9,7 +9,7 @@ const packageJson = `{
     "preview": "serve dist"
   },
   "devDependencies": {
-    "@kunai-consulting/qwik": "latest",
+    "@qds.dev/ui": "latest",
     "@qwikest/icons": "^0.0.13",
     "serve": "^14.2.4",
     "typescript": "~5.7.2",

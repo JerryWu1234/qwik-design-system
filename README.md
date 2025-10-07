@@ -30,7 +30,7 @@ And much more, you can view our roadmap [here](https://qwik.design/contributing/
 To install the project, run the following command:
 
 ```shell
-npm i -D @kunai-consulting/qwik
+npm i -D @qds.dev/ui
 ```
 
 ## Contributing

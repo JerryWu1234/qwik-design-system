@@ -1,4 +1,4 @@
-import { Tabs } from "@kunai-consulting/qwik";
+import { Tabs } from "@qds.dev/ui";
 import {
   $,
   type Component,

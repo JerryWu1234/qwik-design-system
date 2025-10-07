@@ -33,7 +33,7 @@ Our icon system includes the following icon libraries:
 The icons package is included in our design system by default. If you need to install it separately:
 
 ```bash
-npm i @kunai-consulting/qwik-icons
+npm i @qds.dev/ui-icons
 ```
 
 ## Usage
@@ -41,7 +41,7 @@ npm i @kunai-consulting/qwik-icons
 Icons can be imported from their respective packages and used directly in your components. They inherit size and color from their parent elements by default.
 
 ```tsx
-import { LuRocket } from "@kunai-consulting/qwik-icons";
+import { LuRocket } from "@qds.dev/ui-icons";
 
 export const MyComponent = component$(() => {
   return (
@@ -70,7 +70,7 @@ import {
   GoFlame24,
   Si1Password,
   Tb123
-} from "@kunai-consulting/qwik-icons";
+} from "@qds.dev/ui-icons";
 ```
 
 ## Styling Icons
@@ -88,7 +88,7 @@ Icons inherit their parent's color and size by default. You can customize them u
 ## Differences from Qwikest Icons
 
 - Each component is a regular Qwik component (it uses `component$`).
-- Every icons can be grabbed from `@kunai-consulting/qwik-icons`, rather than having to grab from the `/lucide` or `/feather` subpaths.
+- Every icons can be grabbed from `@qds.dev/ui-icons`, rather than having to grab from the `/lucide` or `/feather` subpaths.
 - Icons are part of the Icon namespace, and autocomplete to the specific icon you're searching for.
 
 ## Roadmap

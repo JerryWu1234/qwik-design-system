@@ -1,5 +1,5 @@
-import type { BindableProps } from "@kunai-consulting/qwik-utils";
-import { useBindings } from "@kunai-consulting/qwik-utils";
+import type { BindableProps } from "@qds.dev/utils";
+import { useBindings } from "@qds.dev/utils";
 import {
   $,
   type PropsOf,

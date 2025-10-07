@@ -1,4 +1,4 @@
-import { Tree } from "@kunai-consulting/qwik";
+import { Tree } from "@qds.dev/ui";
 import { $, type PropsOf, component$ } from "@qwik.dev/core";
 import { useSignal } from "@qwik.dev/core";
 import { Link } from "@qwik.dev/router";

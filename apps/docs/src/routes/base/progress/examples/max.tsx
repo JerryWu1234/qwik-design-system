@@ -1,4 +1,4 @@
-import { Progress } from "@kunai-consulting/qwik";
+import { Progress } from "@qds.dev/ui";
 import { $, component$, useSignal, useStyles$ } from "@qwik.dev/core";
 
 export default component$(() => {

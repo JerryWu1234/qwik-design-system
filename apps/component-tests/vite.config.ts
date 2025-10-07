@@ -67,9 +67,9 @@ export default defineConfig(({ command, mode }): UserConfig => {
     },
     resolve: {
       alias: {
-        "@kunai-consulting/qwik": resolve(__dirname, "../../libs/components/src"),
-        "@kunai-consulting/qwik-utils": resolve(__dirname, "../../libs/utils/src"),
-        "@kunai-consulting/qwik-icons": resolve(__dirname, "../../libs/icons/src"),
+        "@qds.dev/ui": resolve(__dirname, "../../libs/components/src"),
+        "@qds.dev/utils": resolve(__dirname, "../../libs/utils/src"),
+        "@qds.dev/ui-icons": resolve(__dirname, "../../libs/icons/src"),
         "~": resolve(__dirname, "src")
       },
       dedupe: ["@qwik.dev/core", "@qwik.dev/router"]

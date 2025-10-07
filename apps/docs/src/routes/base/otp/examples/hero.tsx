@@ -1,4 +1,4 @@
-import { Checkbox, Otp } from "@kunai-consulting/qwik";
+import { Checkbox, Otp } from "@qds.dev/ui";
 import { type PropsOf, Slot, component$, useSignal } from "@qwik.dev/core";
 import { LuCheck } from "@qwikest/icons/lucide";
 

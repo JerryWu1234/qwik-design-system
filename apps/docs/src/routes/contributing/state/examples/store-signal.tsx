@@ -1,4 +1,4 @@
-import { Checkbox } from "@kunai-consulting/qwik";
+import { Checkbox } from "@qds.dev/ui";
 import {
   type Signal,
   component$,

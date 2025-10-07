@@ -1,4 +1,4 @@
-# @kunai-consulting/qwik-headless
+# @qds.dev/ui-headless
 
 ## 0.3.0
 

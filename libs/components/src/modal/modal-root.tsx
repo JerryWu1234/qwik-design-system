@@ -1,6 +1,6 @@
 import { createNoScroll, markScrollable } from "@fluejs/noscroll";
 import { initTouchHandler, resetTouchHandler } from "@fluejs/noscroll/touch";
-import { type BindableProps, useBindings } from "@kunai-consulting/qwik-utils";
+import { type BindableProps, useBindings } from "@qds.dev/utils";
 import {
   type PropsOf,
   type Signal,

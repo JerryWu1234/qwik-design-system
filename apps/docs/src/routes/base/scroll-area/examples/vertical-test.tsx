@@ -1,4 +1,4 @@
-import { ScrollArea } from "@kunai-consulting/qwik";
+import { ScrollArea } from "@qds.dev/ui";
 import { component$, useStyles$ } from "@qwik.dev/core";
 import styles from "./scroll-area.css?inline";
 

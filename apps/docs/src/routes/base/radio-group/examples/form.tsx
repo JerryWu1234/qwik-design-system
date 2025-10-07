@@ -1,4 +1,4 @@
-import { RadioGroup } from "@kunai-consulting/qwik";
+import { RadioGroup } from "@qds.dev/ui";
 import { $, component$, useSignal } from "@qwik.dev/core";
 
 export default component$(() => {

@@ -1,4 +1,4 @@
-import { Popover } from "@kunai-consulting/qwik";
+import { Popover } from "@qds.dev/ui";
 import { component$, useSignal } from "@qwik.dev/core";
 
 export default component$(() => {

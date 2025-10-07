@@ -1,4 +1,4 @@
-import { Render } from "@kunai-consulting/qwik";
+import { Render } from "@qds.dev/ui";
 import { $, type PropsOf, Slot, component$, useSignal } from "@qwik.dev/core";
 
 export default component$(() => {

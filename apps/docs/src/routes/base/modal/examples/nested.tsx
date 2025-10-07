@@ -1,4 +1,4 @@
-import { Modal } from "@kunai-consulting/qwik";
+import { Modal } from "@qds.dev/ui";
 import { component$, useSignal } from "@qwik.dev/core";
 
 export default component$(() => {

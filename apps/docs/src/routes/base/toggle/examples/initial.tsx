@@ -1,4 +1,4 @@
-import { Toggle } from "@kunai-consulting/qwik";
+import { Toggle } from "@qds.dev/ui";
 import { component$, useStyles$ } from "@qwik.dev/core";
 import { LuVolume2, LuVolumeX } from "@qwikest/icons/lucide";
 import styles from "./toggle.css?inline";

@@ -12,17 +12,17 @@ This monorepo uses [PNPM Workspaces](https://pnpm.io/workspaces), [TypeScript Pr
 
 The root `tsconfig.json` file defines base TypeScript settings and path aliases.
 
-*   **`compilerOptions.paths`:** Maps package names (e.g., `@kunai-consulting/qwik`) to their source directories (`libs/components/src`). This helps TypeScript and potentially other tools understand the mapping.
+*   **`compilerOptions.paths`:** Maps package names (e.g., `@qds.dev/ui`) to their source directories (`libs/components/src`). This helps TypeScript and potentially other tools understand the mapping.
     *   **Action:** When adding a new package (e.g., `libs/new-package`), add a new entry:
         ```json:tsconfig.json
         {
           "compilerOptions": {
             "baseUrl": ".",
             "paths": {
-              "@kunai-consulting/qwik": ["libs/components/src"],
-              "@kunai-consulting/qwik-icons": ["libs/icons/src"],
-              "@kunai-consulting/qwik-utils": ["libs/utils/src"],
-              "@kunai-consulting/new-package": ["libs/new-package/src"]
+              "@qds.dev/ui": ["libs/components/src"],
+              "@qds.dev/ui-icons": ["libs/icons/src"],
+              "@qds.dev/utils": ["libs/utils/src"],
+              "@qds.dev/new-package": ["libs/new-package/src"]
             }
           },
           "references": [
@@ -40,10 +40,10 @@ The root `tsconfig.json` file defines base TypeScript settings and path aliases.
           "compilerOptions": {
             "baseUrl": ".",
             "paths": {
-              "@kunai-consulting/qwik": ["libs/components/src"],
-              "@kunai-consulting/qwik-icons": ["libs/icons/src"],
-              "@kunai-consulting/qwik-utils": ["libs/utils/src"],
-              "@kunai-consulting/new-package": ["libs/new-package/src"]
+              "@qds.dev/ui": ["libs/components/src"],
+              "@qds.dev/ui-icons": ["libs/icons/src"],
+              "@qds.dev/utils": ["libs/utils/src"],
+              "@qds.dev/new-package": ["libs/new-package/src"]
             }
           },
           "references": [
@@ -86,8 +86,8 @@ In the `package.json` of any package that needs to *use* another local package:
     ```json:apps/docs/package.json
     {
       "devDependencies": {
-        "@kunai-consulting/qwik": "workspace:*",
-        "@kunai-consulting/new-package": "workspace:*"
+        "@qds.dev/ui": "workspace:*",
+        "@qds.dev/new-package": "workspace:*"
       }
     }
     ```
@@ -98,16 +98,16 @@ In the `package.json` of any package that needs to *use* another local package:
 The Vite configuration for the consuming application (`apps/docs`) is critical for development, **especially for Hot Module Replacement (HMR)**.
 
 *   **`resolve.alias`:** This section **must** explicitly map the package names of your local `libs/*` dependencies directly to their `src` directories. While `vite-tsconfig-paths` might handle initial resolution using the root `tsconfig.json`, experience shows **this explicit aliasing in the Vite config is necessary for HMR to reliably detect and apply changes** made within the source files of linked local packages.
-    *   **Action:** When adding a new package (e.g., `@kunai-consulting/new-package`), add a corresponding alias:
+    *   **Action:** When adding a new package (e.g., `@qds.dev/new-package`), add a corresponding alias:
         ```typescript:apps/docs/vite.config.ts
         import { resolve } from "pathe";
         
         resolve: {
           alias: {
-            "@kunai-consulting/qwik": resolve(__dirname, "../../libs/components/src"),
-            "@kunai-consulting/qwik-utils": resolve(__dirname, "../../libs/utils/src"),
-            "@kunai-consulting/qwik-icons": resolve(__dirname, "../../libs/icons/src"),
-            "@kunai-consulting/new-package": resolve(__dirname, "../../libs/new-package/src"),
+            "@qds.dev/ui": resolve(__dirname, "../../libs/components/src"),
+            "@qds.dev/utils": resolve(__dirname, "../../libs/utils/src"),
+            "@qds.dev/ui-icons": resolve(__dirname, "../../libs/icons/src"),
+            "@qds.dev/new-package": resolve(__dirname, "../../libs/new-package/src"),
             "~": resolve(__dirname, "src")
           },
           dedupe: ["@qwik.dev/core", "@qwik.dev/router"]
@@ -134,10 +134,10 @@ For testing with Vitest, we need to ensure proper path resolution for local pack
     export default defineConfig({
       resolve: {
         alias: {
-          "@kunai-consulting/qwik-utils": resolve(__dirname, "libs/utils/src"),
-          "@kunai-consulting/qwik-components": resolve(__dirname, "libs/components/src"),
-          "@kunai-consulting/qwik-icons": resolve(__dirname, "libs/icons/src"),
-          "@kunai-consulting/new-package": resolve(__dirname, "libs/new-package/src")
+          "@qds.dev/utils": resolve(__dirname, "libs/utils/src"),
+          "@qds.dev/ui-components": resolve(__dirname, "libs/components/src"),
+          "@qds.dev/ui-icons": resolve(__dirname, "libs/icons/src"),
+          "@qds.dev/new-package": resolve(__dirname, "libs/new-package/src")
         }
       },
       test: {

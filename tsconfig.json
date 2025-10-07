@@ -2,8 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@kunai-consulting/qwik": ["libs/components/src"],
-      "@kunai-consulting/qwik-utils": ["libs/utils/src"]
+      "@qds.dev/ui": ["libs/components/src"],
+      "@qds.dev/utils": ["libs/utils/src"]
     }
   },
   "references": [{ "path": "./libs/components" }, { "path": "./libs/utils" }]

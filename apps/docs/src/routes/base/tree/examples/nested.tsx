@@ -1,5 +1,5 @@
 // import { component$ } from "@qwik.dev/core";
-// import { Tree } from "@kunai-consulting/qwik";
+// import { Tree } from "@qds.dev/ui";
 
 // export default component$(() => {
 //   return (

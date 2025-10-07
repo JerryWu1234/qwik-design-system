@@ -1,4 +1,4 @@
-# @kunai-consulting/qwik-utils
+# @qds.dev/utils
 
 ## 0.3.0
 

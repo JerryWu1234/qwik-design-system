@@ -32,8 +32,8 @@ const domConfig: TestProjectConfiguration = {
 export default defineConfig({
   resolve: {
     alias: {
-      "@kunai-consulting/qwik-utils": resolve(__dirname, "libs/utils/src"),
-      "@kunai-consulting/qwik": resolve(__dirname, "libs/components/src")
+      "@qds.dev/utils": resolve(__dirname, "libs/utils/src"),
+      "@qds.dev/ui": resolve(__dirname, "libs/components/src")
     }
   },
   test: {

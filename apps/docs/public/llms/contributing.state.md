@@ -57,7 +57,7 @@ It looks at what the user passed to your component - whether it's a plain value 
 
 1. Import the necessary types and hook:
    ```tsx
-   import { type BindableProps, useBindings } from "@kunai-consulting/qwik-utils";
+   import { type BindableProps, useBindings } from "@qds.dev/utils";
    ```
 
 2. Define your bindable properties:

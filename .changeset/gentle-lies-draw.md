@@ -1,5 +1,5 @@
 ---
-"@kunai-consulting/qwik": patch
+"@qds.dev/ui": patch
 ---
 
 - Rework DateInput separator API

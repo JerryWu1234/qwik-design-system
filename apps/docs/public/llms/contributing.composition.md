@@ -85,7 +85,7 @@ This pattern is ok for those consuming the library, but not for those building i
 The purpose of these primitives is for consumers to combine the pieces of the component, so you can focus on building your app.
 
 ```jsx
-import { Tooltip } from "@kunai-consulting/qwik";
+import { Tooltip } from "@qds.dev/ui";
 
 export const HelpTip = component$(({ trigger }) => {
   return (

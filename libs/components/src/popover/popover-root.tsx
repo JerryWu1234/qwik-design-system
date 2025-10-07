@@ -29,7 +29,7 @@ export type PopoverRootProps<Fallback extends "div" | "li" = "div"> = Omit<
   closeDelay?: number;
 } & BindableProps<{ open: boolean }>;
 
-import { type BindableProps, useBindings } from "@kunai-consulting/qwik-utils";
+import { type BindableProps, useBindings } from "@qds.dev/utils";
 import anchorStyles from "./anchor-logic.css?inline";
 
 export const popoverContextId = createContextId<PopoverContext>("qds-popover");

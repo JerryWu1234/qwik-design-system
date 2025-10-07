@@ -1,4 +1,4 @@
-import { Lucide } from "@kunai-consulting/qwik";
+import { Lucide } from "@qds.dev/ui";
 import { component$ } from "@qwik.dev/core";
 import { Action } from "../../docs-widgets/action/action";
 import { Home } from "../../docs-widgets/home";

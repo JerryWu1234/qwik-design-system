@@ -1,4 +1,4 @@
-import { useBoundSignal } from "@kunai-consulting/qwik-utils";
+import { useBoundSignal } from "@qds.dev/utils";
 import {
   $,
   type PropsOf,

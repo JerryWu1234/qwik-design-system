@@ -1,4 +1,4 @@
-import { Popover } from "@kunai-consulting/qwik";
+import { Popover } from "@qds.dev/ui";
 import { component$, useSignal, useStyles$ } from "@qwik.dev/core";
 import styles from "./popover.css?inline";
 

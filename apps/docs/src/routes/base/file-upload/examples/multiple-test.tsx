@@ -1,4 +1,4 @@
-import { FileUpload } from "@kunai-consulting/qwik";
+import { FileUpload } from "@qds.dev/ui";
 import { component$ } from "@qwik.dev/core";
 
 export default component$(() => {

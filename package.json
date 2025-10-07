@@ -5,8 +5,8 @@
   "version": "0.0.0",
   "packageManager": "pnpm@9.14.4",
   "scripts": {
-    "dev": "pnpm --filter ./libs/core dev & pnpm --filter ./apps/docs dev",
-    "dev.watch": "pnpm --filter ./libs/core dev:watch & pnpm --filter ./apps/docs dev",
+    "dev": "pnpm --filter ./libs/core dev:watch & sleep 0.7 && pnpm --filter ./apps/docs dev & wait",
+    "dev.watch": "pnpm --filter ./libs/core dev:watch & pnpm --filter ./apps/docs dev & wait",
     "dev.ct": "pnpm --filter ./apps/component-tests dev -- --port 6174",
     "build": "pnpm --filter ./libs/core build && pnpm --filter ./libs/utils build && pnpm --filter ./libs/components build && pnpm --filter ./apps/docs build && cp -r ./apps/docs/dist/pagefind ./apps/docs/public",
     "preview": "pnpm --filter ./apps/docs preview",

@@ -1,4 +1,4 @@
-import { type BindableProps, useBindings } from "@kunai-consulting/qwik-utils";
+import { type BindableProps, useBindings } from "@qds.dev/utils";
 import { type PropsOf, component$, useSignal, useStyles$ } from "@qwik.dev/core";
 import { Slot } from "@qwik.dev/core";
 import styles from "./form.css?inline";

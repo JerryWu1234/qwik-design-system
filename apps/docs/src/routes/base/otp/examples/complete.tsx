@@ -1,4 +1,4 @@
-import { Otp } from "@kunai-consulting/qwik";
+import { Otp } from "@qds.dev/ui";
 import { $, component$, useSignal } from "@qwik.dev/core";
 import type { DocumentHead } from "@qwik.dev/router";
 

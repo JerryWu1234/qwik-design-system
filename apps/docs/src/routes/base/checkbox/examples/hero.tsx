@@ -1,4 +1,4 @@
-import { Checkbox } from "@kunai-consulting/qwik";
+import { Checkbox } from "@qds.dev/ui";
 import { component$, useStyles$ } from "@qwik.dev/core";
 
 export default component$(() => {

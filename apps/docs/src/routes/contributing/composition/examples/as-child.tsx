@@ -1,5 +1,5 @@
-import type { AsChildTypes } from "@kunai-consulting/core";
-import { Render } from "@kunai-consulting/qwik";
+import type { AsChildTypes } from "@qds.dev/tools";
+import { Render } from "@qds.dev/ui";
 import { type PropsOf, Slot, component$ } from "@qwik.dev/core";
 
 export default component$(() => {

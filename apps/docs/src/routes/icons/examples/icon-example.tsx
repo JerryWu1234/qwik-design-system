@@ -1,4 +1,4 @@
-import { AkarIcons, Heroicons, Lucide, Tabler } from "@kunai-consulting/qwik";
+import { AkarIcons, Heroicons, Lucide, Tabler } from "@qds.dev/ui";
 import { component$ } from "@qwik.dev/core";
 
 export default component$(() => {

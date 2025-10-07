@@ -1,4 +1,4 @@
-import { getNextEnabledIndex, getPrevEnabledIndex } from "@kunai-consulting/qwik-utils";
+import { getNextEnabledIndex, getPrevEnabledIndex } from "@qds.dev/utils";
 import {
   $,
   type PropsOf,

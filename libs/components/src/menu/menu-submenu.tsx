@@ -1,4 +1,4 @@
-import { useBindings } from "@kunai-consulting/qwik-utils";
+import { useBindings } from "@qds.dev/utils";
 import {
   Slot,
   component$,

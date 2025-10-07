@@ -10,7 +10,7 @@ import {
   useTask$
 } from "@qwik.dev/core";
 
-import { useBoundSignal } from "@kunai-consulting/qwik-utils";
+import { useBoundSignal } from "@qds.dev/utils";
 import { createContextId } from "@qwik.dev/core";
 import { useStyles$ } from "@qwik.dev/core";
 import { Render } from "../render/render";

@@ -1,4 +1,4 @@
-import { RadioGroup } from "@kunai-consulting/qwik";
+import { RadioGroup } from "@qds.dev/ui";
 import { $, component$, useSignal, useStyles$ } from "@qwik.dev/core";
 import styles from "./radio-group-custom.css?inline";
 

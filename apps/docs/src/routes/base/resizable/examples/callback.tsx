@@ -1,4 +1,4 @@
-import { Resizable } from "@kunai-consulting/qwik";
+import { Resizable } from "@qds.dev/ui";
 import { $, component$, useSignal, useStyles$ } from "@qwik.dev/core";
 import styles from "./resizable-custom.css?inline";
 
