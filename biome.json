@@ -7,7 +7,7 @@
       "dist",
       "node_modules",
       "server",
-      "apps/docs/public/pagefind",
+      "docs/public/pagefind",
       "lib-types",
       "libs/components/lib/*",
       "libs/components/node_modules",

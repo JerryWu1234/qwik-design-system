@@ -1,6 +1,6 @@
 packages:
+  - docs
   - libs/*
-  - apps/*
 ignoredBuiltDependencies:
   - yarn
 onlyBuiltDependencies:

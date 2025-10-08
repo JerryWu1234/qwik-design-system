@@ -1,20 +1,20 @@
-import type { Locator, Page } from "@playwright/test";
+// import type { Locator, Page } from "@playwright/test";
 
-export type DriverLocator = Locator | Page;
+// export type DriverLocator = Locator | Page;
 
-export function createTestDriver<T extends DriverLocator>(rootLocator: T) {
-  const getRoot = () => {
-    return rootLocator.locator("[data-qds-toggle-root]");
-  };
+// export function createTestDriver<T extends DriverLocator>(rootLocator: T) {
+//   const getRoot = () => {
+//     return rootLocator.locator("[data-qds-toggle-root]");
+//   };
 
-  const getIndicator = () => {
-    return getRoot().locator("[data-qds-toggle-indicator]");
-  };
+//   const getIndicator = () => {
+//     return getRoot().locator("[data-qds-toggle-indicator]");
+//   };
 
-  return {
-    ...rootLocator,
-    locator: rootLocator,
-    getRoot,
-    getIndicator
-  };
-}
+//   return {
+//     ...rootLocator,
+//     locator: rootLocator,
+//     getRoot,
+//     getIndicator
+//   };
+// }
