@@ -1,6 +1,6 @@
 {
   "name": "@qds.dev/ui",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Create a Qwik library",
   "main": "./lib/index.qwik.mjs",
   "qwik": "./lib/index.qwik.mjs",
@@ -11,7 +11,10 @@
       "types": "./lib-types/src/index.d.ts"
     }
   },
-  "files": ["lib", "lib-types"],
+  "files": [
+    "lib",
+    "lib-types"
+  ],
   "private": false,
   "type": "module",
   "license": "MIT",
