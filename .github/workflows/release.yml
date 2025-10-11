@@ -64,9 +64,10 @@ jobs:
 
       - name: 📊 Generate changeset data and determine next version
         id: generate-changeset
+        continue-on-error: true
         run: |
-          pnpm changeset status --output=release.json
-          echo "NEW_VERSION=$(jq -r '.releases[0].newVersion' release.json)" >> $GITHUB_ENV
+          pnpm changeset status --output=release.json || echo '{"releases":[]}' > release.json
+          echo "NEW_VERSION=$(jq -r '.releases[0].newVersion // "next"' release.json)" >> $GITHUB_ENV
           CHANGESET_DATA=$(jq -c . release.json)
           echo "changeset_data=$CHANGESET_DATA" >> $GITHUB_OUTPUT
           rm release.json
