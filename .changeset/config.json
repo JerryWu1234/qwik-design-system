@@ -5,7 +5,7 @@
   "fixed": [["@qds.dev/ui", "@qds.dev/utils", "@qds.dev/tools"]],
   "linked": [],
   "access": "public",
-  "baseBranch": "main",
+  "baseBranch": "v2-migration",
   "updateInternalDependencies": "patch",
   "ignore": ["qwik-design-system-docs"]
 }
