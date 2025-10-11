@@ -2,7 +2,7 @@
   "$schema": "https://unpkg.com/@changesets/config@3.0.2/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [["@qds.dev/ui", "@qds.dev/utils"]],
+  "fixed": [["@qds.dev/ui", "@qds.dev/utils", "@qds.dev/tools"]],
   "linked": [],
   "access": "public",
   "baseBranch": "main",

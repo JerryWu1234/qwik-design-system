@@ -3,7 +3,7 @@
 // The actual functionality comes from the Vite plugin transformation at build time
 
 import type { Component, PropsOf } from "@qwik.dev/core";
-import type * as GeneratedTypes from "../lib-types/virtual-qds-icons";
+import type * as GeneratedTypes from "../virtual-qds-icons";
 
 type IconComponent = Component<PropsOf<"svg">>;
 

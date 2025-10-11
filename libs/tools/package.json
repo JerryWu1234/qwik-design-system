@@ -1,7 +1,7 @@
 {
   "name": "@qds.dev/tools",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.0.1",
+  "private": false,
   "description": "A simple example library built by tsdown",
   "type": "module",
   "files": ["dist"],
@@ -22,14 +22,16 @@
     "generate-icon-types": "tsx src/generate-icon-types.ts"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.382",
     "@iconify/utils": "^3.0.1",
     "@iconify/types": "^2",
-    "@oxc-project/types": "^0.87.0",
     "magic-string": "^0.30.17",
-    "oxc-parser": "^0.94.0",
-    "oxc-walker": "^0.5.2",
     "tsdown": "latest",
     "vite": "^7.0.6"
+  },
+  "dependencies": {
+    "@iconify/json": "^2.2.382",
+    "@oxc-project/types": "^0.87.0",
+    "oxc-parser": "^0.94.0",
+    "oxc-walker": "^0.5.2"
   }
 }

@@ -98,19 +98,32 @@ async function generateIconTypes(packs?: Record<string, { iconifyPrefix: string 
 
   const output = declarations.join("\n");
 
-  // Create directory if it doesn't exist
-  const outputDir = dirname(outputPath);
-  if (!existsSync(outputDir)) {
-    mkdirSync(outputDir, { recursive: true });
+  const libTypesPath = join(
+    scriptDir,
+    "../../components/lib-types/virtual-qds-icons.d.ts"
+  );
+  const componentsRootPath = join(scriptDir, "../../components/virtual-qds-icons.d.ts");
+
+  const libTypesDir = dirname(libTypesPath);
+  if (!existsSync(libTypesDir)) {
+    mkdirSync(libTypesDir, { recursive: true });
   }
 
-  writeFileSync(outputPath, output, "utf-8");
+  const componentsRootDir = dirname(componentsRootPath);
+  if (!existsSync(componentsRootDir)) {
+    mkdirSync(componentsRootDir, { recursive: true });
+  }
+
+  // Write to both locations
+  writeFileSync(libTypesPath, output, "utf-8");
+  writeFileSync(componentsRootPath, output, "utf-8");
 
   console.log("✓ Generated type declarations:");
   for (const [packName, count] of Object.entries(iconCounts)) {
     console.log(`  - ${packName}: ${count} icons`);
   }
-  console.log(`✓ Output: ${outputPath}`);
+  console.log(`✓ Output (lib-types): ${libTypesPath}`);
+  console.log(`✓ Output (components root): ${componentsRootPath}`);
 }
 
 /**
@@ -140,9 +153,7 @@ async function generateRuntimeProxies(
   );
   declarations.push("");
   declarations.push('import type { Component, PropsOf } from "@qwik.dev/core";');
-  declarations.push(
-    'import type * as GeneratedTypes from "../lib-types/virtual-qds-icons";'
-  );
+  declarations.push('import type * as GeneratedTypes from "../virtual-qds-icons";');
   declarations.push("");
   declarations.push('type IconComponent = Component<PropsOf<"svg">>;');
   declarations.push("");
