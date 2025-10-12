@@ -23,7 +23,7 @@ export interface PointerOpts {
 }
 
 function createDebugDot(x: number, y: number, type: "down" | "up") {
-  if (typeof window === "undefined" || !import.meta.env?.DEV) return;
+  if (typeof window === "undefined") return;
 
   const dot = document.createElement("div");
   dot.style.cssText = `

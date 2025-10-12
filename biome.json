@@ -17,6 +17,7 @@
       "libs/icons/src/icons",
       "libs/icons/src/page",
       "libs/components/virtual-qds-icons.d.ts",
+      "libs/components/icons-runtime.ts",
       "libs/utils/lib/*",
       ".vscode",
       "test-results"

@@ -5,7 +5,7 @@
     "composite": true,
     "allowJs": true,
     "target": "ES2017",
-    "module": "ES2020",
+    "module": "esnext",
     "lib": ["es2020", "DOM"],
     "jsx": "react-jsx",
     "jsxImportSource": "@qwik.dev/core",
@@ -18,8 +18,9 @@
     "skipLibCheck": true,
     "incremental": true,
     "isolatedModules": true,
-    "types": ["vite/client", "node"]
+    "types": ["node"]
   },
-  "include": ["src", "vitest"],
+  "include": ["src", "vitest", "env.d.ts"],
+  "exclude": ["virtual-qds-icons.d.ts", "lib", "lib-types", "node_modules"],
   "references": [{ "path": "../utils" }]
 }

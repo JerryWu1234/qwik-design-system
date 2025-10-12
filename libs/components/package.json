@@ -11,31 +11,31 @@
       "types": "./lib-types/src/index.d.ts"
     }
   },
-  "files": [
-    "lib",
-    "lib-types"
-  ],
+  "files": ["lib", "lib-types"],
   "private": false,
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "build": "qwik build",
-    "build.lib": "vite build --mode lib",
+    "build": "pnpm run build.lib & pnpm run build.types",
+    "build.lib": "rolldown -c rolldown.config.ts",
     "build.types": "tsc --emitDeclarationOnly --project tsconfig.json --outDir ./lib-types --pretty",
     "dev": "vite --mode ssr",
     "qwik": "qwik"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.9.1",
+    "@fluejs/noscroll": "^1.0.0",
     "@qds.dev/utils": "workspace:*",
+    "@qwik.dev/core": "2.0.0-beta.11",
     "@types/node": "22.14.0",
+    "rolldown": "1.0.0-beta.42",
     "typescript": "5.4.5",
     "uqr": "^0.1.2",
-    "vite": "^7",
     "vite-tsconfig-paths": "^4.2.1",
-    "@qwik.dev/core": "2.0.0-beta.11",
-    "vitest-browser-qwik": "https://pkg.pr.new/kunai-consulting/vitest-browser-qwik@949e6ac",
-    "@fluejs/noscroll": "^1.0.0"
+    "vitest-browser-qwik": "https://pkg.pr.new/kunai-consulting/vitest-browser-qwik@949e6ac"
+  },
+  "peerDependencies": {
+    "@qwik.dev/core": ">=2.0.0-beta.11"
   },
   "dependencies": {
     "@oddbird/css-anchor-positioning": "^0.6"
