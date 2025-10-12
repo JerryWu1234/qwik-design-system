@@ -1,5 +1,11 @@
 # @qds.dev/ui-headless
 
+## 0.3.2
+
+### Patch Changes
+
+- 9ad77d6: feat: migrate components library to rolldown instead of vite
+
 ## 0.3.1
 
 ### Patch Changes
