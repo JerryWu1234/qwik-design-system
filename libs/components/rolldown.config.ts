@@ -17,14 +17,12 @@ const excludeAll = (obj: Record<string, string>) => Object.keys(obj).map(makeReg
 export default defineConfig({
   input: "./src/index.ts",
   output: {
-    dir: "./lib",
-    format: "esm",
-    preserveModules: true,
-    preserveModulesRoot: "src"
+    format: "esm"
   },
   plugins: [
     // qwikRollup overrides the default output dir to dist, we need to fix this. qwikExtensionPlugin overrides it back to lib.
     qwikRollup({
+      target: "lib",
       lint: false,
       srcDir: "./src",
       rootDir: ".",

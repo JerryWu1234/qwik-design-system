@@ -12,6 +12,8 @@ export function qwikExtensionPlugin() {
       outputOpts.dir = "./lib";
       outputOpts.entryFileNames = "[name].qwik.mjs";
       outputOpts.chunkFileNames = "[name]-[hash].qwik.mjs";
+      outputOpts.preserveModules = true;
+      outputOpts.preserveModulesRoot = "src";
       return outputOpts;
     }
   };
