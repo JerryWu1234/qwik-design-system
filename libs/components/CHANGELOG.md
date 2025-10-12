@@ -1,5 +1,12 @@
 # @qds.dev/ui-headless
 
+## 0.3.3
+
+### Patch Changes
+
+- 8c3759c: fix: rolldown chunking
+- 8c3759c: feat: migrate components library to rolldown instead of vite
+
 ## 0.3.2
 
 ### Patch Changes
