@@ -1,8 +1,13 @@
 import { $, type PropsOf, component$, useSignal, useStore } from "@qwik.dev/core";
 import { page, userEvent } from "@vitest/browser/context";
+import axe from "axe-core";
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-qwik";
 import { RadioGroup } from "..";
+
+/**
+ * TODO: create tests that check that check if Label, Error, etc. are connected to the correct elements (aria-labelledby, aria-describedby, aria-errormessage, etc.)
+ */
 
 // Top-level locator constants using data-testid
 const Root = page.getByTestId("root");
@@ -33,21 +38,15 @@ const Basic = component$((props: PropsOf<typeof RadioGroup.Root>) => {
   );
 });
 
-/**
- *  TODO: We need StreamPause in qwik core to fix this
- *
- *  @see https://qwik.design/contributing/tradeoffs/
- */
+test("should meet axe accessibility requirements", async () => {
+  const screen = render(<Basic />);
 
-// test("should meet axe accessibility requirements", async () => {
-//   const screen = render(<Basic />);
+  await expect.element(Root).toBeVisible();
 
-//   await expect.element(Root).toBeVisible();
+  const results = await axe.run(screen.container);
 
-//   const results = await axe.run(screen.container);
-
-//   expect(results.violations).toHaveLength(0);
-// });
+  expect(results.violations).toHaveLength(0);
+});
 
 test("radio group role visible", async () => {
   render(<Basic />);
