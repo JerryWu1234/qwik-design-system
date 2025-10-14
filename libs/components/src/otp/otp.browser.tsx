@@ -60,9 +60,14 @@ test("range selection should replace selected characters", async () => {
   await userEvent.keyboard("1234");
   await expect.element(Input).toHaveValue("1234");
 
-  await userEvent.keyboard("{Shift>}{ArrowLeft}{ArrowLeft}{/Shift}");
+  await userEvent.keyboard("{Shift>}{ArrowLeft}{ArrowLeft}");
+
+  await expect.element(Items.nth(2)).toBeVisible();
 
   await expect.element(Items.nth(2)).toHaveAttribute("data-highlighted");
+
+  await expect.element(Items.nth(3)).toBeVisible();
+
   await expect.element(Items.nth(3)).toHaveAttribute("data-highlighted");
 
   await userEvent.keyboard("1");
