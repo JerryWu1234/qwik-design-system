@@ -166,7 +166,7 @@ const DesktopNav = component$(() => {
                   <span>{item.label}</span>
                 </Navbar.ItemTrigger>
                 <Navbar.ItemContent
-                  class="open:grid gap-4 max-w-[600px] w-full shadow-[6px_6px_0_0px_var(--color-blue-200)] rounded-2xl p-4 border-[1.6px] border-blue-300 transition-discrete duration-[325ms] ease-in-out open:animate-fade-in not-open:animate-fade-out"
+                  class="open:grid gap-4 max-w-[600px] w-full shadow-[6px_6px_0_0px_var(--color-blue-200)] rounded-2xl p-4 border-[1.6px] border-blue-300 transition-discrete duration-[325ms] ease-in-out open:animate-to-visible not-open:animate-from-visible opacity-0"
                   style={getContentGridTemplate(item.label)}
                   data-mega-popover
                 >

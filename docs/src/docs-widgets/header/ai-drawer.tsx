@@ -48,7 +48,7 @@ export const AIDrawer = component$(() => {
       >
         <Slot />
       </Modal.Trigger>
-      <Modal.Content class=" ml-auto data-open:translate-x-0 translate-x-[100%] duration-300 h-full w-[300px] data-open:backdrop:backdrop-brightness-20 data-open:backdrop:animate-fade-in data-closing:backdrop:animate-fade-out  border-l border-neutral-800 bg-neutral-accent data-open:flex flex-col gap-4 px-4 pt-4">
+      <Modal.Content class=" ml-auto data-open:translate-x-0 translate-x-[100%] duration-300 h-full w-[300px] data-open:backdrop:backdrop-brightness-20 data-open:backdrop:animate-to-visible data-closing:backdrop:animate-to-invisible border-l border-neutral-800 bg-neutral-accent data-open:flex flex-col gap-4 px-4 pt-4">
         <p class="text-neutral-foreground">
           Welcome to <Sparkles>CodeNotate!</Sparkles> I'm here to help you create awesome
           documentation.

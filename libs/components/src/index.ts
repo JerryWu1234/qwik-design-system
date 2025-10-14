@@ -7,6 +7,7 @@ export * as Pagination from "./pagination";
 export * as ScrollArea from "./scroll-area";
 export * as RadioGroup from "./radio-group";
 export * as Calendar from "./calendar";
+export * as Field from "./field";
 export * as FileUpload from "./file-upload";
 export * as QRCode from "./qr-code";
 export * as Slider from "./slider";

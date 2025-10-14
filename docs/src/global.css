@@ -48,24 +48,32 @@
   --color-gradient-blue-end: rgba(198, 204, 242, 0);
 
   --animate-shimmer: shimmer 8s infinite backwards reverse cubic-bezier(0.4, 0.0, 0.2, 1);
-  --animate-fade-in: fade-in 325ms ease-in-out;
-  --animate-fade-out: fade-out 325ms ease-in-out;
+  --animate-to-visible: to-visible 325ms ease-in-out forwards;
+  --animate-to-invisible: to-invisible 325ms ease-in-out forwards;
+  --animate-from-invisible: from-invisible 325ms ease-in-out forwards;
+  --animate-from-visible: from-visible 325ms ease-in-out forwards;
 
-  @keyframes fade-out {
+  @keyframes from-visible {
     from {
       opacity: 1;
     }
+  }
+
+  @keyframes to-visible {
     to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes from-invisible {
+    from {
       opacity: 0;
     }
   }
 
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
+  @keyframes to-invisible {
     to {
-      opacity: 1;
+      opacity: 0;
     }
   }
 

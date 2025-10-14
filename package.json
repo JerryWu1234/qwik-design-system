@@ -36,6 +36,7 @@
     "pagefind": "1.2.0",
     "pathe": "^2.0.3",
     "pkg-pr-new": "^0.0.56",
+    "playwright": "^1.56.0",
     "tsx": "^4.19.3",
     "vitest": "^3.2.4"
   }
