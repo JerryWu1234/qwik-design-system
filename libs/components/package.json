@@ -11,10 +11,7 @@
       "types": "./lib-types/src/index.d.ts"
     }
   },
-  "files": [
-    "lib",
-    "lib-types"
-  ],
+  "files": ["lib", "lib-types"],
   "private": false,
   "type": "module",
   "license": "MIT",
