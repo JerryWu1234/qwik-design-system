@@ -7,6 +7,7 @@ import {
   component$,
   useComputed$,
   useContextProvider,
+  useId,
   useSignal,
   useStyles$,
   useTask$
@@ -49,6 +50,9 @@ export const SliderRoot = component$<PublicRootProps>((props) => {
     onChangeEnd$,
     ...divProps
   } = props;
+
+  const localId = useId();
+  const labelId = `${localId}-label`;
 
   const isRangeSignal = useSignal(isRange);
 
@@ -143,7 +147,8 @@ export const SliderRoot = component$<PublicRootProps>((props) => {
     calculateValue,
     onChange$,
     onChangeEnd$,
-    thumbType: useSignal<ThumbType | undefined>(undefined)
+    thumbType: useSignal<ThumbType | undefined>(undefined),
+    localId
   };
 
   useContextProvider(sliderContextId, context);
@@ -163,6 +168,7 @@ export const SliderRoot = component$<PublicRootProps>((props) => {
       aria-valuemin={min.value}
       aria-valuemax={max.value}
       aria-valuenow={ariaValueNow.value}
+      aria-labelledby={labelId}
     >
       <Slot />
     </div>

@@ -18,6 +18,7 @@ export interface SliderContext {
   thumbType: Signal<ThumbType | undefined>;
   onChange$?: (value: SliderValue) => void;
   onChangeEnd$?: (value: SliderValue) => void;
+  localId: string;
 }
 
 export const sliderContextId = createContextId<SliderContext>("slider-context");

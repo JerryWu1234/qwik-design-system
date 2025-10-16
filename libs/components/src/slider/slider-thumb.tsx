@@ -184,6 +184,8 @@ export const SliderThumb = component$((props: PublicThumbProps) => {
     }
   });
 
+  const thumbLabelId = `${context.localId}-label`;
+
   return (
     <div
       {...rest}
@@ -209,6 +211,7 @@ export const SliderThumb = component$((props: PublicThumbProps) => {
       aria-valuemax={ariaValueMax.value}
       aria-valuenow={ariaValueNow.value}
       aria-disabled={context.disabled.value}
+      aria-labelledby={thumbLabelId}
     >
       <Slot />
     </div>
