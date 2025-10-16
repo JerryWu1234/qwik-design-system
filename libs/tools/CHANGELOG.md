@@ -1,5 +1,11 @@
 # @qds.dev/tools
 
+## 0.4.1
+
+### Patch Changes
+
+- 3da5742: feat: icons now supported in mdx
+
 ## 0.4.0
 
 ## 0.3.3

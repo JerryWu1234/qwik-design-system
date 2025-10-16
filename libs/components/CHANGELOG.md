@@ -1,5 +1,11 @@
 # @qds.dev/ui-headless
 
+## 0.4.1
+
+### Patch Changes
+
+- 3da5742: feat: icons now support the title and description props for accessible titles and descroptions
+
 ## 0.4.0
 
 ### Minor Changes
