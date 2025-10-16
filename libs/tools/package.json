@@ -4,9 +4,7 @@
   "private": false,
   "description": "A simple example library built by tsdown",
   "type": "module",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -24,8 +22,8 @@
     "generate-icon-types": "tsx src/generate-icon-types.ts"
   },
   "devDependencies": {
-    "@iconify/utils": "^3.0.1",
     "@iconify/types": "^2",
+    "@iconify/utils": "^3.0.1",
     "magic-string": "^0.30.17",
     "tsdown": "latest",
     "vite": "^7.0.6"
@@ -34,6 +32,8 @@
     "@iconify/json": "^2.2.382",
     "@oxc-project/types": "^0.87.0",
     "oxc-parser": "^0.94.0",
-    "oxc-walker": "^0.5.2"
+    "oxc-walker": "^0.5.2",
+    "remark": "^15.0.1",
+    "remark-mdx": "^3.1.1"
   }
 }

@@ -39,19 +39,33 @@ export default component$(() => {
       </div>
 
       <div class="space-y-4">
-        <h2 class="text-2xl font-bold">Icon with Title (A11y)</h2>
+        <h2 class="text-2xl font-bold">Accessibility - Title & Description (Props)</h2>
         <div class="flex gap-4 items-center">
-          <Lucide.Info width={24} class="text-blue-500" />
+          <Lucide.Info
+            width={24}
+            class="text-blue-500"
+            title="Information"
+            description="Important information icon"
+          />
+          <Lucide.Heart width={24} class="text-red-500" title="Favorite" />
+          <Lucide.Check
+            width={24}
+            class="text-green-500"
+            description="Task completed successfully"
+          />
         </div>
       </div>
 
       <div class="space-y-4">
-        <h2 class="text-2xl font-bold">Icon with Custom Children</h2>
+        <h2 class="text-2xl font-bold">Accessibility - Title & Description (Children)</h2>
         <div class="flex gap-4 items-center">
           <Lucide.User width={24} class="text-gray-500">
             <title>Profile</title>
             <desc>Click to view user profile</desc>
           </Lucide.User>
+          <Lucide.Settings width={24} class="text-gray-700">
+            <title>Settings</title>
+          </Lucide.Settings>
         </div>
       </div>
     </div>

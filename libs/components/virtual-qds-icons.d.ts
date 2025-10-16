@@ -1,6 +1,13 @@
 import type { Component, PropsOf } from "@qwik.dev/core";
 
-export type Icon = Component<PropsOf<"svg">>;
+export type Icon = Component<
+  PropsOf<"svg"> & {
+    /** Title for accessibility - rendered as <title> element inside SVG */
+    title?: string;
+    /** Description for accessibility - rendered as <desc> element inside SVG */
+    description?: string;
+  }
+>;
 
 // Academicons icons (academicons)
 export namespace Academicons {

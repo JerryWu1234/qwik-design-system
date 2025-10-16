@@ -165,7 +165,7 @@ describe("icons", () => {
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
     expect(result.code).toContain(
-      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>{{label}}</title></svg>'
+      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>{label}</title></svg>'
     );
   });
 
@@ -186,6 +186,109 @@ describe("icons", () => {
     expect(result.code).toContain(
       '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Checked item</title><desc>Extra a11y</desc></svg>'
     );
+  });
+
+  it("should convert description prop to children", () => {
+    const code = `
+      import { Lucide } from "@qds.dev/ui";
+
+      function App() {
+        return <Lucide.Check description="This icon indicates completion" />;
+      }
+    `;
+    const result = transform(code, "test.tsx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><desc>This icon indicates completion</desc></svg>'
+    );
+  });
+
+  it("should convert description expression prop to children", () => {
+    const code = `
+      import { Lucide } from "@qds.dev/ui";
+
+      function App() {
+        const desc = "Task completed";
+        return <Lucide.Check description={desc} />;
+      }
+    `;
+    const result = transform(code, "test.tsx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><desc>{desc}</desc></svg>'
+    );
+  });
+
+  it("should handle both title and description props", () => {
+    const code = `
+      import { Lucide } from "@qds.dev/ui";
+
+      function App() {
+        return <Lucide.Check title="Check mark" description="Indicates completion" />;
+      }
+    `;
+    const result = transform(code, "test.tsx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Check mark</title><desc>Indicates completion</desc></svg>'
+    );
+  });
+
+  it("should handle title and description with expressions", () => {
+    const code = `
+      import { Lucide } from "@qds.dev/ui";
+
+      function App() {
+        const iconTitle = "Status";
+        const iconDesc = "Current status indicator";
+        return <Lucide.Check title={iconTitle} description={iconDesc} />;
+      }
+    `;
+    const result = transform(code, "test.tsx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>{iconTitle}</title><desc>{iconDesc}</desc></svg>'
+    );
+  });
+
+  it("should handle title and description props with existing children", () => {
+    const code = `
+      import { Lucide } from "@qds.dev/ui";
+
+      function App() {
+        return (
+          <Lucide.Check title="Check" description="Done">
+            <circle cx="12" cy="12" r="10" />
+          </Lucide.Check>
+        );
+      }
+    `;
+    const result = transform(code, "test.tsx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain("<title>Check</title>");
+    expect(result.code).toContain("<desc>Done</desc>");
+    expect(result.code).toContain('<circle cx="12" cy="12" r="10" />');
+  });
+
+  it("should handle description prop with other attributes", () => {
+    const code = `
+      import { Lucide } from "@qds.dev/ui";
+
+      function App() {
+        return (
+          <Lucide.Check 
+            width={24} 
+            class="text-green-500" 
+            description="Success indicator"
+          />
+        );
+      }
+    `;
+    const result = transform(code, "test.tsx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain("width={24}");
+    expect(result.code).toContain('class="text-green-500"');
+    expect(result.code).toContain("<desc>Success indicator</desc>");
   });
 
   it("should handle self-closing and non-self-closing tags", () => {
@@ -1433,5 +1536,415 @@ describe("HMR (Hot Module Replacement)", () => {
       expect(mockCtx.server.ws.send).toHaveBeenCalledWith({ type: "full-reload" });
       expect(result).toEqual([]);
     });
+  });
+});
+
+describe("MDX file support", () => {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  let plugin: any;
+  let transform: (code: string, id: string) => TransformResult;
+
+  beforeAll(async () => {
+    plugin = icons({ debug: true });
+
+    const collections: Map<string, IconifyJSON> = new Map();
+    try {
+      const lucideCollection = await lookupCollection("lucide");
+      collections.set("lucide", lucideCollection);
+    } catch (error) {
+      console.warn("Failed to preload Lucide collection for MDX tests:", error);
+    }
+
+    plugin.collections = collections;
+    transform = plugin.transform as (code: string, id: string) => TransformResult;
+  });
+
+  it("should transform icon in basic MDX file", () => {
+    const code = `---
+title: "Test Page"
+---
+
+import { Lucide } from "@qds.dev/ui";
+
+# Hello World
+
+Here's an icon: <Lucide.Check width={24} class="text-green-500" />
+
+Some more text.
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
+    );
+    expect(result.code).toContain("<svg");
+    expect(result.code).toContain("width={24}");
+    expect(result.code).toContain('class="text-green-500"');
+    expect(result.code).toContain("dangerouslySetInnerHTML={__qds_i_lucide_check}");
+  });
+
+  it("should transform multiple icons in MDX", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+# Icons Demo
+
+<Lucide.Check width={20} class="inline" />
+<Lucide.Star width={24} class="text-yellow-500" />
+<Lucide.Heart width={16} />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
+    );
+    expect(result.code).toContain(
+      "import __qds_i_lucide_star from 'virtual:icons/lucide/star'"
+    );
+    expect(result.code).toContain(
+      "import __qds_i_lucide_heart from 'virtual:icons/lucide/heart'"
+    );
+  });
+
+  it("should handle MDX with frontmatter", () => {
+    const code = `---
+title: "Component Demo"
+description: "Testing icons"
+---
+
+import { Lucide } from "@qds.dev/ui";
+
+<Lucide.Check width={24} />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
+    );
+    // Frontmatter should be preserved
+    expect(result.code).toContain("---");
+    expect(result.code).toContain('title: "Component Demo"');
+  });
+
+  it("should handle icons with expression attributes in MDX", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+<Lucide.Check width={size} class={cn("icon", className)} />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain("width={size}");
+    expect(result.code).toContain('class={cn("icon", className)}');
+  });
+
+  it("should handle MDX with mixed markdown and JSX", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+# Heading
+
+This is a paragraph with **bold** text.
+
+<div class="flex gap-2">
+  <Lucide.Check width={20} />
+  <Lucide.X width={20} />
+</div>
+
+- List item 1
+- List item 2
+
+<Lucide.Star width={24} class="text-yellow-500" />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
+    );
+    expect(result.code).toContain(
+      "import __qds_i_lucide_x from 'virtual:icons/lucide/x'"
+    );
+    expect(result.code).toContain(
+      "import __qds_i_lucide_star from 'virtual:icons/lucide/star'"
+    );
+  });
+
+  it("should handle MDX with code blocks and icons", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+Here's some code:
+
+\`\`\`tsx
+import { Lucide } from "@qds.dev/ui";
+<Lucide.Check />
+\`\`\`
+
+And here's a real icon: <Lucide.Check width={24} />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
+    );
+    // Should only transform the actual JSX, not the code block
+    const svgMatches = result.code.match(/<svg[^>]*>/g);
+    expect(svgMatches).toHaveLength(1);
+  });
+
+  it("should return null for MDX without icon imports", () => {
+    const code = `# Just Markdown
+
+This is plain markdown without any icons.
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeNull();
+  });
+
+  it("should return null for MDX with imports but no icon usage", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+# Heading
+
+Just text, no icons used.
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeNull();
+  });
+
+  it("should handle MDX with inline JSX expressions", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+# Status: {status}
+
+<Lucide.Check width={24} class="inline" /> Task complete
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
+    );
+    expect(result.code).toContain('class="inline"');
+  });
+
+  it("should handle aliased imports in MDX", () => {
+    const code = `import { Lucide as L } from "@qds.dev/ui";
+
+<L.Check width={24} />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
+    );
+  });
+
+  it("should generate valid JSX syntax for MDX transformations", () => {
+    const code = `---
+title: "Test"
+---
+
+import { Lucide } from "@qds.dev/ui";
+
+# Demo
+
+<Lucide.Check width={24} class="text-green-500" />
+<Lucide.X width={20} class="text-red-500" />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+
+    // The transformed code should be parseable
+    const validation = validateJSXSyntax(result.code);
+    if (!validation.isValid) {
+      console.error("JSX validation errors for MDX:", validation.errors);
+      console.error("Generated code:", result.code);
+    }
+    expect(validation.isValid).toBe(true);
+  });
+
+  it("should handle complex MDX component with multiple icons", () => {
+    const code = `---
+title: "Checkbox Component"
+---
+
+import { Lucide } from "@qds.dev/ui";
+
+# Checkbox
+
+## Basic Example
+
+<div class="flex items-center gap-2">
+  <Lucide.Check width={20} class="text-green-600" />
+  <span>Checked</span>
+</div>
+
+<div class="flex items-center gap-2">
+  <Lucide.X width={20} class="text-red-600" />
+  <span>Unchecked</span>
+</div>
+
+## Indeterminate
+
+<Lucide.Minus width={20} class="text-gray-600" />
+`;
+    const result = transform(code, "checkbox.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
+    );
+    expect(result.code).toContain(
+      "import __qds_i_lucide_x from 'virtual:icons/lucide/x'"
+    );
+    expect(result.code).toContain(
+      "import __qds_i_lucide_minus from 'virtual:icons/lucide/minus'"
+    );
+
+    // Validate the transformed code
+    const validation = validateJSXSyntax(result.code);
+    expect(validation.isValid).toBe(true);
+  });
+
+  it("should preserve boolean attributes in MDX", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+<Lucide.Check disabled aria-hidden />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain("disabled");
+    expect(result.code).toContain("aria-hidden");
+  });
+
+  it("should handle MDX with multiple import sources", () => {
+    const code = `import { Lucide, Heroicons } from "@qds.dev/ui";
+
+<Lucide.Check width={20} />
+<Heroicons.Star width={24} />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
+    );
+    expect(result.code).toContain(
+      "import __qds_i_heroicons_star from 'virtual:icons/heroicons/star'"
+    );
+  });
+
+  it("should deduplicate icon imports in MDX", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+<Lucide.Check width={16} />
+<Lucide.Check width={20} />
+<Lucide.Check width={24} />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+
+    // Should only have one import for the same icon
+    const importMatches = result.code.match(/import __qds_i_lucide_check/g);
+    expect(importMatches).toHaveLength(1);
+
+    // All three uses should reference the same variable
+    const svgMatches = result.code.match(
+      /dangerouslySetInnerHTML=\{__qds_i_lucide_check\}/g
+    );
+    expect(svgMatches).toHaveLength(3);
+  });
+
+  it("should handle MDX with nested JSX structures", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+<div class="container">
+  <div class="header">
+    <Lucide.Menu width={24} />
+  </div>
+  <div class="content">
+    <p>Text content</p>
+    <Lucide.Check width={20} />
+  </div>
+</div>
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain(
+      "import __qds_i_lucide_menu from 'virtual:icons/lucide/menu'"
+    );
+    expect(result.code).toContain(
+      "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
+    );
+  });
+
+  it("should handle title prop in MDX", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+# Accessibility Demo
+
+<Lucide.Check title="Success" width={24} class="text-green-500" />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain("<title>Success</title>");
+    expect(result.code).toContain("width={24}");
+    expect(result.code).toContain('class="text-green-500"');
+  });
+
+  it("should handle description prop in MDX", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+<Lucide.Info description="Important information icon" width={20} />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain("<desc>Important information icon</desc>");
+    expect(result.code).toContain("width={20}");
+  });
+
+  it("should handle both title and description props in MDX", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+# Icon with A11y
+
+<Lucide.Heart 
+  title="Favorite" 
+  description="Mark as favorite" 
+  width={24} 
+  class="text-red-500" 
+/>
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain("<title>Favorite</title>");
+    expect(result.code).toContain("<desc>Mark as favorite</desc>");
+    expect(result.code).toContain("width={24}");
+    expect(result.code).toContain('class="text-red-500"');
+  });
+
+  it("should handle title and description with expressions in MDX", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+<Lucide.Check title={dynamicTitle} description={dynamicDesc} />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain("<title>{dynamicTitle}</title>");
+    expect(result.code).toContain("<desc>{dynamicDesc}</desc>");
+  });
+
+  it("should handle mixed title/description syntax in MDX", () => {
+    const code = `import { Lucide } from "@qds.dev/ui";
+
+# Multiple Icons
+
+<Lucide.Check title="Completed" />
+<Lucide.Star description="Featured item" />
+<Lucide.Heart title="Favorite" description="Add to favorites" />
+`;
+    const result = transform(code, "test.mdx");
+    expect(result).toBeTruthy();
+    expect(result.code).toContain("<title>Completed</title>");
+    expect(result.code).toContain("<desc>Featured item</desc>");
+    // The third icon should have both
+    const heartMatches = result.code.match(
+      /<title>Favorite<\/title>.*?<desc>Add to favorites<\/desc>/s
+    );
+    expect(heartMatches).toBeTruthy();
   });
 });

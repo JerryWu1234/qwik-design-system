@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 export { sanitizeIconName, generateIconTypes, generateRuntimeProxies };
 
 // Import shared utilities
-import { discoverAllIconifyCollections, toPascalCase } from "../utils/icons";
+import { discoverAllIconifyCollections, toPascalCase } from "../utils/icons/naming";
 
 // Export shared utilities for convenience
 export { discoverAllIconifyCollections, toPascalCase };
@@ -42,7 +42,18 @@ async function generateIconTypes(packs?: Record<string, { iconifyPrefix: string 
   // Header
   declarations.push('import type { Component, PropsOf } from "@qwik.dev/core";');
   declarations.push("");
-  declarations.push('export type Icon = Component<PropsOf<"svg">>;');
+  declarations.push("export type Icon = Component<");
+  declarations.push('  PropsOf<"svg"> & {');
+  declarations.push(
+    "    /** Title for accessibility - rendered as <title> element inside SVG */"
+  );
+  declarations.push("    title?: string;");
+  declarations.push(
+    "    /** Description for accessibility - rendered as <desc> element inside SVG */"
+  );
+  declarations.push("    description?: string;");
+  declarations.push("  }");
+  declarations.push(">;");
   declarations.push("");
 
   // Generate declarations for each pack
@@ -239,4 +250,7 @@ async function main() {
   }
 }
 
-main();
+// Only run if this file is executed directly (not imported in tests)
+if (fileURLToPath(import.meta.url) === process.argv[1]) {
+  main();
+}

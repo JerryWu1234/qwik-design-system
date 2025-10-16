@@ -16,9 +16,9 @@ import {
   isJSXElement,
   isJSXExpressionContainer,
   isJSXText
-} from "../utils/jsx";
+} from "../utils/icons/ast/jsx";
 
-import { handleExpression } from "../utils/expressions";
+import { handleExpression } from "../utils/icons/ast/expressions";
 
 export type AsChildTypes = {
   asChild: true;
