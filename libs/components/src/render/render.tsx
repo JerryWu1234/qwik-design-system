@@ -34,6 +34,20 @@ type RenderInternalProps<T extends AllowedFallbacks> = {
   Record<`${string}$`, unknown>;
 
 /**
+ * Creates an object that overrides bind:* props with undefined to prevent them from rendering in the DOM.
+ * This approach preserves Qwik's reactivity tracking on the original props.
+ */
+function getBindOverrides(props: Record<string, unknown>): Record<string, undefined> {
+  const overrides: Record<string, undefined> = {};
+  for (const key in props) {
+    if (key.startsWith("bind:")) {
+      overrides[key] = undefined;
+    }
+  }
+  return overrides;
+}
+
+/**
  * Render component enables flexible composition by allowing a component to be rendered with a fallback
  * element type.
  *
@@ -42,6 +56,9 @@ type RenderInternalProps<T extends AllowedFallbacks> = {
  *
  * This allows components and JSX nodes to be composed with asChild while maintaining proper typing and
  * accessibility.
+ *
+ * IMPORTANT: Filters out bind:* directives by overriding them with undefined, which preserves
+ * Qwik's reactivity tracking while preventing these attributes from appearing in the DOM.
  */
 export const Render = component$(
   <T extends AllowedFallbacks>(props: RenderInternalProps<T>): JSXOutput => {
@@ -54,10 +71,15 @@ export const Render = component$(
 
     const Comp = (props.jsxType ?? props.fallback) as Component;
 
+    const restOverrides = getBindOverrides(rest);
+    const movedPropsOverrides = movedProps ? getBindOverrides(movedProps) : undefined;
+
     return (
       <Comp
         {...rest}
         {...movedProps}
+        {...restOverrides}
+        {...movedPropsOverrides}
         ref={$((el: HTMLElement) => {
           if (props.ref && "value" in props.ref) {
             (props.ref as Signal<HTMLElement>).value = el;

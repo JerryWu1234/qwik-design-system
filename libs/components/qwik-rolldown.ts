@@ -4,9 +4,9 @@ import type { OutputOptions } from "rolldown";
  * Plugin to ensure .qwik.mjs extension and correct output dir
  * Runs after qwikRollup to override its settings
  */
-export function qwikExtensionPlugin() {
+export function qwikRolldown() {
   return {
-    name: "qwik-extension-plugin",
+    name: "qwik-rolldown-override",
 
     outputOptions(outputOpts: OutputOptions) {
       outputOpts.dir = "./lib";

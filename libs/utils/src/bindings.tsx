@@ -34,7 +34,7 @@ export type SignalResults<T> = {
  *   value: ""
  * });
  *
- *  * @example
+ * @example
  * <Component value="jim" /> // value={signal.value}, value={store.property}
  * <Component bind:value={mySignal} />
  */
@@ -66,4 +66,44 @@ export function useBindings<T extends object>(
   }
 
   return result;
+}
+
+/**
+ * IF NOT USING RENDER COMPONENT:
+ *
+ * Removes keys and their `bind:` versions (e.g., `value` and `bind:value`) from the given props object.
+ * Useful in headless or higher-order components to prevent forwarding value/signal props to DOM elements.
+ *
+ * @param props The original component props.
+ * @param initialValues The same object passed to useBindings - keys are automatically extracted.
+ * @returns New props without those keys.
+ *
+ * @example
+ * const initialValues = { value: undefined as string | undefined };
+ * const { valueSig } = useBindings(props, initialValues);
+ * const rest = destructureBindings(props, initialValues);
+ * // <div {...rest}/> will not get `value` or `bind:value`
+ */
+export function destructureBindings<T extends object, Props extends BindableProps<T>>(
+  props: Props,
+  initialValues: T
+): Omit<Props, keyof T | keyof { [K in keyof T as `bind:${string & K}`]: unknown }> {
+  const keysToOmit = new Set<string>();
+
+  for (const key in initialValues) {
+    keysToOmit.add(key as string);
+    keysToOmit.add(`bind:${key as string}`);
+  }
+
+  const result = {} as Record<string, unknown>;
+  for (const key in props) {
+    if (!keysToOmit.has(key)) {
+      result[key] = props[key];
+    }
+  }
+
+  return result as Omit<
+    Props,
+    keyof T | keyof { [K in keyof T as `bind:${string & K}`]: unknown }
+  >;
 }

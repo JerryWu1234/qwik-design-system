@@ -9,9 +9,10 @@
     ".": {
       "import": "./lib/index.qwik.mjs",
       "types": "./lib-types/src/index.d.ts"
-    }
+    },
+    "./tailwind": "./styles/tailwind/qds-tailwind.css"
   },
-  "files": ["lib", "lib-types"],
+  "files": ["lib", "lib-types", "styles"],
   "private": false,
   "type": "module",
   "license": "MIT",
@@ -20,13 +21,15 @@
     "build.lib": "rolldown -c rolldown.config.ts",
     "build.types": "tsc --emitDeclarationOnly --project tsconfig.json --outDir ./lib-types --pretty",
     "dev": "vite --mode ssr",
+    "generate.styles": "pnpm tsx styles/tailwind/generate.ts",
     "qwik": "qwik"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.9.1",
     "@fluejs/noscroll": "^1.0.0",
     "@qds.dev/utils": "workspace:*",
-    "@qwik.dev/core": "2.0.0-beta.11",
+    "@qwik.dev/core": "https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@d48c3d2",
+    "@qds.dev/tools": "workspace:*",
     "@types/node": "22.14.0",
     "rolldown": "1.0.0-beta.42",
     "typescript": "5.4.5",
@@ -35,7 +38,7 @@
     "vitest-browser-qwik": "https://pkg.pr.new/kunai-consulting/vitest-browser-qwik@949e6ac"
   },
   "peerDependencies": {
-    "@qwik.dev/core": ">=2.0.0-beta.11"
+    "@qwik.dev/core": ">=https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@d48c3d2"
   },
   "dependencies": {
     "@oddbird/css-anchor-positioning": "^0.6"

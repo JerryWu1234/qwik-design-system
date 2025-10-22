@@ -40,8 +40,8 @@
     "vite": "^7",
     "vite-plugin-image-optimizer": "^1.1.8",
     "vite-tsconfig-paths": "^4.2.1",
-    "@qwik.dev/router": "2.0.0-beta.11",
-    "@qwik.dev/core": "2.0.0-beta.11"
+    "@qwik.dev/router": "https://pkg.pr.new/QwikDev/qwik/@qwik.dev/router@d48c3d2",
+    "@qwik.dev/core": "https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@d48c3d2"
   },
   "dependencies": {
     "@stackblitz/sdk": "^1.11.0",

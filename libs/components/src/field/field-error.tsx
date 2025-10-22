@@ -1,20 +1,20 @@
-import { type PropsOf, Slot, component$, useContext, useTask$ } from "@qwik.dev/core";
+import { appendId, removeId, useMountTask$ } from "@qds.dev/utils";
+import { type PropsOf, Slot, component$, useContext, useSignal } from "@qwik.dev/core";
 import { Render } from "../render/render";
 import { fieldContextId } from "./field-root";
 
 export const FieldError = component$((props: PropsOf<"div">) => {
   const context = useContext(fieldContextId);
   const errorId = `${context.localId}-error`;
+  const errorRef = useSignal<HTMLDivElement>();
 
-  useTask$(({ cleanup }) => {
+  useMountTask$(({ cleanup }) => {
+    context.describedByIds.value = appendId(context.describedByIds.value, errorId);
+
     cleanup(() => {
-      if (context.isInitialRender.value) return;
-      context.isError.value = false;
+      context.describedByIds.value = removeId(context.describedByIds.value, errorId);
     });
-
-    context.isError.value = true;
-    context.isInitialRender.value = false;
-  });
+  }, errorRef);
 
   return (
     <Render fallback="div" {...props} id={errorId}>

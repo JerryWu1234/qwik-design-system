@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
+import { inlineCssPlugin, qdsTransformPlugin } from "@qds.dev/tools/rolldown";
 import { qwikRollup } from "@qwik.dev/core/optimizer";
 import { defineConfig } from "rolldown";
-import { inlineCssPlugin } from "./plugin-inline-css";
-import { qwikExtensionPlugin } from "./plugin-qwik-extension";
+import { qwikRolldown } from "./qwik-rolldown";
 
 type PackageJson = {
   dependencies?: Record<string, string>;
@@ -20,7 +20,6 @@ export default defineConfig({
     format: "esm"
   },
   plugins: [
-    // qwikRollup overrides the default output dir to dist, we need to fix this. qwikExtensionPlugin overrides it back to lib.
     qwikRollup({
       target: "lib",
       lint: false,
@@ -28,7 +27,9 @@ export default defineConfig({
       rootDir: ".",
       buildMode: "production"
     }),
-    qwikExtensionPlugin(),
+    // qwikRollup overrides the default output dir to dist, we need to fix this. qwikRolldown overrides it back to lib.
+    qwikRolldown(),
+    qdsTransformPlugin(),
     inlineCssPlugin()
   ],
   external: [/^node:.*/, ...excludeAll(dependencies), ...excludeAll(peerDependencies)],

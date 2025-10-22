@@ -12,7 +12,8 @@
     ".": "./dist/src/index.js",
     "./package.json": "./package.json",
     "./vite": "./dist/vite/index.js",
-    "./utils": "./dist/utils/index.js"
+    "./utils": "./dist/utils/index.js",
+    "./rolldown": "./dist/rolldown/index.js"
   },
   "scripts": {
     "build": "tsdown && pnpm generate-icon-types",

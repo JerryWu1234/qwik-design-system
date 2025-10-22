@@ -16,20 +16,14 @@ export const CheckboxIndicator = component$<PublicCheckboxIndicatorProps>((props
   useStyles$(styles);
   const context = useContext(checkboxContextId);
 
-  const isHiddenSig = useComputed$(() => context.checkedSig.value === false);
-  const isCheckedSig = useComputed$(() => context.checkedSig.value === true);
+  const isHidden = useComputed$(() => context.checked.value === false);
 
   return (
     <Render
       {...props}
       fallback="span"
       // Indicates whether the indicator should be hidden based on checkbox state
-      data-hidden={isHiddenSig.value}
-      // Indicates whether the checkbox is in a checked state
-      data-checked={isCheckedSig.value}
-      // Indicates whether the checkbox is in an indeterminate state
-      data-mixed={context.checkedSig.value === "mixed"}
-      // Identifier for the checkbox indicator element
+      data-hidden={isHidden.value}
       data-qds-checkbox-indicator
       aria-hidden="true"
     >

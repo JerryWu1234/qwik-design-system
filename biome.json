@@ -18,6 +18,7 @@
       "libs/icons/src/page",
       "libs/components/virtual-qds-icons.d.ts",
       "libs/components/icons-runtime.ts",
+      "libs/components/styles/tailwind/qds-tailwind.css",
       "libs/utils/lib/*",
       ".vscode",
       "test-results"

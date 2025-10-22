@@ -1,4 +1,4 @@
-@layer qds, theme, base, components, utilities;
+@import "@qds.dev/ui/tailwind";
 
 @import "tailwindcss";
 

@@ -1,3 +1,4 @@
+import { qdsTransformPlugin } from "@qds.dev/tools/rolldown";
 import { asChild, icons } from "@qds.dev/tools/vite";
 import { qwikVite } from "@qwik.dev/core/optimizer";
 import { qwikRouter } from "@qwik.dev/router/vite";
@@ -34,6 +35,8 @@ export default defineConfig(({ command, mode }): UserConfig => {
     plugins: [
       asChild(),
       icons(),
+      // This plugin handles transforms for our lib author DX. We add it here so it runs in the docs dev mode as well.
+      qdsTransformPlugin(),
       tailwindcss(),
       qwikRouter({
         mdx: {
@@ -79,9 +82,12 @@ export default defineConfig(({ command, mode }): UserConfig => {
     },
     resolve: {
       alias: {
+        "@qds.dev/ui/tailwind": resolve(
+          __dirname,
+          "../libs/components/styles/tailwind/qds-tailwind.css"
+        ),
         "@qds.dev/ui": resolve(__dirname, "../libs/components/src"),
         "@qds.dev/utils": resolve(__dirname, "../libs/utils/src"),
-        "@qds.dev/ui-icons": resolve(__dirname, "../libs/icons/src"),
         "@qds.dev/tools": resolve(__dirname, "../libs/tools/src"),
         "~": resolve(__dirname, "src")
       },

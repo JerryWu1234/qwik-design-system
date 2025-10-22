@@ -3,17 +3,12 @@ import { type Signal, createContextId } from "@qwik.dev/core";
 export const checkboxContextId = createContextId<CheckboxContext>("qds-checkbox-context");
 
 export type CheckboxContext = {
-  checkedSig: Signal<boolean | "mixed">;
-  isDisabledSig: Signal<boolean | undefined>;
-  isErrorSig: Signal<boolean | undefined>;
+  checked: Signal<boolean | "mixed">;
+  isDisabled: Signal<boolean | undefined>;
   localId: string;
-  description: boolean | undefined;
   name: string | undefined;
   required: boolean | undefined;
   value: string | undefined;
   triggerRef: Signal<HTMLButtonElement | undefined>;
-  dataAttributes: Signal<{
-    "data-checked": string | undefined;
-    "data-mixed": string | undefined;
-  }>;
+  describedByIds: Signal<string | undefined>;
 };

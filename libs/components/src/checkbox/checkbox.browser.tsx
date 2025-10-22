@@ -523,3 +523,114 @@ test(`should submit checkbox with custom value "checked" in form`, async () => {
   await userEvent.click(SubmitButton);
   await expect(Submitted).toHaveTextContent(`Submitted: { "terms": "checked" }`);
 });
+
+const Description = page.getByTestId("description");
+
+const WithDescription = component$(() => {
+  return (
+    <Checkbox.Root data-testid="root">
+      <Checkbox.Label data-testid="label">Subscribe to newsletter</Checkbox.Label>
+      <Checkbox.Description data-testid="description">
+        We'll send you updates about new features
+      </Checkbox.Description>
+      <Checkbox.Trigger data-testid="trigger">
+        <Checkbox.Indicator data-testid="indicator">Checked</Checkbox.Indicator>
+      </Checkbox.Trigger>
+    </Checkbox.Root>
+  );
+});
+
+test("description is linked to trigger via aria-describedby", async () => {
+  render(<WithDescription />);
+
+  await expect.element(Label).toBeVisible();
+  await expect.element(Trigger).toBeVisible();
+  await expect.element(Description).toBeVisible();
+
+  const triggerElement = await Trigger.element();
+  const descriptionElement = await Description.element();
+  const descriptionId = descriptionElement?.getAttribute("id");
+  const describedBy = triggerElement?.getAttribute("aria-describedby");
+
+  expect(descriptionId).toBeTruthy();
+  expect(describedBy).toContain(descriptionId as string);
+});
+
+test("error message is visible when present", async () => {
+  render(<BasicFormWithValidation />);
+
+  await userEvent.click(SubmitButton);
+
+  await expect.element(CheckboxError).toBeVisible();
+  await expect
+    .element(CheckboxError)
+    .toHaveTextContent("Please accept the terms and conditions");
+});
+
+test("error message is linked to trigger via aria-describedby", async () => {
+  render(<BasicFormWithValidation />);
+
+  await userEvent.click(SubmitButton);
+
+  await expect.element(Label).toBeVisible();
+  await expect.element(Trigger).toBeVisible();
+  await expect.element(CheckboxError).toBeVisible();
+
+  const triggerElement = await Trigger.element();
+  const errorElement = await CheckboxError.element();
+  const errorId = errorElement?.getAttribute("id");
+  const describedBy = triggerElement?.getAttribute("aria-describedby");
+
+  expect(errorId).toBeTruthy();
+  expect(describedBy).toContain(errorId as string);
+});
+
+test("trigger has aria-invalid when error is present", async () => {
+  render(<BasicFormWithValidation />);
+
+  await userEvent.click(SubmitButton);
+
+  await expect.element(Trigger).toHaveAttribute("aria-invalid", "true");
+});
+
+const WithDescriptionAndError = component$(() => {
+  const isError = useSignal(true);
+
+  return (
+    <Checkbox.Root data-testid="root">
+      <Checkbox.Label data-testid="label">Accept Terms</Checkbox.Label>
+      <Checkbox.Description data-testid="description">
+        Read our terms and conditions before accepting
+      </Checkbox.Description>
+      <Checkbox.Trigger data-testid="trigger">
+        <Checkbox.Indicator data-testid="indicator">Checked</Checkbox.Indicator>
+      </Checkbox.Trigger>
+      {isError.value && (
+        <Checkbox.Error data-testid="checkbox-error">
+          You must accept the terms
+        </Checkbox.Error>
+      )}
+    </Checkbox.Root>
+  );
+});
+
+test("both description and error are linked via aria-describedby", async () => {
+  render(<WithDescriptionAndError />);
+
+  await expect.element(Label).toBeVisible();
+  await expect.element(Trigger).toBeVisible();
+  await expect.element(Description).toBeVisible();
+  await expect.element(CheckboxError).toBeVisible();
+
+  const triggerElement = await Trigger.element();
+  const descriptionElement = await Description.element();
+  const errorElement = await CheckboxError.element();
+  const descriptionId = descriptionElement?.getAttribute("id");
+  const errorId = errorElement?.getAttribute("id");
+  const describedBy = triggerElement?.getAttribute("aria-describedby");
+
+  expect(descriptionId).toBeTruthy();
+  expect(errorId).toBeTruthy();
+  expect(describedBy).toContain(descriptionId as string);
+  expect(describedBy).toContain(errorId as string);
+});

@@ -14,14 +14,12 @@ import { Render } from "../render/render";
 
 type FieldContext = {
   localId: string;
-  isDescription: Signal<boolean>;
-  isError: Signal<boolean>;
   isDisabled: Signal<boolean>;
   isRequired: Signal<boolean>;
   isReadOnly: Signal<boolean>;
   name: string | undefined;
   rootValue: Signal<unknown>;
-  isInitialRender: Signal<boolean>;
+  describedByIds: Signal<string | undefined>;
 };
 
 export const fieldContextId = createContextId<FieldContext>("field-context");
@@ -39,9 +37,8 @@ type FieldRootProps = {
 
 export const FieldRoot = component$((props: FieldRootProps) => {
   const localId = useId();
-  const isDescription = useSignal(false);
-  const isError = useSignal(false);
   const isInitialRender = useSignal(true);
+  const describedByIds = useSignal<string | undefined>(undefined);
 
   /**
    * Value can be given from either this Root component or a child component. Also value can be given from a custom control, which gets rootValue from the field context.
@@ -58,25 +55,27 @@ export const FieldRoot = component$((props: FieldRootProps) => {
     value: undefined as unknown
   });
 
-  useTask$(async ({ track }) => {
+  useTask$(async ({ track, cleanup }) => {
     if (!props.onChange$) return;
     const value = track(() => rootValue.value);
 
     if (!isInitialRender.value) {
       await props.onChange$(value);
     }
+
+    cleanup(() => {
+      isInitialRender.value = false;
+    });
   });
 
   const context: FieldContext = {
     localId,
-    isDescription,
-    isError,
     isDisabled,
     isRequired,
     name: props.name,
     isReadOnly,
     rootValue: rootValue,
-    isInitialRender
+    describedByIds
   };
 
   useContextProvider(fieldContextId, context);

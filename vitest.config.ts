@@ -1,3 +1,4 @@
+import { qdsTransformPlugin } from "@qds.dev/tools/rolldown";
 import { qwikVite } from "@qwik.dev/core/optimizer";
 import { resolve } from "pathe";
 import { type TestProjectConfiguration, defineConfig } from "vitest/config";
@@ -13,6 +14,8 @@ const unitConfig: TestProjectConfiguration = {
 // TODO: once multiple frameworks are supported, filter this to /qwik folder
 const domConfig: TestProjectConfiguration = {
   plugins: [
+    // This plugin handles transforms for our lib author DX. We add it here so it runs in testing.
+    qdsTransformPlugin(),
     qwikVite({
       srcDir: "libs/components/src"
     })
