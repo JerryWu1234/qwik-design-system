@@ -81,7 +81,7 @@ export const CheckboxRoot = component$((props: PublicCheckboxRootProps) => {
       fallback="div"
       // Identifier for the root checkbox container
       data-qds-checkbox-root
-      data-qds-root
+      data-qds-scope
       // Indicates whether the checkbox is disabled
       aria-disabled={context.isDisabled.value ? "true" : "false"}
       data-checked={isChecked.value}

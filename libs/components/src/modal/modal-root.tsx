@@ -55,9 +55,9 @@ export const ModalRoot = component$((props: ModalRootProps) => {
     return (parentContext?.level ?? 0) + 1;
   });
 
-  const { closeOnOutsideClick = true, ...restProps } = props;
+  const { closeOnOutsideClick = true, ...rest } = props;
 
-  const { openSig: isOpen } = useBindings(restProps, {
+  const { openSig: isOpen } = useBindings(rest, {
     open: false
   });
 
@@ -104,7 +104,13 @@ export const ModalRoot = component$((props: ModalRootProps) => {
   useContextProvider(modalContextId, context);
 
   return (
-    <Render fallback="div" {...restProps}>
+    <Render
+      {...rest}
+      fallback="div"
+      data-qds-scope
+      data-open={isOpen.value}
+      data-closed={!isOpen.value}
+    >
       <Slot />
     </Render>
   );

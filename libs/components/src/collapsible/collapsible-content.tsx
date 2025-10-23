@@ -16,9 +16,6 @@ export const CollapsibleContent = component$((props: CollapsibleContentProps) =>
       internalRef={context.contentRef}
       id={contentId}
       data-qds-collapsible-content
-      data-disabled={context.disabled ? "" : undefined}
-      data-open={context.isOpenSig.value}
-      data-closed={!context.isOpenSig.value}
       aria-labelledby={triggerId}
       inert={!context.isOpenSig.value}
     >

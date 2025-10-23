@@ -11,7 +11,7 @@ export const ModalTitle = component$((props: PropsOf<"div">) => {
   });
 
   return (
-    <Render fallback="div" {...props} id={titleId}>
+    <Render {...props} fallback="div" id={titleId}>
       <Slot />
     </Render>
   );

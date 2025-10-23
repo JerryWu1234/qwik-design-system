@@ -84,7 +84,7 @@ export const FieldRoot = component$((props: FieldRootProps) => {
     <Render
       {...props}
       fallback="div"
-      data-qds-root
+      data-qds-scope
       data-disabled={isDisabled.value}
       data-required={isRequired.value}
       data-readonly={isReadOnly.value}

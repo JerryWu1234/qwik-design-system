@@ -11,7 +11,7 @@ export const ModalDescription = component$((props: PropsOf<"div">) => {
   });
 
   return (
-    <Render fallback="div" {...props} id={descriptionId}>
+    <Render {...props} fallback="div" id={descriptionId}>
       <Slot />
     </Render>
   );

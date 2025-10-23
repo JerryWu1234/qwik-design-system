@@ -36,23 +36,23 @@ function generateVariant(state: DataAttributeState): string {
   const dataAttr = `data-${state}`;
 
   return `/**
- * ${variantName}: Apply styles when nearest component root has ${dataAttr}
+ * ${variantName}: Apply styles when nearest component scope has ${dataAttr}
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ${variantName} (
-  /* Descendant of root with ${dataAttr}, stops at nearest root boundary */
-  [data-qds-root][${dataAttr}]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with ${dataAttr}, stops at nearest scope boundary */
+  [data-qds-scope][${dataAttr}]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [${dataAttr}]&
 );
 
 /**
- * ${negatedVariantName}: Apply styles when nearest component root does NOT have ${dataAttr}
+ * ${negatedVariantName}: Apply styles when nearest component scope does NOT have ${dataAttr}
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ${negatedVariantName} (
-  /* Descendant of root without ${dataAttr}, stops at nearest root boundary */
-  [data-qds-root]:not([${dataAttr}]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without ${dataAttr}, stops at nearest scope boundary */
+  [data-qds-scope]:not([${dataAttr}]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([${dataAttr}])&
 );`;
@@ -82,7 +82,7 @@ export function generateAllVariants(): string {
  * QDS UI State Variants
  * 
  * These custom variants enable state-based styling that automatically scopes
- * to the nearest component root, preventing style leakage in nested components.
+ * to the nearest component scope, preventing style leakage in nested components.
  * 
  * Usage:
  *   ui-checked:bg-blue-500

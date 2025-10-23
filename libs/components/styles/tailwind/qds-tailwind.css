@@ -14,7 +14,7 @@
  * QDS UI State Variants
  * 
  * These custom variants enable state-based styling that automatically scopes
- * to the nearest component root, preventing style leakage in nested components.
+ * to the nearest component scope, preventing style leakage in nested components.
  * 
  * Usage:
  *   ui-checked:bg-blue-500
@@ -26,287 +26,287 @@
  */
 
 /**
- * ui-invalid: Apply styles when nearest component root has data-invalid
+ * ui-invalid: Apply styles when nearest component scope has data-invalid
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ui-invalid (
-  /* Descendant of root with data-invalid, stops at nearest root boundary */
-  [data-qds-root][data-invalid]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with data-invalid, stops at nearest scope boundary */
+  [data-qds-scope][data-invalid]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [data-invalid]&
 );
 
 /**
- * not-ui-invalid: Apply styles when nearest component root does NOT have data-invalid
+ * not-ui-invalid: Apply styles when nearest component scope does NOT have data-invalid
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant not-ui-invalid (
-  /* Descendant of root without data-invalid, stops at nearest root boundary */
-  [data-qds-root]:not([data-invalid]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without data-invalid, stops at nearest scope boundary */
+  [data-qds-scope]:not([data-invalid]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([data-invalid])&
 );
 
 /**
- * ui-required: Apply styles when nearest component root has data-required
+ * ui-required: Apply styles when nearest component scope has data-required
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ui-required (
-  /* Descendant of root with data-required, stops at nearest root boundary */
-  [data-qds-root][data-required]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with data-required, stops at nearest scope boundary */
+  [data-qds-scope][data-required]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [data-required]&
 );
 
 /**
- * not-ui-required: Apply styles when nearest component root does NOT have data-required
+ * not-ui-required: Apply styles when nearest component scope does NOT have data-required
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant not-ui-required (
-  /* Descendant of root without data-required, stops at nearest root boundary */
-  [data-qds-root]:not([data-required]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without data-required, stops at nearest scope boundary */
+  [data-qds-scope]:not([data-required]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([data-required])&
 );
 
 /**
- * ui-disabled: Apply styles when nearest component root has data-disabled
+ * ui-disabled: Apply styles when nearest component scope has data-disabled
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ui-disabled (
-  /* Descendant of root with data-disabled, stops at nearest root boundary */
-  [data-qds-root][data-disabled]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with data-disabled, stops at nearest scope boundary */
+  [data-qds-scope][data-disabled]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [data-disabled]&
 );
 
 /**
- * not-ui-disabled: Apply styles when nearest component root does NOT have data-disabled
+ * not-ui-disabled: Apply styles when nearest component scope does NOT have data-disabled
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant not-ui-disabled (
-  /* Descendant of root without data-disabled, stops at nearest root boundary */
-  [data-qds-root]:not([data-disabled]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without data-disabled, stops at nearest scope boundary */
+  [data-qds-scope]:not([data-disabled]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([data-disabled])&
 );
 
 /**
- * ui-readonly: Apply styles when nearest component root has data-readonly
+ * ui-readonly: Apply styles when nearest component scope has data-readonly
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ui-readonly (
-  /* Descendant of root with data-readonly, stops at nearest root boundary */
-  [data-qds-root][data-readonly]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with data-readonly, stops at nearest scope boundary */
+  [data-qds-scope][data-readonly]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [data-readonly]&
 );
 
 /**
- * not-ui-readonly: Apply styles when nearest component root does NOT have data-readonly
+ * not-ui-readonly: Apply styles when nearest component scope does NOT have data-readonly
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant not-ui-readonly (
-  /* Descendant of root without data-readonly, stops at nearest root boundary */
-  [data-qds-root]:not([data-readonly]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without data-readonly, stops at nearest scope boundary */
+  [data-qds-scope]:not([data-readonly]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([data-readonly])&
 );
 
 /**
- * ui-checked: Apply styles when nearest component root has data-checked
+ * ui-checked: Apply styles when nearest component scope has data-checked
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ui-checked (
-  /* Descendant of root with data-checked, stops at nearest root boundary */
-  [data-qds-root][data-checked]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with data-checked, stops at nearest scope boundary */
+  [data-qds-scope][data-checked]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [data-checked]&
 );
 
 /**
- * not-ui-checked: Apply styles when nearest component root does NOT have data-checked
+ * not-ui-checked: Apply styles when nearest component scope does NOT have data-checked
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant not-ui-checked (
-  /* Descendant of root without data-checked, stops at nearest root boundary */
-  [data-qds-root]:not([data-checked]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without data-checked, stops at nearest scope boundary */
+  [data-qds-scope]:not([data-checked]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([data-checked])&
 );
 
 /**
- * ui-selected: Apply styles when nearest component root has data-selected
+ * ui-selected: Apply styles when nearest component scope has data-selected
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ui-selected (
-  /* Descendant of root with data-selected, stops at nearest root boundary */
-  [data-qds-root][data-selected]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with data-selected, stops at nearest scope boundary */
+  [data-qds-scope][data-selected]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [data-selected]&
 );
 
 /**
- * not-ui-selected: Apply styles when nearest component root does NOT have data-selected
+ * not-ui-selected: Apply styles when nearest component scope does NOT have data-selected
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant not-ui-selected (
-  /* Descendant of root without data-selected, stops at nearest root boundary */
-  [data-qds-root]:not([data-selected]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without data-selected, stops at nearest scope boundary */
+  [data-qds-scope]:not([data-selected]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([data-selected])&
 );
 
 /**
- * ui-pressed: Apply styles when nearest component root has data-pressed
+ * ui-pressed: Apply styles when nearest component scope has data-pressed
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ui-pressed (
-  /* Descendant of root with data-pressed, stops at nearest root boundary */
-  [data-qds-root][data-pressed]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with data-pressed, stops at nearest scope boundary */
+  [data-qds-scope][data-pressed]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [data-pressed]&
 );
 
 /**
- * not-ui-pressed: Apply styles when nearest component root does NOT have data-pressed
+ * not-ui-pressed: Apply styles when nearest component scope does NOT have data-pressed
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant not-ui-pressed (
-  /* Descendant of root without data-pressed, stops at nearest root boundary */
-  [data-qds-root]:not([data-pressed]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without data-pressed, stops at nearest scope boundary */
+  [data-qds-scope]:not([data-pressed]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([data-pressed])&
 );
 
 /**
- * ui-open: Apply styles when nearest component root has data-open
+ * ui-open: Apply styles when nearest component scope has data-open
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ui-open (
-  /* Descendant of root with data-open, stops at nearest root boundary */
-  [data-qds-root][data-open]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with data-open, stops at nearest scope boundary */
+  [data-qds-scope][data-open]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [data-open]&
 );
 
 /**
- * not-ui-open: Apply styles when nearest component root does NOT have data-open
+ * not-ui-open: Apply styles when nearest component scope does NOT have data-open
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant not-ui-open (
-  /* Descendant of root without data-open, stops at nearest root boundary */
-  [data-qds-root]:not([data-open]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without data-open, stops at nearest scope boundary */
+  [data-qds-scope]:not([data-open]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([data-open])&
 );
 
 /**
- * ui-highlighted: Apply styles when nearest component root has data-highlighted
+ * ui-highlighted: Apply styles when nearest component scope has data-highlighted
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ui-highlighted (
-  /* Descendant of root with data-highlighted, stops at nearest root boundary */
-  [data-qds-root][data-highlighted]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with data-highlighted, stops at nearest scope boundary */
+  [data-qds-scope][data-highlighted]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [data-highlighted]&
 );
 
 /**
- * not-ui-highlighted: Apply styles when nearest component root does NOT have data-highlighted
+ * not-ui-highlighted: Apply styles when nearest component scope does NOT have data-highlighted
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant not-ui-highlighted (
-  /* Descendant of root without data-highlighted, stops at nearest root boundary */
-  [data-qds-root]:not([data-highlighted]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without data-highlighted, stops at nearest scope boundary */
+  [data-qds-scope]:not([data-highlighted]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([data-highlighted])&
 );
 
 /**
- * ui-current: Apply styles when nearest component root has data-current
+ * ui-current: Apply styles when nearest component scope has data-current
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ui-current (
-  /* Descendant of root with data-current, stops at nearest root boundary */
-  [data-qds-root][data-current]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with data-current, stops at nearest scope boundary */
+  [data-qds-scope][data-current]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [data-current]&
 );
 
 /**
- * not-ui-current: Apply styles when nearest component root does NOT have data-current
+ * not-ui-current: Apply styles when nearest component scope does NOT have data-current
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant not-ui-current (
-  /* Descendant of root without data-current, stops at nearest root boundary */
-  [data-qds-root]:not([data-current]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without data-current, stops at nearest scope boundary */
+  [data-qds-scope]:not([data-current]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([data-current])&
 );
 
 /**
- * ui-mixed: Apply styles when nearest component root has data-mixed
+ * ui-mixed: Apply styles when nearest component scope has data-mixed
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ui-mixed (
-  /* Descendant of root with data-mixed, stops at nearest root boundary */
-  [data-qds-root][data-mixed]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with data-mixed, stops at nearest scope boundary */
+  [data-qds-scope][data-mixed]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [data-mixed]&
 );
 
 /**
- * not-ui-mixed: Apply styles when nearest component root does NOT have data-mixed
+ * not-ui-mixed: Apply styles when nearest component scope does NOT have data-mixed
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant not-ui-mixed (
-  /* Descendant of root without data-mixed, stops at nearest root boundary */
-  [data-qds-root]:not([data-mixed]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without data-mixed, stops at nearest scope boundary */
+  [data-qds-scope]:not([data-mixed]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([data-mixed])&
 );
 
 /**
- * ui-empty: Apply styles when nearest component root has data-empty
+ * ui-empty: Apply styles when nearest component scope has data-empty
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ui-empty (
-  /* Descendant of root with data-empty, stops at nearest root boundary */
-  [data-qds-root][data-empty]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with data-empty, stops at nearest scope boundary */
+  [data-qds-scope][data-empty]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [data-empty]&
 );
 
 /**
- * not-ui-empty: Apply styles when nearest component root does NOT have data-empty
+ * not-ui-empty: Apply styles when nearest component scope does NOT have data-empty
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant not-ui-empty (
-  /* Descendant of root without data-empty, stops at nearest root boundary */
-  [data-qds-root]:not([data-empty]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without data-empty, stops at nearest scope boundary */
+  [data-qds-scope]:not([data-empty]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([data-empty])&
 );
 
 /**
- * ui-orientation: Apply styles when nearest component root has data-orientation
+ * ui-orientation: Apply styles when nearest component scope has data-orientation
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ui-orientation (
-  /* Descendant of root with data-orientation, stops at nearest root boundary */
-  [data-qds-root][data-orientation]:has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope with data-orientation, stops at nearest scope boundary */
+  [data-qds-scope][data-orientation]:has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   [data-orientation]&
 );
 
 /**
- * not-ui-orientation: Apply styles when nearest component root does NOT have data-orientation
+ * not-ui-orientation: Apply styles when nearest component scope does NOT have data-orientation
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant not-ui-orientation (
-  /* Descendant of root without data-orientation, stops at nearest root boundary */
-  [data-qds-root]:not([data-orientation]):has(&):not(:has([data-qds-root] &)) &,
+  /* Descendant of scope without data-orientation, stops at nearest scope boundary */
+  [data-qds-scope]:not([data-orientation]):has(&):not(:has([data-qds-scope] &)) &,
   /* Direct match on element itself */
   :not([data-orientation])&
 );

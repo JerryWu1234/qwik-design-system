@@ -556,76 +556,60 @@ test("textarea with local value prop changes independently from root", async () 
   await expect.element(Textarea).toHaveValue("value changed");
 });
 
-test("field root has data-qds-root attribute", async () => {
+test("field root has data-qds-scope attribute", async () => {
   render(<BasicInput />);
 
   await expect.element(Root).toBeVisible();
-
-  const rootElement = await Root.element();
-  expect(rootElement?.hasAttribute("data-qds-root")).toBe(true);
+  await expect.element(Root).toHaveAttribute("data-qds-scope");
 });
 
 test("field root has data-disabled when disabled", async () => {
   render(<BasicInput disabled />);
 
   await expect.element(Root).toBeVisible();
-
-  const rootElement = await Root.element();
-  expect(rootElement?.hasAttribute("data-disabled")).toBe(true);
+  await expect.element(Root).toHaveAttribute("data-disabled");
 });
 
 test("field root does not have data-disabled when not disabled", async () => {
   render(<BasicInput />);
 
   await expect.element(Root).toBeVisible();
-
-  const rootElement = await Root.element();
-  expect(rootElement?.hasAttribute("data-disabled")).toBe(false);
+  await expect.element(Root).not.toHaveAttribute("data-disabled");
 });
 
 test("field root has data-required when required", async () => {
   render(<BasicInput required />);
 
   await expect.element(Root).toBeVisible();
-
-  const rootElement = await Root.element();
-  expect(rootElement?.hasAttribute("data-required")).toBe(true);
+  await expect.element(Root).toHaveAttribute("data-required");
 });
 
 test("field root does not have data-required when not required", async () => {
   render(<BasicInput />);
 
   await expect.element(Root).toBeVisible();
-
-  const rootElement = await Root.element();
-  expect(rootElement?.hasAttribute("data-required")).toBe(false);
+  await expect.element(Root).not.toHaveAttribute("data-required");
 });
 
 test("field root has data-readonly when readonly", async () => {
   render(<BasicInput readOnly />);
 
   await expect.element(Root).toBeVisible();
-
-  const rootElement = await Root.element();
-  expect(rootElement?.hasAttribute("data-readonly")).toBe(true);
+  await expect.element(Root).toHaveAttribute("data-readonly");
 });
 
 test("field root does not have data-readonly when not readonly", async () => {
   render(<BasicInput />);
 
   await expect.element(Root).toBeVisible();
-
-  const rootElement = await Root.element();
-  expect(rootElement?.hasAttribute("data-readonly")).toBe(false);
+  await expect.element(Root).not.toHaveAttribute("data-readonly");
 });
 
 test("field root has data-empty when value is empty", async () => {
   render(<BasicInput />);
 
   await expect.element(Root).toBeVisible();
-
-  const rootElement = await Root.element();
-  expect(rootElement?.hasAttribute("data-empty")).toBe(true);
+  await expect.element(Root).toHaveAttribute("data-empty");
 });
 
 const FilledValueInput = component$(() => {
@@ -642,35 +626,29 @@ test("field root does not have data-empty when value exists", async () => {
   render(<FilledValueInput />);
 
   await expect.element(Root).toBeVisible();
-
-  const rootElement = await Root.element();
-  expect(rootElement?.hasAttribute("data-empty")).toBe(false);
+  await expect.element(Root).not.toHaveAttribute("data-empty");
 });
 
 test("field root data-empty updates when input changes from empty to filled", async () => {
   render(<BasicInput />);
 
   await expect.element(Root).toBeVisible();
-
-  const rootElement = await Root.element();
-  expect(rootElement?.hasAttribute("data-empty")).toBe(true);
+  await expect.element(Root).toHaveAttribute("data-empty");
 
   await userEvent.fill(Input, "test value");
 
-  expect(rootElement?.hasAttribute("data-empty")).toBe(false);
+  await expect.element(Root).not.toHaveAttribute("data-empty");
 });
 
 test("field root data-empty updates when input changes from filled to empty", async () => {
   render(<FilledValueInput />);
 
   await expect.element(Root).toBeVisible();
-
-  const rootElement = await Root.element();
-  expect(rootElement?.hasAttribute("data-empty")).toBe(false);
+  await expect.element(Root).not.toHaveAttribute("data-empty");
 
   await userEvent.clear(Input);
 
-  expect(rootElement?.hasAttribute("data-empty")).toBe(true);
+  await expect.element(Root).toHaveAttribute("data-empty");
 });
 
 const DynamicStateInput = component$(() => {
@@ -767,11 +745,9 @@ test("field root has all data attributes simultaneously", async () => {
   render(<AllAttributesInput />);
 
   await expect.element(Root).toBeVisible();
-
-  const rootElement = await Root.element();
-  expect(rootElement?.hasAttribute("data-qds-root")).toBe(true);
-  expect(rootElement?.hasAttribute("data-disabled")).toBe(true);
-  expect(rootElement?.hasAttribute("data-required")).toBe(true);
-  expect(rootElement?.hasAttribute("data-readonly")).toBe(true);
-  expect(rootElement?.hasAttribute("data-empty")).toBe(true);
+  await expect.element(Root).toHaveAttribute("data-qds-scope");
+  await expect.element(Root).toHaveAttribute("data-disabled");
+  await expect.element(Root).toHaveAttribute("data-required");
+  await expect.element(Root).toHaveAttribute("data-readonly");
+  await expect.element(Root).toHaveAttribute("data-empty");
 });

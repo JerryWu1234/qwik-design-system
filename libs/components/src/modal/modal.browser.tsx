@@ -287,6 +287,8 @@ test("if description is not provided, aria-describedby is not set", async () => 
 test("modal does not close on backdrop click when set to false", async () => {
   const screen = render(<Basic closeOnOutsideClick={false} />);
 
+  await expect.element(Root).toBeVisible();
+  await expect.element(Trigger).toBeVisible();
   await userEvent.click(Trigger);
   await expect.element(Content).toBeVisible();
 
@@ -316,4 +318,119 @@ test("clicks inside modal content do not close the modal", async () => {
   await userEvent.click(Title);
 
   await expect.element(Content).toBeVisible();
+});
+
+test("modal root has data-qds-scope attribute", async () => {
+  render(<Basic />);
+
+  await expect.element(Root).toBeVisible();
+  await expect.element(Root).toHaveAttribute("data-qds-scope");
+});
+
+test("modal root has data-closed when closed", async () => {
+  render(<Basic />);
+
+  await expect.element(Root).toBeVisible();
+  await expect.element(Root).toHaveAttribute("data-closed");
+});
+
+test("modal root does not have data-closed when open", async () => {
+  render(<Basic />);
+
+  await userEvent.click(Trigger);
+  await expect.element(Content).toBeVisible();
+
+  await expect.element(Root).not.toHaveAttribute("data-closed");
+});
+
+test("modal root has data-open when open", async () => {
+  render(<Basic />);
+
+  await userEvent.click(Trigger);
+  await expect.element(Content).toBeVisible();
+
+  await expect.element(Root).toHaveAttribute("data-open");
+});
+
+test("modal root does not have data-open when closed", async () => {
+  render(<Basic />);
+
+  await expect.element(Root).toBeVisible();
+  await expect.element(Root).not.toHaveAttribute("data-open");
+});
+
+test("modal root data-open updates when opened", async () => {
+  render(<Basic />);
+
+  await expect.element(Root).toBeVisible();
+  await expect.element(Root).not.toHaveAttribute("data-open");
+  await expect.element(Root).toHaveAttribute("data-closed");
+
+  await userEvent.click(Trigger);
+  await expect.element(Content).toBeVisible();
+
+  await expect.element(Root).toHaveAttribute("data-open");
+  await expect.element(Root).not.toHaveAttribute("data-closed");
+});
+
+test("modal root data-closed updates when closed", async () => {
+  render(<Basic />);
+
+  await userEvent.click(Trigger);
+  await expect.element(Content).toBeVisible();
+
+  await expect.element(Root).toHaveAttribute("data-open");
+  await expect.element(Root).not.toHaveAttribute("data-closed");
+
+  await userEvent.click(CloseButton);
+  await expect.element(Content).not.toBeVisible();
+
+  await expect.element(Root).not.toHaveAttribute("data-open");
+  await expect.element(Root).toHaveAttribute("data-closed");
+});
+
+const ControlledModal = component$(() => {
+  const isOpen = useSignal(false);
+
+  return (
+    <div>
+      <Modal.Root bind:open={isOpen} data-testid="root">
+        <Modal.Trigger data-testid="trigger">Open Modal</Modal.Trigger>
+        <Modal.Content data-testid="content">
+          <Modal.Title data-testid="title">Controlled Modal</Modal.Title>
+          <p>This modal's state is controlled externally.</p>
+          <Modal.Close data-testid="close">Close</Modal.Close>
+        </Modal.Content>
+      </Modal.Root>
+      <button
+        type="button"
+        data-testid="external-toggle"
+        onClick$={() => (isOpen.value = !isOpen.value)}
+      >
+        Toggle Modal
+      </button>
+    </div>
+  );
+});
+
+test("modal root data attributes update with external state changes", async () => {
+  render(<ControlledModal />);
+
+  await expect.element(Root).toBeVisible();
+  await expect.element(Root).not.toHaveAttribute("data-open");
+  await expect.element(Root).toHaveAttribute("data-closed");
+
+  await userEvent.click(page.getByTestId("external-toggle"));
+  await expect.element(Content).toBeVisible();
+
+  await expect.element(Root).toHaveAttribute("data-open");
+  await expect.element(Root).not.toHaveAttribute("data-closed");
+
+  // Close the modal using the close button instead of external toggle
+  // (external toggle is blocked by modal backdrop)
+  await userEvent.click(CloseButton);
+  await expect.element(Content).not.toBeVisible();
+
+  await expect.element(Root).not.toHaveAttribute("data-open");
+  await expect.element(Root).toHaveAttribute("data-closed");
 });
