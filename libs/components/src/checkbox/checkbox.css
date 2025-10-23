@@ -3,7 +3,20 @@
     user-select: none;
   }
 
+  /**
+   * We use visibility:hidden instead of display:none to maintain layout space and prevent height shifts.
+   *
+   * Per WCAG guidelines:
+   * - visibility:hidden hides the element visually
+   * - The indicator component already has aria-hidden="true" for explicit exclusion from accessibility tree
+   * - This is appropriate because the indicator is purely decorative - the checkbox state
+   *   is properly communicated via the trigger's aria-checked attribute
+   *
+   * Sources:
+   * - https://www.w3.org/WAI/WCAG21/Understanding/
+   * - https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden
+   */
   [data-qds-checkbox-indicator][data-hidden] {
-    display: none;
+    visibility: hidden;
   }
 }
