@@ -17,7 +17,7 @@ export const FieldError = component$((props: PropsOf<"div">) => {
   }, errorRef);
 
   return (
-    <Render fallback="div" {...props} id={errorId}>
+    <Render {...props} internalRef={errorRef} fallback="div" id={errorId}>
       <Slot />
     </Render>
   );

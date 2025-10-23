@@ -555,3 +555,223 @@ test("textarea with local value prop changes independently from root", async () 
 
   await expect.element(Textarea).toHaveValue("value changed");
 });
+
+test("field root has data-qds-root attribute", async () => {
+  render(<BasicInput />);
+
+  await expect.element(Root).toBeVisible();
+
+  const rootElement = await Root.element();
+  expect(rootElement?.hasAttribute("data-qds-root")).toBe(true);
+});
+
+test("field root has data-disabled when disabled", async () => {
+  render(<BasicInput disabled />);
+
+  await expect.element(Root).toBeVisible();
+
+  const rootElement = await Root.element();
+  expect(rootElement?.hasAttribute("data-disabled")).toBe(true);
+});
+
+test("field root does not have data-disabled when not disabled", async () => {
+  render(<BasicInput />);
+
+  await expect.element(Root).toBeVisible();
+
+  const rootElement = await Root.element();
+  expect(rootElement?.hasAttribute("data-disabled")).toBe(false);
+});
+
+test("field root has data-required when required", async () => {
+  render(<BasicInput required />);
+
+  await expect.element(Root).toBeVisible();
+
+  const rootElement = await Root.element();
+  expect(rootElement?.hasAttribute("data-required")).toBe(true);
+});
+
+test("field root does not have data-required when not required", async () => {
+  render(<BasicInput />);
+
+  await expect.element(Root).toBeVisible();
+
+  const rootElement = await Root.element();
+  expect(rootElement?.hasAttribute("data-required")).toBe(false);
+});
+
+test("field root has data-readonly when readonly", async () => {
+  render(<BasicInput readOnly />);
+
+  await expect.element(Root).toBeVisible();
+
+  const rootElement = await Root.element();
+  expect(rootElement?.hasAttribute("data-readonly")).toBe(true);
+});
+
+test("field root does not have data-readonly when not readonly", async () => {
+  render(<BasicInput />);
+
+  await expect.element(Root).toBeVisible();
+
+  const rootElement = await Root.element();
+  expect(rootElement?.hasAttribute("data-readonly")).toBe(false);
+});
+
+test("field root has data-empty when value is empty", async () => {
+  render(<BasicInput />);
+
+  await expect.element(Root).toBeVisible();
+
+  const rootElement = await Root.element();
+  expect(rootElement?.hasAttribute("data-empty")).toBe(true);
+});
+
+const FilledValueInput = component$(() => {
+  const initialValue = useSignal("test value");
+  return (
+    <Field.Root data-testid="root" bind:value={initialValue}>
+      <Field.Label data-testid="label">Username</Field.Label>
+      <Field.Input data-testid="input" />
+    </Field.Root>
+  );
+});
+
+test("field root does not have data-empty when value exists", async () => {
+  render(<FilledValueInput />);
+
+  await expect.element(Root).toBeVisible();
+
+  const rootElement = await Root.element();
+  expect(rootElement?.hasAttribute("data-empty")).toBe(false);
+});
+
+test("field root data-empty updates when input changes from empty to filled", async () => {
+  render(<BasicInput />);
+
+  await expect.element(Root).toBeVisible();
+
+  const rootElement = await Root.element();
+  expect(rootElement?.hasAttribute("data-empty")).toBe(true);
+
+  await userEvent.fill(Input, "test value");
+
+  expect(rootElement?.hasAttribute("data-empty")).toBe(false);
+});
+
+test("field root data-empty updates when input changes from filled to empty", async () => {
+  render(<FilledValueInput />);
+
+  await expect.element(Root).toBeVisible();
+
+  const rootElement = await Root.element();
+  expect(rootElement?.hasAttribute("data-empty")).toBe(false);
+
+  await userEvent.clear(Input);
+
+  expect(rootElement?.hasAttribute("data-empty")).toBe(true);
+});
+
+const DynamicStateInput = component$(() => {
+  const disabled = useSignal(false);
+  const required = useSignal(false);
+  const readOnly = useSignal(false);
+
+  return (
+    <div>
+      <Field.Root
+        data-testid="root"
+        bind:disabled={disabled}
+        bind:required={required}
+        bind:readOnly={readOnly}
+      >
+        <Field.Label data-testid="label">Username</Field.Label>
+        <Field.Input data-testid="input" />
+      </Field.Root>
+      <button
+        type="button"
+        data-testid="toggle-disabled"
+        onClick$={() => (disabled.value = !disabled.value)}
+      >
+        Toggle Disabled
+      </button>
+      <button
+        type="button"
+        data-testid="toggle-required"
+        onClick$={() => (required.value = !required.value)}
+      >
+        Toggle Required
+      </button>
+      <button
+        type="button"
+        data-testid="toggle-readonly"
+        onClick$={() => (readOnly.value = !readOnly.value)}
+      >
+        Toggle Readonly
+      </button>
+    </div>
+  );
+});
+
+test("field root data-disabled updates dynamically", async () => {
+  render(<DynamicStateInput />);
+
+  await expect.element(Root).toBeVisible();
+  await expect.element(Root).not.toHaveAttribute("data-disabled");
+
+  await userEvent.click(page.getByTestId("toggle-disabled"));
+  await expect.element(Root).toHaveAttribute("data-disabled");
+
+  await userEvent.click(page.getByTestId("toggle-disabled"));
+  await expect.element(Root).not.toHaveAttribute("data-disabled");
+});
+
+test("field root data-required updates dynamically", async () => {
+  render(<DynamicStateInput />);
+
+  await expect.element(Root).toBeVisible();
+  await expect.element(Root).not.toHaveAttribute("data-required");
+
+  await userEvent.click(page.getByTestId("toggle-required"));
+  await expect.element(Root).toHaveAttribute("data-required");
+
+  await userEvent.click(page.getByTestId("toggle-required"));
+  await expect.element(Root).not.toHaveAttribute("data-required");
+});
+
+test("field root data-readonly updates dynamically", async () => {
+  render(<DynamicStateInput />);
+
+  await expect.element(Root).toBeVisible();
+  await expect.element(Root).not.toHaveAttribute("data-readonly");
+
+  await userEvent.click(page.getByTestId("toggle-readonly"));
+  await expect.element(Root).toHaveAttribute("data-readonly");
+
+  await userEvent.click(page.getByTestId("toggle-readonly"));
+  await expect.element(Root).not.toHaveAttribute("data-readonly");
+});
+
+const AllAttributesInput = component$(() => {
+  const fieldValue = useSignal("");
+  return (
+    <Field.Root data-testid="root" bind:value={fieldValue} disabled required readOnly>
+      <Field.Label data-testid="label">Username</Field.Label>
+      <Field.Input data-testid="input" />
+    </Field.Root>
+  );
+});
+
+test("field root has all data attributes simultaneously", async () => {
+  render(<AllAttributesInput />);
+
+  await expect.element(Root).toBeVisible();
+
+  const rootElement = await Root.element();
+  expect(rootElement?.hasAttribute("data-qds-root")).toBe(true);
+  expect(rootElement?.hasAttribute("data-disabled")).toBe(true);
+  expect(rootElement?.hasAttribute("data-required")).toBe(true);
+  expect(rootElement?.hasAttribute("data-readonly")).toBe(true);
+  expect(rootElement?.hasAttribute("data-empty")).toBe(true);
+});

@@ -81,7 +81,15 @@ export const FieldRoot = component$((props: FieldRootProps) => {
   useContextProvider(fieldContextId, context);
 
   return (
-    <Render fallback="div" {...props}>
+    <Render
+      {...props}
+      fallback="div"
+      data-qds-root
+      data-disabled={isDisabled.value}
+      data-required={isRequired.value}
+      data-readonly={isReadOnly.value}
+      data-empty={!rootValue.value || rootValue.value === "" ? "true" : undefined}
+    >
       <Slot />
     </Render>
   );
