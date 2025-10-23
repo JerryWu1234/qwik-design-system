@@ -1,7 +1,7 @@
 import { $, component$, useSignal } from "@qwik.dev/core";
-import { page, userEvent } from "@vitest/browser/context";
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-qwik";
+import { page, userEvent } from "vitest/browser";
 import { Pagination } from "..";
 import type { PublicPaginationRootProps } from "./pagination-root";
 

@@ -14,7 +14,7 @@
 //  */
 //
 // // import { $, component$, useSignal } from "@qwik.dev/core";
-// // import { page, userEvent } from "@vitest/browser/context";
+// // import { page, userEvent } from "vitest/browser";
 // // import { expect, test } from "vitest";
 // // import { render } from "vitest-browser-qwik";
 // // import * as Menu from ".";

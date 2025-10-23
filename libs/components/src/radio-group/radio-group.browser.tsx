@@ -1,8 +1,8 @@
 import { $, type PropsOf, component$, useSignal, useStore } from "@qwik.dev/core";
-import { page, userEvent } from "@vitest/browser/context";
 import axe from "axe-core";
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-qwik";
+import { page, userEvent } from "vitest/browser";
 import { RadioGroup } from "..";
 
 /**

@@ -1,7 +1,7 @@
 import { component$ } from "@qwik.dev/core";
-import { page, userEvent } from "@vitest/browser/context";
 import { describe, expect, test } from "vitest";
 import { render } from "vitest-browser-qwik";
+import { page, userEvent } from "vitest/browser";
 import * as ScrollArea from "./index";
 
 // Locator constants

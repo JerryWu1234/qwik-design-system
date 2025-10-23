@@ -1,8 +1,8 @@
 import { type PropsOf, component$, useSignal } from "@qwik.dev/core";
-import { page, userEvent } from "@vitest/browser/context";
 import axe from "axe-core";
 import { describe, expect, test } from "vitest";
 import { render } from "vitest-browser-qwik";
+import { page, userEvent } from "vitest/browser";
 import * as Slider from "./index";
 
 // Locator constants

@@ -1,7 +1,7 @@
 // TODO: Add improved tests once spec is laid out.
 
 // import { component$ } from "@qwik.dev/core";
-// import { page, userEvent } from "@vitest/browser/context";
+// import { page, userEvent } from "vitest/browser";
 // import { beforeEach, expect, test, vi } from "vitest";
 // import { render } from "vitest-browser-qwik";
 // import { FileUpload } from "..";

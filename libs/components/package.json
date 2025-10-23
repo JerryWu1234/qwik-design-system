@@ -35,7 +35,7 @@
     "typescript": "5.4.5",
     "uqr": "^0.1.2",
     "vite-tsconfig-paths": "^4.2.1",
-    "vitest-browser-qwik": "https://pkg.pr.new/kunai-consulting/vitest-browser-qwik@949e6ac"
+    "vitest-browser-qwik": "https://pkg.pr.new/kunai-consulting/vitest-browser-qwik@4577f38"
   },
   "peerDependencies": {
     "@qwik.dev/core": ">=https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@d48c3d2"

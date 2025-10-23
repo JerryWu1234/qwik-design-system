@@ -1,7 +1,7 @@
 import { type PropsOf, component$, useSignal, useStore } from "@qwik.dev/core";
-import { page, userEvent } from "@vitest/browser/context";
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-qwik";
+import { page, userEvent } from "vitest/browser";
 import { Popover } from "..";
 
 // Top-level locator constants using data-testid

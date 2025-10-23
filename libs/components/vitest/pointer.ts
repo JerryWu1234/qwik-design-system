@@ -1,4 +1,4 @@
-import type { Locator } from "@vitest/browser/context";
+import type { Locator } from "vitest/browser";
 import { nextTick } from "./tick";
 export type Target = Locator | HTMLElement | Document | Window;
 

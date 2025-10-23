@@ -1,7 +1,7 @@
 import { type PropsOf, component$ } from "@qwik.dev/core";
-import { page } from "@vitest/browser/context";
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-qwik";
+import { page } from "vitest/browser";
 import { QRCode } from "..";
 
 // Top-level locator constants using data-testid

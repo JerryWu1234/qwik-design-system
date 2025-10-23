@@ -1,5 +1,6 @@
 import { qdsTransformPlugin } from "@qds.dev/tools/rolldown";
 import { qwikVite } from "@qwik.dev/core/optimizer";
+import { playwright } from "@vitest/browser-playwright";
 import { resolve } from "pathe";
 import { type TestProjectConfiguration, defineConfig } from "vitest/config";
 
@@ -25,7 +26,7 @@ const domConfig: TestProjectConfiguration = {
     name: "dom",
     testTimeout: 2000,
     browser: {
-      provider: "playwright",
+      provider: playwright(),
       enabled: true,
       instances: [{ browser: "chromium" }]
     }
