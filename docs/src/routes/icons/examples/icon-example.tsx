@@ -15,6 +15,7 @@ export default component$(() => {
           {/* <Hugeicons.Abacus /> */}
           <AkarIcons.Air class="size-6 text-green-500" />
           <AkarIcons.Airpods />
+          <AkarIcons.AlignLeft />
         </div>
       </div>
 

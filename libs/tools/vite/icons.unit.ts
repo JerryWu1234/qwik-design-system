@@ -138,6 +138,118 @@ describe("icons", () => {
     expect(result.code).toContain('className={cn("icon")}');
   });
 
+  describe("default size attributes", () => {
+    it("should add default width and height of 1em when not specified", () => {
+      const code = `
+        import { Lucide } from "@qds.dev/ui";
+
+        function App() {
+          return <Lucide.Check class="icon" />;
+        }
+      `;
+      const result = transform(code, "test.tsx");
+      expect(result).toBeTruthy();
+      expect(result.code).toContain('width="1em"');
+      expect(result.code).toContain('height="1em"');
+      expect(result.code).toContain('viewBox="0 0 24 24"');
+    });
+
+    it("should not add default width when width is explicitly provided", () => {
+      const code = `
+        import { Lucide } from "@qds.dev/ui";
+
+        function App() {
+          return <Lucide.Check width={24} />;
+        }
+      `;
+      const result = transform(code, "test.tsx");
+      expect(result).toBeTruthy();
+      expect(result.code).toContain("width={24}");
+      expect(result.code).not.toContain('width="1em"');
+      // Should still add default height
+      expect(result.code).toContain('height="1em"');
+    });
+
+    it("should not add default height when height is explicitly provided", () => {
+      const code = `
+        import { Lucide } from "@qds.dev/ui";
+
+        function App() {
+          return <Lucide.Check height={24} />;
+        }
+      `;
+      const result = transform(code, "test.tsx");
+      expect(result).toBeTruthy();
+      expect(result.code).toContain("height={24}");
+      expect(result.code).not.toContain('height="1em"');
+      // Should still add default width
+      expect(result.code).toContain('width="1em"');
+    });
+
+    it("should not add defaults when both width and height are explicitly provided", () => {
+      const code = `
+        import { Lucide } from "@qds.dev/ui";
+
+        function App() {
+          return <Lucide.Check width={24} height={24} />;
+        }
+      `;
+      const result = transform(code, "test.tsx");
+      expect(result).toBeTruthy();
+      expect(result.code).toContain("width={24}");
+      expect(result.code).toContain("height={24}");
+      expect(result.code).not.toContain('width="1em"');
+      expect(result.code).not.toContain('height="1em"');
+    });
+
+    it("should add default sizes with expression props", () => {
+      const code = `
+        import { Lucide } from "@qds.dev/ui";
+
+        function App() {
+          return <Lucide.Check className="icon" aria-label="Check" />;
+        }
+      `;
+      const result = transform(code, "test.tsx");
+      expect(result).toBeTruthy();
+      expect(result.code).toContain('width="1em"');
+      expect(result.code).toContain('height="1em"');
+      expect(result.code).toContain('className="icon"');
+      expect(result.code).toContain('aria-label="Check"');
+    });
+
+    it("should respect string width values", () => {
+      const code = `
+        import { Lucide } from "@qds.dev/ui";
+
+        function App() {
+          return <Lucide.Check width="2rem" />;
+        }
+      `;
+      const result = transform(code, "test.tsx");
+      expect(result).toBeTruthy();
+      expect(result.code).toContain('width="2rem"');
+      expect(result.code).not.toContain('width="1em"');
+      expect(result.code).toContain('height="1em"');
+    });
+
+    it("should respect expression width values", () => {
+      const code = `
+        import { Lucide } from "@qds.dev/ui";
+
+        function App() {
+          const iconSize = "2em";
+          return <Lucide.Check width={iconSize} />;
+        }
+      `;
+      const result = transform(code, "test.tsx");
+      expect(result).toBeTruthy();
+      expect(result.code).toContain("width={iconSize}");
+      expect(result.code).not.toContain('width="1em"');
+      expect(result.code).toContain('height="1em"');
+    });
+  });
+
   it("should convert title prop to children", () => {
     const code = `
       import { Lucide } from "@qds.dev/ui";
@@ -149,7 +261,7 @@ describe("icons", () => {
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
     expect(result.code).toContain(
-      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Checked item</title></svg>'
+      '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Checked item</title></svg>'
     );
   });
 
@@ -165,7 +277,7 @@ describe("icons", () => {
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
     expect(result.code).toContain(
-      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>{label}</title></svg>'
+      '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>{label}</title></svg>'
     );
   });
 
@@ -184,7 +296,7 @@ describe("icons", () => {
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
     expect(result.code).toContain(
-      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Checked item</title><desc>Extra a11y</desc></svg>'
+      '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Checked item</title><desc>Extra a11y</desc></svg>'
     );
   });
 
@@ -199,7 +311,7 @@ describe("icons", () => {
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
     expect(result.code).toContain(
-      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><desc>This icon indicates completion</desc></svg>'
+      '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><desc>This icon indicates completion</desc></svg>'
     );
   });
 
@@ -215,7 +327,7 @@ describe("icons", () => {
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
     expect(result.code).toContain(
-      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><desc>{desc}</desc></svg>'
+      '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><desc>{desc}</desc></svg>'
     );
   });
 
@@ -230,7 +342,7 @@ describe("icons", () => {
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
     expect(result.code).toContain(
-      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Check mark</title><desc>Indicates completion</desc></svg>'
+      '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Check mark</title><desc>Indicates completion</desc></svg>'
     );
   });
 
@@ -247,7 +359,7 @@ describe("icons", () => {
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
     expect(result.code).toContain(
-      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>{iconTitle}</title><desc>{iconDesc}</desc></svg>'
+      '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>{iconTitle}</title><desc>{iconDesc}</desc></svg>'
     );
   });
 
@@ -472,7 +584,7 @@ describe("icons", () => {
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
     expect(result.code).toContain(
-      '<svg viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Check</title><desc>Description</desc></svg>'
+      '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Check</title><desc>Description</desc></svg>'
     );
   });
 
@@ -592,7 +704,7 @@ describe("icons", () => {
         "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-green-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check} />'
+        '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check} />'
       );
     });
 
@@ -610,7 +722,7 @@ describe("icons", () => {
         "import __qds_i_lucide_x from 'virtual:icons/lucide/x'"
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-red-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_x} />'
+        '<svg width={24} class="text-red-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_x} />'
       );
     });
 
@@ -628,7 +740,7 @@ describe("icons", () => {
         "import __qds_i_lucide_heart from 'virtual:icons/lucide/heart'"
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-red-500 fill-current" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_heart} />'
+        '<svg width={24} class="text-red-500 fill-current" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_heart} />'
       );
     });
 
@@ -662,16 +774,16 @@ describe("icons", () => {
         "import __qds_i_lucide_star from 'virtual:icons/lucide/star'"
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-green-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check} />'
+        '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check} />'
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-red-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_x} />'
+        '<svg width={24} class="text-red-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_x} />'
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-red-500 fill-current" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_heart} />'
+        '<svg width={24} class="text-red-500 fill-current" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_heart} />'
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-yellow-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_star} />'
+        '<svg width={24} class="text-yellow-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_star} />'
       );
     });
 
@@ -689,7 +801,7 @@ describe("icons", () => {
         "import __qds_i_heroicons_check_circle from 'virtual:icons/heroicons/check-circle'"
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-green-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_heroicons_check_circle} />'
+        '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_heroicons_check_circle} />'
       );
     });
 
@@ -707,7 +819,7 @@ describe("icons", () => {
         "import __qds_i_tabler_check from 'virtual:icons/tabler/check'"
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-green-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_tabler_check} />'
+        '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_tabler_check} />'
       );
     });
 
@@ -729,7 +841,7 @@ describe("icons", () => {
       expect(result.code).toContain("__qds_i_akaricons_airpods");
 
       expect(result.code).toContain(
-        '<svg viewBox="0 0 24 24" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_akaricons_airpods} />'
+        '<svg viewBox="0 0 24 24" width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_akaricons_airpods} />'
       );
 
       expect(result.code).not.toContain("__qds_i_akar-icons_airpods");
@@ -753,7 +865,7 @@ describe("icons", () => {
       expect(result.code).toContain("__qds_i_materialsymbols_ac_unit_rounded");
 
       expect(result.code).toContain(
-        '<svg class="text-blue-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_materialsymbols_ac_unit_rounded} />'
+        '<svg class="text-blue-500" width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_materialsymbols_ac_unit_rounded} />'
       );
 
       expect(result.code).not.toContain("__qds_i_material-symbols_ac-unit-rounded");
@@ -772,7 +884,7 @@ describe("icons", () => {
 
       // Should include consumer's viewBox and width
       expect(result.code).toContain(
-        '<svg viewBox="0 0 32 32" width={32} viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check} />'
+        '<svg viewBox="0 0 32 32" width={32} height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check} />'
       );
     });
 
@@ -830,28 +942,28 @@ describe("icons", () => {
 
       // Should contain all the transformed icons
       expect(result.code).toContain(
-        '<svg width={24} class="text-green-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check} />'
+        '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check} />'
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-red-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_x} />'
+        '<svg width={24} class="text-red-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_x} />'
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-red-500 fill-current" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_heart} />'
+        '<svg width={24} class="text-red-500 fill-current" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_heart} />'
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-yellow-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_star} />'
+        '<svg width={24} class="text-yellow-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_star} />'
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-gray-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_search} />'
+        '<svg width={24} class="text-gray-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_search} />'
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-green-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_heroicons_check_circle} />'
+        '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_heroicons_check_circle} />'
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-red-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_heroicons_x_circle} />'
+        '<svg width={24} class="text-red-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_heroicons_x_circle} />'
       );
       expect(result.code).toContain(
-        '<svg width={24} class="text-green-500" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_tabler_check} />'
+        '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_tabler_check} />'
       );
 
       // Validate JSX syntax using oxc-parser

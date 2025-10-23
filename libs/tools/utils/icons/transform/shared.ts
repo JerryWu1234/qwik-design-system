@@ -65,6 +65,16 @@ export function buildSVGElement(
   varName: string,
   children?: string
 ): string {
+  const hasWidth = attrs.some((attr) => attr.startsWith("width="));
+  const hasHeight = attrs.some((attr) => attr.startsWith("height="));
+
+  if (!hasWidth) {
+    attrs.push('width="1em"');
+  }
+  if (!hasHeight) {
+    attrs.push('height="1em"');
+  }
+
   attrs.push('viewBox="0 0 24 24"');
   attrs.push(`dangerouslySetInnerHTML={${varName}}`);
 
