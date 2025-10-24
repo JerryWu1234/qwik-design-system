@@ -45,8 +45,8 @@
   /* Descendant of scope without data-invalid, stops at nearest scope boundary */
   [data-qds-scope]:not([data-invalid]) > &,
   [data-qds-scope]:not([data-invalid]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([data-invalid])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([data-invalid])&
 );
 
 /**
@@ -69,8 +69,8 @@
   /* Descendant of scope without data-required, stops at nearest scope boundary */
   [data-qds-scope]:not([data-required]) > &,
   [data-qds-scope]:not([data-required]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([data-required])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([data-required])&
 );
 
 /**
@@ -93,8 +93,8 @@
   /* Descendant of scope without data-disabled, stops at nearest scope boundary */
   [data-qds-scope]:not([data-disabled]) > &,
   [data-qds-scope]:not([data-disabled]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([data-disabled])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([data-disabled])&
 );
 
 /**
@@ -117,8 +117,8 @@
   /* Descendant of scope without data-readonly, stops at nearest scope boundary */
   [data-qds-scope]:not([data-readonly]) > &,
   [data-qds-scope]:not([data-readonly]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([data-readonly])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([data-readonly])&
 );
 
 /**
@@ -141,8 +141,8 @@
   /* Descendant of scope without data-checked, stops at nearest scope boundary */
   [data-qds-scope]:not([data-checked]) > &,
   [data-qds-scope]:not([data-checked]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([data-checked])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([data-checked])&
 );
 
 /**
@@ -165,8 +165,8 @@
   /* Descendant of scope without data-selected, stops at nearest scope boundary */
   [data-qds-scope]:not([data-selected]) > &,
   [data-qds-scope]:not([data-selected]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([data-selected])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([data-selected])&
 );
 
 /**
@@ -189,8 +189,8 @@
   /* Descendant of scope without data-pressed, stops at nearest scope boundary */
   [data-qds-scope]:not([data-pressed]) > &,
   [data-qds-scope]:not([data-pressed]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([data-pressed])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([data-pressed])&
 );
 
 /**
@@ -213,8 +213,8 @@
   /* Descendant of scope without data-open, stops at nearest scope boundary */
   [data-qds-scope]:not([data-open]) > &,
   [data-qds-scope]:not([data-open]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([data-open])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([data-open])&
 );
 
 /**
@@ -237,8 +237,8 @@
   /* Descendant of scope without data-highlighted, stops at nearest scope boundary */
   [data-qds-scope]:not([data-highlighted]) > &,
   [data-qds-scope]:not([data-highlighted]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([data-highlighted])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([data-highlighted])&
 );
 
 /**
@@ -261,8 +261,8 @@
   /* Descendant of scope without data-current, stops at nearest scope boundary */
   [data-qds-scope]:not([data-current]) > &,
   [data-qds-scope]:not([data-current]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([data-current])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([data-current])&
 );
 
 /**
@@ -285,8 +285,8 @@
   /* Descendant of scope without data-mixed, stops at nearest scope boundary */
   [data-qds-scope]:not([data-mixed]) > &,
   [data-qds-scope]:not([data-mixed]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([data-mixed])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([data-mixed])&
 );
 
 /**
@@ -309,8 +309,8 @@
   /* Descendant of scope without data-empty, stops at nearest scope boundary */
   [data-qds-scope]:not([data-empty]) > &,
   [data-qds-scope]:not([data-empty]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([data-empty])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([data-empty])&
 );
 
 /**
@@ -333,6 +333,6 @@
   /* Descendant of scope without data-orientation, stops at nearest scope boundary */
   [data-qds-scope]:not([data-orientation]) > &,
   [data-qds-scope]:not([data-orientation]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([data-orientation])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([data-orientation])&
 );

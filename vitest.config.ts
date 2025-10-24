@@ -22,6 +22,7 @@ const domConfig: TestProjectConfiguration = {
     })
   ],
   test: {
+    fileParallelism: false,
     include: ["**/*.browser.ts", "**/*.browser.tsx"],
     name: "dom",
     testTimeout: 2000,

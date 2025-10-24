@@ -10,47 +10,50 @@ import {
   useTask$
 } from "@qwik.dev/core";
 
-import { useBoundSignal } from "@qds.dev/utils";
+import { type BindableProps, useBindings } from "@qds.dev/utils";
 import { createContextId } from "@qwik.dev/core";
-import { useStyles$ } from "@qwik.dev/core";
 import { Render } from "../render/render";
-import collapsibleStyles from "./collapsible.css?inline";
 
 export const collapsibleContextId = createContextId<CollapsibleContext>("Collapsible");
 
 export interface CollapsibleContext {
   itemId: string;
-  isOpenSig: Signal<boolean>;
+  isOpen: Signal<boolean>;
   triggerRef: Signal<HTMLButtonElement | undefined>;
   contentRef: Signal<HTMLElement | undefined>;
-  disabled: boolean | undefined;
-  collapsible?: boolean;
+  isDisabled: Signal<boolean>;
+  isCollapsible: Signal<boolean>;
+  disableUntilFound: boolean | undefined;
 }
 
 export type CollapsibleRootProps = PropsOf<"div"> & {
   id?: string;
   open?: boolean | undefined;
-  "bind:open"?: Signal<boolean>;
   onChange$?: QRL<(open: boolean) => void>;
   disabled?: boolean;
   collapsible?: boolean;
+  /** If true, collapsible will be hidden instead of hidden until found */
+  disableUntilFound?: boolean;
+} & BindableProps<CollapsibleBinds>;
+
+type CollapsibleBinds = {
+  open: boolean;
+  disabled: boolean;
+  collapsible: boolean;
 };
 
 export const CollapsibleRoot = component$((props: CollapsibleRootProps) => {
+  const { onChange$, id, disableUntilFound, ...rest } = props;
+
   const {
-    disabled,
-    onChange$,
-    "bind:open": givenIsOpenSig,
-    id,
-    collapsible = true,
-    // todo, make open value based -> useComputed$ and combined source of truth
-    open,
-    ...rest
-  } = props;
-
-  useStyles$(collapsibleStyles);
-
-  const isOpenSig = useBoundSignal(givenIsOpenSig, open ?? false);
+    openSig: isOpen,
+    disabledSig: isDisabled,
+    collapsibleSig: isCollapsible
+  } = useBindings(props, {
+    open: false,
+    disabled: false,
+    collapsible: true
+  });
 
   const triggerRef = useSignal<HTMLButtonElement>();
   const contentRef = useSignal<HTMLElement>();
@@ -60,22 +63,23 @@ export const CollapsibleRoot = component$((props: CollapsibleRootProps) => {
   const isInitialLoadSig = useSignal(true);
 
   useTask$(function onChangeTask({ track, cleanup }) {
-    track(() => isOpenSig.value);
+    track(() => isOpen.value);
 
     if (!isInitialLoadSig.value) {
-      onChange$?.(isOpenSig.value);
+      onChange$?.(isOpen.value);
     }
 
     cleanup(() => (isInitialLoadSig.value = false));
   });
 
   const context: CollapsibleContext = {
-    isOpenSig,
+    isOpen,
     itemId,
     triggerRef,
     contentRef,
-    disabled,
-    collapsible
+    isDisabled,
+    isCollapsible,
+    disableUntilFound
   };
 
   useContextProvider(collapsibleContextId, context);
@@ -85,9 +89,10 @@ export const CollapsibleRoot = component$((props: CollapsibleRootProps) => {
       id={itemId}
       fallback="div"
       data-qds-collapsible
-      data-disabled={context.disabled ? "" : undefined}
-      data-open={context.isOpenSig.value}
-      data-closed={!context.isOpenSig.value}
+      data-qds-scope
+      data-disabled={isDisabled.value}
+      data-open={context.isOpen.value}
+      data-closed={!context.isOpen.value}
       aria-live="polite"
       {...rest}
     >

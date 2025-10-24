@@ -150,6 +150,7 @@ export const TreeItem = component$((props: TreeItemProps) => {
       aria-level={level}
       data-highlighted={isHighlightedSig.value}
       data-group
+      disableUntilFound
     >
       {/* NOTE: This span is required for the aria tree grid pattern, we give it display contents so that it does not break composition */}
       <div role="gridcell" style={{ display: "contents" }} tabIndex={-1}>

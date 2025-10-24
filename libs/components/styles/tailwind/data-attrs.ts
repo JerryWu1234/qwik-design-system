@@ -55,8 +55,8 @@ function generateVariant(state: DataAttributeState): string {
   /* Descendant of scope without ${dataAttr}, stops at nearest scope boundary */
   [data-qds-scope]:not([${dataAttr}]) > &,
   [data-qds-scope]:not([${dataAttr}]) > :not([data-qds-scope]) &,
-  /* Direct match on element itself */
-  :not([${dataAttr}])&
+  /* Direct match on element itself ONLY if it's also a scope */
+  [data-qds-scope]:not([${dataAttr}])&
 );`;
 }
 

@@ -1,22 +1,19 @@
 import { Collapsible } from "@qds.dev/ui";
-import { component$, useStyles$ } from "@qwik.dev/core";
-import { LuChevronDown } from "@qwikest/icons/lucide";
+import { component$ } from "@qwik.dev/core";
 
 export default component$(() => {
-  useStyles$(styles);
-
   return (
-    <Collapsible.Root class="collapsible">
-      <Collapsible.Trigger class="collapsible-trigger">
-        <span>Trigger</span>
-        <LuChevronDown />
-      </Collapsible.Trigger>
-      <Collapsible.Content class="collapsible-content collapsible-content-outline ">
-        Content
-      </Collapsible.Content>
-    </Collapsible.Root>
+    <div>
+      <p>Some visible text before</p>
+      <Collapsible.Root>
+        <Collapsible.Trigger class="not-ui-open:bg-red-500">
+          Click to toggle
+        </Collapsible.Trigger>
+        <Collapsible.Content>
+          <p>This is hidden searchable content that contains the word FINDME</p>
+        </Collapsible.Content>
+      </Collapsible.Root>
+      <p>Some visible text after</p>
+    </div>
   );
 });
-
-// internal
-import styles from "../snippets/collapsible.css?inline";

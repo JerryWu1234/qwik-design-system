@@ -10,7 +10,7 @@ export const CollapsibleTrigger = component$<PropsOf<"button">>(
 
     const handleClick$ = $((e: MouseEvent) => {
       e.stopPropagation();
-      context.isOpenSig.value = !context.isOpenSig.value;
+      context.isOpen.value = !context.isOpen.value;
     });
 
     return (
@@ -19,9 +19,9 @@ export const CollapsibleTrigger = component$<PropsOf<"button">>(
         fallback="button"
         id={triggerId}
         internalRef={context.triggerRef}
-        disabled={context.disabled}
-        aria-disabled={context.disabled ? "true" : "false"}
-        aria-expanded={context.isOpenSig.value}
+        disabled={context.isDisabled.value}
+        aria-disabled={context.isDisabled.value ? "true" : "false"}
+        aria-expanded={context.isOpen.value}
         aria-controls={contentId}
         onClick$={[handleClick$, onClick$]}
       >
