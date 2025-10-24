@@ -38,9 +38,9 @@ type PopoverContext = {
   contentRef: Signal<HTMLDivElement | undefined>;
   triggerRef: Signal<HTMLButtonElement | undefined>;
   localId: string;
-  isOpenSig: Signal<boolean>;
-  canExternallyChangeSig: Signal<boolean>;
-  isHiddenSig: Signal<boolean>;
+  isOpen: Signal<boolean>;
+  canExternallyChange: Signal<boolean>;
+  isHidden: Signal<boolean>;
   hover: boolean;
 };
 
@@ -62,17 +62,17 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
   const localId = useId();
   const hoverTimeout = useSignal<number | undefined>(undefined);
 
-  const { openSig: isOpenSig } = useBindings(props, {
+  const { openSig: isOpen } = useBindings(props, {
     open: false
   });
 
-  const isInitialRenderSig = useSignal(true);
-  const canExternallyChangeSig = useSignal(true);
-  const isPolyfillExecutedSig = useSignal(false);
-  const isHiddenSig = useSignal(true);
+  const isInitialRender = useSignal(true);
+  const canExternallyChange = useSignal(true);
+  const isPolyfillExecuted = useSignal(false);
+  const isHidden = useSignal(true);
 
-  const isInitiallyOpenSig = useComputed$(() => {
-    if (isInitialRenderSig.value && isOpenSig.value) {
+  const isInitiallyOpen = useComputed$(() => {
+    if (isInitialRender.value && isOpen.value) {
       return true;
     }
 
@@ -83,35 +83,49 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
     contentRef,
     triggerRef,
     localId,
-    isOpenSig,
-    canExternallyChangeSig,
-    isHiddenSig,
+    isOpen,
+    canExternallyChange,
+    isHidden,
     hover
   };
 
   useContextProvider(popoverContextId, context);
 
   const handleExternalToggle$ = $(async () => {
-    if (!canExternallyChangeSig.value) return;
+    if (!canExternallyChange.value) return;
     if (!contentRef.value) return;
 
-    if (isOpenSig.value) {
-      await contentRef.value.showPopover();
-    } else {
-      await contentRef.value.hidePopover();
+    // Set flag to false to prevent the subsequent toggle event from re-triggering
+    canExternallyChange.value = false;
+
+    try {
+      if (isOpen.value) {
+        await contentRef.value.showPopover();
+      } else {
+        await contentRef.value.hidePopover();
+      }
+    } catch (error) {
+      // Reset flag on error so next attempt can proceed
+      canExternallyChange.value = true;
+
+      // Only silence InvalidStateError (already in desired state), throw everything else
+      if (error instanceof DOMException && error.name === "InvalidStateError") {
+        return;
+      }
+      throw error;
     }
   });
 
   const handlePolyfill$ = $(async () => {
-    if (isServer || isPolyfillExecutedSig.value) return;
+    if (isServer || isPolyfillExecuted.value) return;
 
     const isUsingFixedPosition = contentRef.value
       ? window.getComputedStyle(contentRef.value).position === "fixed"
       : false;
 
     if (isUsingFixedPosition) {
-      isPolyfillExecutedSig.value = true;
-      isHiddenSig.value = false;
+      isPolyfillExecuted.value = true;
+      isHidden.value = false;
       return;
     }
 
@@ -121,15 +135,15 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
       await polyfill();
     }
 
-    isPolyfillExecutedSig.value = true;
-    isHiddenSig.value = false;
+    isPolyfillExecuted.value = true;
+    isHidden.value = false;
   });
 
   useTask$(async function handleChange({ track, cleanup }) {
-    track(() => isOpenSig.value);
+    track(() => isOpen.value);
 
-    if (!isInitialRenderSig.value) {
-      await onChange$?.(isOpenSig.value);
+    if (!isInitialRender.value) {
+      await onChange$?.(isOpen.value);
     }
 
     await handlePolyfill$();
@@ -142,8 +156,8 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
         hoverTimeout.value = undefined;
       }
 
-      if (!isInitialRenderSig.value) return;
-      isInitialRenderSig.value = false;
+      if (!isInitialRender.value) return;
+      isInitialRender.value = false;
     });
   });
 
@@ -151,7 +165,7 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
    *  AVOID THIS UNLESS YOU REALLY KNOW WHAT YOU ARE DOING
    *  qvisible -> conditionally add a visible task
    */
-  const handleOpenOnRender$ = isInitiallyOpenSig.value
+  const handleOpenOnRender$ = isInitiallyOpen.value
     ? $(async () => {
         await handlePolyfill$();
         context.contentRef.value?.showPopover();
@@ -162,7 +176,7 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
    *  AVOID THIS UNLESS YOU REALLY KNOW WHAT YOU ARE DOING
    *  In this case there is a perf cost to wanting popover open immediately on render.
    */
-  if (isInitiallyOpenSig.value) {
+  if (isInitiallyOpen.value) {
     useVisibleTask$(async () => {
       await handleOpenOnRender$?.();
     });
@@ -178,11 +192,11 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
 
     if (delay > 0) {
       hoverTimeout.value = window.setTimeout(() => {
-        isOpenSig.value = true;
+        isOpen.value = true;
         hoverTimeout.value = undefined;
       }, delay);
     } else {
-      isOpenSig.value = true;
+      isOpen.value = true;
     }
   });
 
@@ -194,11 +208,11 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
 
     if (closeDelay > 0) {
       hoverTimeout.value = window.setTimeout(() => {
-        isOpenSig.value = false;
+        isOpen.value = false;
         hoverTimeout.value = undefined;
       }, closeDelay);
     } else {
-      isOpenSig.value = false;
+      isOpen.value = false;
     }
   });
 
@@ -220,8 +234,8 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
       onPointerMove$={handlePointerMove$}
       onPointerOut$={handlePointerOut$}
       onPointerOver$={handlePointerOver$}
-      data-open={isOpenSig.value}
-      data-closed={!isOpenSig.value}
+      data-open={isOpen.value}
+      data-closed={!isOpen.value}
       data-qds-popover-root
       internalRef={rootRef}
       fallback={fallback}

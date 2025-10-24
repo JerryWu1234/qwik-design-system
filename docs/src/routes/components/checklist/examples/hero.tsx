@@ -10,7 +10,7 @@ export default component$(() => {
     <Checklist.Root class="checklist-root">
       {items.map((item) => (
         <Checklist.Item class="checkbox-root" key={item}>
-          <Checklist.ItemTrigger class="checkbox-trigger">
+          <Checklist.ItemTrigger class="checkbox-trigger ui-checked:bg-red-500">
             <Checklist.ItemIndicator class="checkbox-indicator">
               <LuCheck />
             </Checklist.ItemIndicator>

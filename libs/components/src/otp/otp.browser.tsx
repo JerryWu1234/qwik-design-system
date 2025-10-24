@@ -90,7 +90,8 @@ test("select all and backspace should clear OTP", async () => {
   await userEvent.keyboard("1234");
   await expect.element(Input).toHaveValue("1234");
 
-  await userEvent.keyboard("{Meta>}a{/Meta}");
+  // select all using Shift+Home (cursor is at end after typing)
+  await userEvent.keyboard("{Shift>}{Home}{/Shift}");
   await userEvent.keyboard("{Backspace}");
   await expect.element(Input).toHaveValue("");
 });
@@ -116,7 +117,7 @@ test("backspace should delete selected character", async () => {
   await expect.element(Input).toHaveValue("1234");
 
   await userEvent.keyboard("{ArrowLeft}");
-  await userEvent.keyboard("{Meta>}{Backspace}{/Meta}");
+  await userEvent.keyboard("{Backspace}");
 
   await expect.element(Input).toHaveValue("124");
 });
@@ -149,6 +150,7 @@ test("delete in middle should remove character at cursor", async () => {
   await userEvent.keyboard("{Home}");
   await userEvent.keyboard("{ArrowRight}");
   await userEvent.keyboard("{ArrowRight}");
+  await expect.element(Items.nth(2)).toHaveAttribute("data-highlighted");
   await userEvent.keyboard("{Delete}");
   await expect.element(Input).toHaveValue("124");
 });

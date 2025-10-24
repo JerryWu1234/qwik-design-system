@@ -334,7 +334,10 @@ test("keyboard navigation with arrow keys", async () => {
   // Press ArrowRight to move focus
   await userEvent.keyboard("{ArrowRight}");
 
-  // Check if focus moved (by checking if the second item can receive clicks)
+  // Wait for focus to move to the second item
+  await expect.element(Items.nth(1)).toHaveFocus();
+
+  // Press Space to activate the focused item
   await userEvent.keyboard("{Space}");
   await expect.element(Items.nth(1)).toHaveAttribute("data-current");
 });
@@ -351,7 +354,10 @@ test("home key navigates to first page", async () => {
   ((await Items.nth(2).element()) as HTMLButtonElement).focus();
   await userEvent.keyboard("{Home}");
 
-  // Focus should move to first item
+  // Wait for focus to move to first item
+  await expect.element(Items.nth(0)).toHaveFocus();
+
+  // Press Space to activate the focused item
   await userEvent.keyboard("{Space}");
   await expect.element(Items.nth(0)).toHaveAttribute("data-current");
 });

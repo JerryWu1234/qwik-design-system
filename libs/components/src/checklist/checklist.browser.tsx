@@ -132,10 +132,11 @@ test("main checkbox is unchecked when no items are checked", async () => {
 test("main checkbox is partially checked when some items are checked", async () => {
   render(<SelectAllExample />);
 
-  await expect.element(MainIndicator).toBeVisible();
-  await expect.element(Indicators.nth(0)).toBeVisible();
+  await expect.element(MainTrigger).toBeVisible();
+  await expect.element(Indicators.nth(0)).not.toBeVisible();
 
   // Click the first checkbox
+  await expect.element(Triggers.nth(0)).toBeVisible();
   await userEvent.click(Triggers.nth(0));
 
   await expect.element(MainTrigger).toHaveAttribute("aria-checked", "mixed");

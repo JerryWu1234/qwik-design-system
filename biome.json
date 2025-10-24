@@ -17,7 +17,7 @@
       "libs/icons/src/icons",
       "libs/icons/src/page",
       "libs/components/virtual-qds-icons.d.ts",
-      "libs/components/icons-runtime.ts",
+      "libs/components/src/icons-runtime.ts",
       "libs/components/styles/tailwind/qds-tailwind.css",
       "libs/utils/lib/*",
       ".vscode",
@@ -106,6 +106,12 @@
         "parser": {
           "allowComments": true
         }
+      }
+    },
+    {
+      "include": ["**/package.json"],
+      "formatter": {
+        "enabled": false
       }
     },
     {

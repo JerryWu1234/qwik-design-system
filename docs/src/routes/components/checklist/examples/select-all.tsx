@@ -8,15 +8,15 @@ export default component$(() => {
 
   return (
     <Checklist.Root>
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <Checklist.SelectAll class="checkbox-trigger select-all-trigger">
-          <Checklist.SelectAllIndicator class="checkbox-indicator">
+      <div>
+        <Checklist.SelectAll class=" ui-checked:bg-red-500 ui-mixed:bg-yellow-500">
+          <Checklist.SelectAllIndicator class="checkbox-indicator ui-checked:bg-red-500">
             <LuCheck data-check-icon />
             <LuMinus data-minus-icon />
           </Checklist.SelectAllIndicator>
         </Checklist.SelectAll>
-        <Checklist.Label>All items</Checklist.Label>
       </div>
+      <Checklist.Label>All items</Checklist.Label>
       <div style={{ marginLeft: "32px" }}>
         {items.map((item) => (
           <Checklist.Item
@@ -24,12 +24,14 @@ export default component$(() => {
             class="checkbox-root"
             key={item}
           >
-            <Checklist.ItemTrigger class="checkbox-trigger">
-              <Checklist.ItemIndicator class="checkbox-indicator">
-                <LuCheck />
-              </Checklist.ItemIndicator>
-            </Checklist.ItemTrigger>
-            <Checklist.ItemLabel>{item}</Checklist.ItemLabel>
+            <span>
+              <Checklist.ItemTrigger class="checkbox-trigger ui-checked:bg-red-500">
+                <Checklist.ItemIndicator class="checkbox-indicator">
+                  <LuCheck />
+                </Checklist.ItemIndicator>
+              </Checklist.ItemTrigger>
+              <Checklist.ItemLabel>{item}</Checklist.ItemLabel>
+            </span>
           </Checklist.Item>
         ))}
       </div>

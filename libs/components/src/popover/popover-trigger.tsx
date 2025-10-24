@@ -18,8 +18,8 @@ export const PopoverTrigger = component$((props: PropsOf<"button">) => {
   return (
     <Render
       data-hover={context.hover}
-      data-open={context.isOpenSig.value}
-      data-closed={!context.isOpenSig.value}
+      data-open={context.isOpen.value}
+      data-closed={!context.isOpen.value}
       internalRef={context.triggerRef}
       popovertarget={panelId}
       onClick$={[handleClick, props.onClick$]}

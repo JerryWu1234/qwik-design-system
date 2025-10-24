@@ -45,6 +45,8 @@ test("should meet axe accessibility requirements", async () => {
 
   const results = await axe.run(screen.container);
 
+  console.log(results.violations);
+
   expect(results.violations).toHaveLength(0);
 });
 

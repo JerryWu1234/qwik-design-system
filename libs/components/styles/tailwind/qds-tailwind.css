@@ -31,7 +31,8 @@
  */
 @custom-variant ui-invalid (
   /* Descendant of scope with data-invalid, stops at nearest scope boundary */
-  [data-qds-scope][data-invalid]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][data-invalid] > &,
+  [data-qds-scope][data-invalid] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [data-invalid]&
 );
@@ -42,7 +43,8 @@
  */
 @custom-variant not-ui-invalid (
   /* Descendant of scope without data-invalid, stops at nearest scope boundary */
-  [data-qds-scope]:not([data-invalid]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([data-invalid]) > &,
+  [data-qds-scope]:not([data-invalid]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([data-invalid])&
 );
@@ -53,7 +55,8 @@
  */
 @custom-variant ui-required (
   /* Descendant of scope with data-required, stops at nearest scope boundary */
-  [data-qds-scope][data-required]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][data-required] > &,
+  [data-qds-scope][data-required] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [data-required]&
 );
@@ -64,7 +67,8 @@
  */
 @custom-variant not-ui-required (
   /* Descendant of scope without data-required, stops at nearest scope boundary */
-  [data-qds-scope]:not([data-required]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([data-required]) > &,
+  [data-qds-scope]:not([data-required]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([data-required])&
 );
@@ -75,7 +79,8 @@
  */
 @custom-variant ui-disabled (
   /* Descendant of scope with data-disabled, stops at nearest scope boundary */
-  [data-qds-scope][data-disabled]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][data-disabled] > &,
+  [data-qds-scope][data-disabled] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [data-disabled]&
 );
@@ -86,7 +91,8 @@
  */
 @custom-variant not-ui-disabled (
   /* Descendant of scope without data-disabled, stops at nearest scope boundary */
-  [data-qds-scope]:not([data-disabled]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([data-disabled]) > &,
+  [data-qds-scope]:not([data-disabled]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([data-disabled])&
 );
@@ -97,7 +103,8 @@
  */
 @custom-variant ui-readonly (
   /* Descendant of scope with data-readonly, stops at nearest scope boundary */
-  [data-qds-scope][data-readonly]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][data-readonly] > &,
+  [data-qds-scope][data-readonly] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [data-readonly]&
 );
@@ -108,7 +115,8 @@
  */
 @custom-variant not-ui-readonly (
   /* Descendant of scope without data-readonly, stops at nearest scope boundary */
-  [data-qds-scope]:not([data-readonly]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([data-readonly]) > &,
+  [data-qds-scope]:not([data-readonly]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([data-readonly])&
 );
@@ -119,7 +127,8 @@
  */
 @custom-variant ui-checked (
   /* Descendant of scope with data-checked, stops at nearest scope boundary */
-  [data-qds-scope][data-checked]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][data-checked] > &,
+  [data-qds-scope][data-checked] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [data-checked]&
 );
@@ -130,7 +139,8 @@
  */
 @custom-variant not-ui-checked (
   /* Descendant of scope without data-checked, stops at nearest scope boundary */
-  [data-qds-scope]:not([data-checked]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([data-checked]) > &,
+  [data-qds-scope]:not([data-checked]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([data-checked])&
 );
@@ -141,7 +151,8 @@
  */
 @custom-variant ui-selected (
   /* Descendant of scope with data-selected, stops at nearest scope boundary */
-  [data-qds-scope][data-selected]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][data-selected] > &,
+  [data-qds-scope][data-selected] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [data-selected]&
 );
@@ -152,7 +163,8 @@
  */
 @custom-variant not-ui-selected (
   /* Descendant of scope without data-selected, stops at nearest scope boundary */
-  [data-qds-scope]:not([data-selected]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([data-selected]) > &,
+  [data-qds-scope]:not([data-selected]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([data-selected])&
 );
@@ -163,7 +175,8 @@
  */
 @custom-variant ui-pressed (
   /* Descendant of scope with data-pressed, stops at nearest scope boundary */
-  [data-qds-scope][data-pressed]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][data-pressed] > &,
+  [data-qds-scope][data-pressed] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [data-pressed]&
 );
@@ -174,7 +187,8 @@
  */
 @custom-variant not-ui-pressed (
   /* Descendant of scope without data-pressed, stops at nearest scope boundary */
-  [data-qds-scope]:not([data-pressed]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([data-pressed]) > &,
+  [data-qds-scope]:not([data-pressed]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([data-pressed])&
 );
@@ -185,7 +199,8 @@
  */
 @custom-variant ui-open (
   /* Descendant of scope with data-open, stops at nearest scope boundary */
-  [data-qds-scope][data-open]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][data-open] > &,
+  [data-qds-scope][data-open] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [data-open]&
 );
@@ -196,7 +211,8 @@
  */
 @custom-variant not-ui-open (
   /* Descendant of scope without data-open, stops at nearest scope boundary */
-  [data-qds-scope]:not([data-open]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([data-open]) > &,
+  [data-qds-scope]:not([data-open]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([data-open])&
 );
@@ -207,7 +223,8 @@
  */
 @custom-variant ui-highlighted (
   /* Descendant of scope with data-highlighted, stops at nearest scope boundary */
-  [data-qds-scope][data-highlighted]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][data-highlighted] > &,
+  [data-qds-scope][data-highlighted] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [data-highlighted]&
 );
@@ -218,7 +235,8 @@
  */
 @custom-variant not-ui-highlighted (
   /* Descendant of scope without data-highlighted, stops at nearest scope boundary */
-  [data-qds-scope]:not([data-highlighted]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([data-highlighted]) > &,
+  [data-qds-scope]:not([data-highlighted]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([data-highlighted])&
 );
@@ -229,7 +247,8 @@
  */
 @custom-variant ui-current (
   /* Descendant of scope with data-current, stops at nearest scope boundary */
-  [data-qds-scope][data-current]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][data-current] > &,
+  [data-qds-scope][data-current] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [data-current]&
 );
@@ -240,7 +259,8 @@
  */
 @custom-variant not-ui-current (
   /* Descendant of scope without data-current, stops at nearest scope boundary */
-  [data-qds-scope]:not([data-current]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([data-current]) > &,
+  [data-qds-scope]:not([data-current]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([data-current])&
 );
@@ -251,7 +271,8 @@
  */
 @custom-variant ui-mixed (
   /* Descendant of scope with data-mixed, stops at nearest scope boundary */
-  [data-qds-scope][data-mixed]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][data-mixed] > &,
+  [data-qds-scope][data-mixed] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [data-mixed]&
 );
@@ -262,7 +283,8 @@
  */
 @custom-variant not-ui-mixed (
   /* Descendant of scope without data-mixed, stops at nearest scope boundary */
-  [data-qds-scope]:not([data-mixed]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([data-mixed]) > &,
+  [data-qds-scope]:not([data-mixed]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([data-mixed])&
 );
@@ -273,7 +295,8 @@
  */
 @custom-variant ui-empty (
   /* Descendant of scope with data-empty, stops at nearest scope boundary */
-  [data-qds-scope][data-empty]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][data-empty] > &,
+  [data-qds-scope][data-empty] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [data-empty]&
 );
@@ -284,7 +307,8 @@
  */
 @custom-variant not-ui-empty (
   /* Descendant of scope without data-empty, stops at nearest scope boundary */
-  [data-qds-scope]:not([data-empty]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([data-empty]) > &,
+  [data-qds-scope]:not([data-empty]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([data-empty])&
 );
@@ -295,7 +319,8 @@
  */
 @custom-variant ui-orientation (
   /* Descendant of scope with data-orientation, stops at nearest scope boundary */
-  [data-qds-scope][data-orientation]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][data-orientation] > &,
+  [data-qds-scope][data-orientation] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [data-orientation]&
 );
@@ -306,7 +331,8 @@
  */
 @custom-variant not-ui-orientation (
   /* Descendant of scope without data-orientation, stops at nearest scope boundary */
-  [data-qds-scope]:not([data-orientation]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([data-orientation]) > &,
+  [data-qds-scope]:not([data-orientation]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([data-orientation])&
 );

@@ -41,7 +41,8 @@ function generateVariant(state: DataAttributeState): string {
  */
 @custom-variant ${variantName} (
   /* Descendant of scope with ${dataAttr}, stops at nearest scope boundary */
-  [data-qds-scope][${dataAttr}]:has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope][${dataAttr}] > &,
+  [data-qds-scope][${dataAttr}] > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   [${dataAttr}]&
 );
@@ -52,7 +53,8 @@ function generateVariant(state: DataAttributeState): string {
  */
 @custom-variant ${negatedVariantName} (
   /* Descendant of scope without ${dataAttr}, stops at nearest scope boundary */
-  [data-qds-scope]:not([${dataAttr}]):has(&):not(:has([data-qds-scope] &)) &,
+  [data-qds-scope]:not([${dataAttr}]) > &,
+  [data-qds-scope]:not([${dataAttr}]) > :not([data-qds-scope]) &,
   /* Direct match on element itself */
   :not([${dataAttr}])&
 );`;

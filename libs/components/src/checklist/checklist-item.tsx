@@ -26,12 +26,9 @@ export const ChecklistItem = component$((props: PublicChecklistItemProps) => {
   });
 
   const isCheckedSig = useSignal(false);
-  const isSelectAllSig = useSignal(false);
 
   useTask$(function checkAllManager({ track }) {
     track(() => context.isAllCheckedSig.value);
-
-    isSelectAllSig.value = true;
 
     if (context.isAllCheckedSig.value === true) {
       isCheckedSig.value = true;
@@ -42,8 +39,6 @@ export const ChecklistItem = component$((props: PublicChecklistItemProps) => {
 
   useTask$(function checkItemsManager({ track }) {
     track(() => isCheckedSig.value);
-
-    if (isSelectAllSig.value) return;
 
     context.checkedStatesSig.value[index] = isCheckedSig.value;
 

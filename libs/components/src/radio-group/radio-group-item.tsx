@@ -7,7 +7,8 @@ import {
   useComputed$,
   useConstant,
   useContext,
-  useContextProvider
+  useContextProvider,
+  useId
 } from "@qwik.dev/core";
 import { Render } from "../render/render";
 import { radioGroupContextId } from "./radio-group-context";
@@ -29,7 +30,7 @@ type RadioGroupItemContext = {
 
 export const RadioGroupItem = component$((props: PublicItemProps) => {
   const context = useContext(radioGroupContextId);
-  const itemId = `${context.localId}-item-${props.value}`;
+  const itemId = useId();
 
   const itemIndex = useConstant(() => {
     const currItemIndex = context.currItemIndex;
