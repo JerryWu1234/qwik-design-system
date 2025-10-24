@@ -547,12 +547,15 @@ test("description is linked to trigger via aria-describedby", async () => {
   await expect.element(Trigger).toBeVisible();
   await expect.element(Description).toBeVisible();
 
+  await expect.element(Description).toHaveAttribute("id");
+  await expect.element(Trigger).toHaveAttribute("aria-describedby");
+
+  // Now safely get the values
   const triggerElement = await Trigger.element();
   const descriptionElement = await Description.element();
   const descriptionId = descriptionElement?.getAttribute("id");
   const describedBy = triggerElement?.getAttribute("aria-describedby");
 
-  expect(descriptionId).toBeTruthy();
   expect(describedBy).toContain(descriptionId as string);
 });
 
@@ -576,12 +579,15 @@ test("error message is linked to trigger via aria-describedby", async () => {
   await expect.element(Trigger).toBeVisible();
   await expect.element(CheckboxError).toBeVisible();
 
+  await expect.element(CheckboxError).toHaveAttribute("id");
+  await expect.element(Trigger).toHaveAttribute("aria-describedby");
+
+  // Now safely get the values
   const triggerElement = await Trigger.element();
   const errorElement = await CheckboxError.element();
   const errorId = errorElement?.getAttribute("id");
   const describedBy = triggerElement?.getAttribute("aria-describedby");
 
-  expect(errorId).toBeTruthy();
   expect(describedBy).toContain(errorId as string);
 });
 
@@ -622,6 +628,10 @@ test("both description and error are linked via aria-describedby", async () => {
   await expect.element(Description).toBeVisible();
   await expect.element(CheckboxError).toBeVisible();
 
+  await expect.element(Description).toHaveAttribute("id");
+  await expect.element(CheckboxError).toHaveAttribute("id");
+  await expect.element(Trigger).toHaveAttribute("aria-describedby");
+
   const triggerElement = await Trigger.element();
   const descriptionElement = await Description.element();
   const errorElement = await CheckboxError.element();
@@ -629,8 +639,6 @@ test("both description and error are linked via aria-describedby", async () => {
   const errorId = errorElement?.getAttribute("id");
   const describedBy = triggerElement?.getAttribute("aria-describedby");
 
-  expect(descriptionId).toBeTruthy();
-  expect(errorId).toBeTruthy();
   expect(describedBy).toContain(descriptionId as string);
   expect(describedBy).toContain(errorId as string);
 });

@@ -138,12 +138,14 @@ test("description is linked to input via aria-describedby", async () => {
   await expect.element(Input).toBeVisible();
   await expect.element(Description).toBeVisible();
 
+  await expect.element(Description).toHaveAttribute("id");
+  await expect.element(Input).toHaveAttribute("aria-describedby");
+
   const inputElement = await Input.element();
   const descriptionElement = await Description.element();
   const descriptionId = descriptionElement?.getAttribute("id");
   const describedBy = inputElement?.getAttribute("aria-describedby");
 
-  expect(descriptionId).toBeTruthy();
   expect(describedBy).toContain(descriptionId as string);
 });
 
@@ -175,12 +177,14 @@ test("error message is linked to input via aria-describedby", async () => {
   await expect.element(Input).toBeVisible();
   await expect.element(Error).toBeVisible();
 
+  await expect.element(Error).toHaveAttribute("id");
+  await expect.element(Input).toHaveAttribute("aria-describedby");
+
   const inputElement = await Input.element();
   const errorElement = await Error.element();
   const errorId = errorElement?.getAttribute("id");
   const describedBy = inputElement?.getAttribute("aria-describedby");
 
-  expect(errorId).toBeTruthy();
   expect(describedBy).toContain(errorId as string);
 });
 
@@ -215,6 +219,10 @@ test("both description and error are linked via aria-describedby", async () => {
   await expect.element(Description).toBeVisible();
   await expect.element(Error).toBeVisible();
 
+  await expect.element(Description).toHaveAttribute("id");
+  await expect.element(Error).toHaveAttribute("id");
+  await expect.element(Input).toHaveAttribute("aria-describedby");
+
   const inputElement = await Input.element();
   const descriptionElement = await Description.element();
   const errorElement = await Error.element();
@@ -222,8 +230,6 @@ test("both description and error are linked via aria-describedby", async () => {
   const errorId = errorElement?.getAttribute("id");
   const describedBy = inputElement?.getAttribute("aria-describedby");
 
-  expect(descriptionId).toBeTruthy();
-  expect(errorId).toBeTruthy();
   expect(describedBy).toContain(descriptionId as string);
   expect(describedBy).toContain(errorId as string);
 });

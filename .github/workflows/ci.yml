@@ -43,28 +43,44 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-          
+
       - name: ✨ Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: 🔍 Get Playwright version
+        id: playwright-version
+        run: |
+          VERSION=$(jq -r '.devDependencies.playwright' package.json | tr -d '^~')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: 💾 Cache Playwright browsers
         uses: actions/cache@v4
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}-chromium
           restore-keys: |
             ${{ runner.os }}-playwright-
 
       - name: 🎭 Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: pnpm exec playwright install --with-deps chromium
-      
-      - name: 🎭 Install Playwright system dependencies
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: pnpm exec playwright install-deps chromium
+        run: pnpm exec playwright install chromium --with-deps
+
+      - name: 💾 Cache build outputs
+        uses: actions/cache@v4
+        id: build-cache
+        with:
+          path: |
+            libs/tools/dist
+            libs/utils/lib
+            libs/utils/lib-types
+            **/tsconfig.tsbuildinfo
+          key: ${{ runner.os }}-build-${{ hashFiles('libs/tools/**', 'libs/utils/**', '!**/node_modules/**') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
 
       - name: 🔨 Build underlying tools and utilities
+        if: steps.build-cache.outputs.cache-hit != 'true'
         run: |
           pnpm --filter ./libs/tools build
           pnpm --filter ./libs/utils build

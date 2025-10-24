@@ -33,11 +33,18 @@ test("OTP control should be empty when rendered", async () => {
 test("typing numbers should update hidden input", async () => {
   render(<Basic />);
 
+  await expect.element(Input).toBeVisible();
   await userEvent.click(Input);
+  await expect.element(Input).toHaveFocus();
   await userEvent.keyboard("1");
+  await expect.element(Items.first()).toHaveTextContent("1");
   await expect.element(Input).toHaveValue("1");
 
   await userEvent.keyboard("234");
+  await expect.element(Items.nth(0)).toHaveTextContent("1");
+  await expect.element(Items.nth(1)).toHaveTextContent("2");
+  await expect.element(Items.nth(2)).toHaveTextContent("3");
+  await expect.element(Items.nth(3)).toHaveTextContent("4");
   await expect.element(Input).toHaveValue("1234");
 });
 
