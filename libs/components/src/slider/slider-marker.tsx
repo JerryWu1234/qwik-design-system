@@ -1,4 +1,5 @@
 import { type PropsOf, Slot, component$, useComputed$, useContext } from "@qwik.dev/core";
+import { Render } from "../render/render";
 import { sliderContextId } from "./slider-context";
 interface PublicMarkerProps extends PropsOf<"div"> {
   /** The value at which to place the marker on the slider track */
@@ -14,13 +15,14 @@ export const SliderMarker = component$((props: PublicMarkerProps) => {
   });
 
   return (
-    <div
+    <Render
       {...rest}
+      fallback="div"
       // Individual marker element representing a specific value on the slider
       data-qds-slider-marker
       style={{ left: `${markerPosition.value}%` }}
     >
       <Slot />
-    </div>
+    </Render>
   );
 });

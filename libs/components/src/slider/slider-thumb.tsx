@@ -12,6 +12,7 @@ import {
   useStylesScoped$,
   useVisibleTask$
 } from "@qwik.dev/core";
+import { Render } from "../render/render";
 import { type SliderContext, type ThumbType, sliderContextId } from "./slider-context";
 interface PublicThumbProps extends PropsOf<"div"> {
   /** The type of thumb - either 'start' or 'end' for range sliders */
@@ -38,18 +39,18 @@ export const SliderThumb = component$((props: PublicThumbProps) => {
     thumbType
   };
 
+  const isRange = useComputed$(() => Array.isArray(context.sliderValue.value));
+
   const ariaValueMin = useComputed$(() =>
-    context.isRange.value && type === "start"
-      ? context.min.value
-      : context.startValue.value
+    isRange.value && type === "start" ? context.min.value : context.startValue.value
   );
 
   const ariaValueMax = useComputed$(() =>
-    context.isRange.value && type === "end" ? context.max.value : context.endValue.value
+    isRange.value && type === "end" ? context.max.value : context.endValue.value
   );
   const ariaValueNow = useComputed$(() => {
-    const value = !context.isRange.value
-      ? context.value.value
+    const value = !isRange.value
+      ? context.sliderValue.value
       : type === "start"
         ? context.startValue.value
         : context.endValue.value;
@@ -62,8 +63,8 @@ export const SliderThumb = component$((props: PublicThumbProps) => {
     const range = context.max.value - context.min.value;
     if (range === 0) return 0;
 
-    if (!context.isRange.value) {
-      const value = context.value.value as number;
+    if (!isRange.value) {
+      const value = context.sliderValue.value as number;
       return Math.min(100, Math.max(0, ((value - context.min.value) / range) * 100));
     }
     const value = type === "start" ? context.startValue.value : context.endValue.value;
@@ -118,7 +119,7 @@ export const SliderThumb = component$((props: PublicThumbProps) => {
   };
 
   const getMinMaxValues = $((thumbType: ThumbType | undefined): MinMaxValues => {
-    if (!context.isRange.value) {
+    if (!Array.isArray(context.sliderValue.value)) {
       return {
         min: context.min.value,
         max: context.max.value
@@ -139,8 +140,8 @@ export const SliderThumb = component$((props: PublicThumbProps) => {
     if (context.disabled.value) return;
 
     const step = event.shiftKey ? context.step.value * 10 : context.step.value;
-    let newValue = !context.isRange.value
-      ? (context.value.value as number)
+    let newValue = !Array.isArray(context.sliderValue.value)
+      ? (context.sliderValue.value as number)
       : type === "start"
         ? context.startValue.value
         : context.endValue.value;
@@ -187,13 +188,14 @@ export const SliderThumb = component$((props: PublicThumbProps) => {
   const thumbLabelId = `${context.localId}-label`;
 
   return (
-    <div
+    <Render
       {...rest}
+      fallback="div"
       ref={thumbRef}
       // Draggable thumb element used to select values on the slider
       data-qds-slider-thumb
       // Identifies whether the thumb is for the start or end value in range mode
-      data-thumb-type={context.isRange.value ? type : undefined}
+      data-thumb-type={Array.isArray(context.sliderValue.value) ? type : undefined}
       style={{
         ...((rest.style ?? {}) as CSSProperties),
         "--thumb-position": `${percentage}%`
@@ -214,6 +216,6 @@ export const SliderThumb = component$((props: PublicThumbProps) => {
       aria-labelledby={thumbLabelId}
     >
       <Slot />
-    </div>
+    </Render>
   );
 });

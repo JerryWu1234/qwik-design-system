@@ -1,4 +1,5 @@
 import { $, type PropsOf, Slot, component$, useContext, useSignal } from "@qwik.dev/core";
+import { Render } from "../render/render";
 import { sliderContextId } from "./slider-context";
 
 /** Component that renders the track along which the thumb slides */
@@ -15,7 +16,7 @@ export const SliderTrack = component$((props: PropsOf<"div">) => {
     const rect = trackRef.value?.getBoundingClientRect();
     if (rect) {
       const newValue = await context.calculateValue(event.clientX, rect);
-      if (context.isRange.value) {
+      if (Array.isArray(context.sliderValue.value)) {
         const startDistance = Math.abs(newValue - context.startValue.value);
         const endDistance = Math.abs(newValue - context.endValue.value);
         const type = startDistance < endDistance ? "start" : "end";
@@ -28,8 +29,9 @@ export const SliderTrack = component$((props: PropsOf<"div">) => {
   });
 
   return (
-    <div
+    <Render
       {...props}
+      fallback="div"
       ref={trackRef}
       // Track element representing the full range of possible values
       data-qds-slider-track
@@ -37,6 +39,6 @@ export const SliderTrack = component$((props: PropsOf<"div">) => {
       onPointerDown$={onPointerDown$}
     >
       <Slot />
-    </div>
+    </Render>
   );
 });

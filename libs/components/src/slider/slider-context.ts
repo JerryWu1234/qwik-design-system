@@ -4,8 +4,7 @@ export type ThumbType = "start" | "end";
 export type SliderValue = number | [number, number];
 
 export interface SliderContext {
-  isRange: Signal<boolean>;
-  value: Signal<SliderValue>;
+  sliderValue: Signal<SliderValue>;
   startValue: Signal<number>;
   endValue: Signal<number>;
   min: Signal<number>;
@@ -16,9 +15,9 @@ export interface SliderContext {
   setValue: QRL<(newValue: number, type?: ThumbType) => void>;
   calculateValue: QRL<(clientX: number, rect: DOMRect) => number>;
   thumbType: Signal<ThumbType | undefined>;
-  onChange$?: (value: SliderValue) => void;
-  onChangeEnd$?: (value: SliderValue) => void;
   localId: string;
+  name?: string;
+  required?: boolean;
 }
 
 export const sliderContextId = createContextId<SliderContext>("slider-context");

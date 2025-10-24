@@ -1,4 +1,5 @@
 import { type PropsOf, component$, useComputed$, useContext } from "@qwik.dev/core";
+import { Render } from "../render/render";
 import { sliderContextId } from "./slider-context";
 type PublicTooltipPlacement = "top" | "bottom" | "left" | "right";
 interface PublicTooltipProps extends PropsOf<"div"> {
@@ -10,8 +11,8 @@ export const SliderTooltip = component$((props: PublicTooltipProps) => {
   const context = useContext(sliderContextId);
   const { placement = "top", ...rest } = props;
   const tooltipValue = useComputed$(() => {
-    if (!context.isRange.value) {
-      return context.value.value;
+    if (!Array.isArray(context.sliderValue.value)) {
+      return context.sliderValue.value;
     }
     return context.thumbType?.value === "start"
       ? context.startValue.value
@@ -19,8 +20,9 @@ export const SliderTooltip = component$((props: PublicTooltipProps) => {
   });
 
   return (
-    <div
+    <Render
       {...rest}
+      fallback="div"
       // Tooltip element displaying the current value of the associated thumb
       data-qds-slider-tooltip
       // Specifies the placement position of the tooltip relative to the thumb
@@ -28,6 +30,6 @@ export const SliderTooltip = component$((props: PublicTooltipProps) => {
       role="tooltip"
     >
       {tooltipValue.value}
-    </div>
+    </Render>
   );
 });

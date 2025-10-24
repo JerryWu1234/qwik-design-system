@@ -1,94 +1,90 @@
+import { type BindableProps, useBindings } from "@qds.dev/utils";
 import {
   $,
   type PropsOf,
   type QRL,
-  type Signal,
   Slot,
   component$,
   useComputed$,
+  useConstant,
   useContextProvider,
   useId,
   useSignal,
   useStyles$,
   useTask$
 } from "@qwik.dev/core";
+import { Render } from "../render/render";
 import { type SliderValue, type ThumbType, sliderContextId } from "./slider-context";
 import styles from "./slider.css?inline";
+
 type DivProps = Omit<PropsOf<"div">, "value" | "min" | "max" | "step" | "disabled">;
+
 interface PublicSliderProps {
-  /** Whether the slider should act as a range slider with two thumbs. Default is false */
-  isRange?: boolean;
-  /** The current value of the slider. For range sliders, this should be a tuple of [start, end] values */
-  value?: SliderValue | Signal<SliderValue>;
-  /** The minimum value of the slider. Default is 0 */
-  min?: number;
-  /** The maximum value of the slider. Default is 100 */
-  max?: number;
-  /** The step interval for the slider value. Default is 1 */
-  step?: number;
-  /** Whether the slider is disabled. Default is false */
-  disabled?: boolean | Signal<boolean>;
-  /** Event handler called when the slider value changes */
   onChange$?: QRL<(value: SliderValue) => void> | ((value: SliderValue) => void);
-  /** Event handler called when the slider value changes are committed (on drag end or keyboard navigation) */
   onChangeEnd$?: QRL<(value: SliderValue) => void> | ((value: SliderValue) => void);
+  name?: string;
+  required?: boolean;
 }
 
-type PublicRootProps = DivProps & PublicSliderProps;
+type PublicRootProps = DivProps &
+  PublicSliderProps &
+  BindableProps<{
+    value: SliderValue;
+    disabled: boolean;
+    min: number;
+    max: number;
+    step: number;
+  }>;
 /** Root component that provides slider context and handles core slider functionality */
 export const SliderRoot = component$<PublicRootProps>((props) => {
   useStyles$(styles);
 
-  const {
-    isRange = false,
-    value: initialValue = isRange ? [0, 100] : 0,
-    min: initialMin = 0,
-    max: initialMax = 100,
-    step: initialStep = 1,
-    disabled: initialDisabled = false,
-    onChange$,
-    onChangeEnd$,
-    ...divProps
-  } = props;
-
   const localId = useId();
   const labelId = `${localId}-label`;
 
-  const isRangeSignal = useSignal(isRange);
+  const {
+    valueSig: sliderValue,
+    disabledSig: disabled,
+    minSig: min,
+    maxSig: max,
+    stepSig: step
+  } = useBindings(props, {
+    value: 0 as SliderValue,
+    disabled: false,
+    min: 0,
+    max: 100,
+    step: 1
+  });
 
-  const valueSignal = useSignal<SliderValue>(
-    initialValue instanceof Object && "value" in initialValue
-      ? initialValue.value
-      : initialValue
-  );
-
-  const disabledSignal = (
-    typeof props.disabled === "object" && "value" in props.disabled
-      ? props.disabled
-      : useSignal(props.disabled ?? initialDisabled)
-  ) as Signal<boolean>;
+  const isRange = useConstant(() => Array.isArray(sliderValue.value));
 
   const startValue = useSignal(
-    isRange ? (Array.isArray(valueSignal.value) ? valueSignal.value[0] : 0) : 0
+    isRange ? (Array.isArray(sliderValue.value) ? sliderValue.value[0] : 0) : 0
   );
 
   const endValue = useSignal(
-    isRange ? (Array.isArray(valueSignal.value) ? valueSignal.value[1] : 100) : 100
+    isRange ? (Array.isArray(sliderValue.value) ? sliderValue.value[1] : 100) : 100
   );
 
+  const isInitialRender = useSignal(true);
+
   useTask$(({ track }) => {
-    if (!isRangeSignal.value) {
-      const value = track(() => valueSignal.value);
-      if (onChange$) {
-        onChange$(value);
-      }
-    } else {
+    let currentValue: SliderValue;
+
+    if (isRange) {
       const start = track(() => startValue.value);
       const end = track(() => endValue.value);
-      if (onChange$) {
-        onChange$([start, end]);
-      }
+      currentValue = [start, end];
+    } else {
+      currentValue = track(() => sliderValue.value);
     }
+
+    if (isInitialRender.value) {
+      isInitialRender.value = false;
+      return;
+    }
+
+    props.onChange$?.(currentValue);
   });
 
   const isDragEnded = useSignal(false);
@@ -96,29 +92,25 @@ export const SliderRoot = component$<PublicRootProps>((props) => {
   useTask$(({ track }) => {
     const dragEnded = track(() => isDragEnded.value);
 
-    if (dragEnded && onChangeEnd$) {
-      if (!isRangeSignal.value) {
-        onChangeEnd$(valueSignal.value);
+    if (dragEnded && props.onChangeEnd$) {
+      if (!isRange) {
+        props.onChangeEnd$(sliderValue.value);
       } else {
-        onChangeEnd$([startValue.value, endValue.value]);
+        props.onChangeEnd$([startValue.value, endValue.value]);
       }
       isDragEnded.value = false;
     }
   });
 
   const setValue = $((newValue: number, type?: "start" | "end") => {
-    if (!isRangeSignal.value) {
-      valueSignal.value = newValue;
+    if (!isRange) {
+      sliderValue.value = newValue;
     } else if (type === "start" && newValue <= endValue.value) {
       startValue.value = newValue;
     } else if (type === "end" && newValue >= startValue.value) {
       endValue.value = newValue;
     }
   });
-
-  const min = useSignal(initialMin);
-  const max = useSignal(initialMax);
-  const step = useSignal(initialStep);
 
   const calculateValue = $((clientX: number, rect: DOMRect) => {
     if (!rect.width) return min.value;
@@ -134,43 +126,42 @@ export const SliderRoot = component$<PublicRootProps>((props) => {
   });
 
   const context = {
-    isRange: isRangeSignal,
-    value: valueSignal,
+    sliderValue,
     startValue,
     endValue,
     min,
     max,
     step,
-    disabled: disabledSignal,
+    disabled,
     isDragEnded,
     setValue,
     calculateValue,
-    onChange$,
-    onChangeEnd$,
     thumbType: useSignal<ThumbType | undefined>(undefined),
-    localId
+    localId,
+    name: props.name,
+    required: props.required
   };
 
   useContextProvider(sliderContextId, context);
 
   const ariaValueNow = useComputed$(() => {
     if (isRange) return undefined;
-    return typeof valueSignal.value === "number" ? valueSignal.value : undefined;
+    return typeof sliderValue.value === "number" ? sliderValue.value : undefined;
   });
 
   return (
-    <div
-      {...divProps}
-      // Root container element for the entire slider component
+    <Render
+      {...props}
+      fallback="div"
       data-qds-slider-root
       role={isRange ? "group" : "slider"}
-      aria-disabled={disabledSignal.value}
+      aria-disabled={disabled.value}
       aria-valuemin={min.value}
       aria-valuemax={max.value}
       aria-valuenow={ariaValueNow.value}
       aria-labelledby={labelId}
     >
       <Slot />
-    </div>
+    </Render>
   );
 });

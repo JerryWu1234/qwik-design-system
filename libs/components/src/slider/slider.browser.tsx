@@ -10,7 +10,7 @@ const Root = page.getByTestId("root");
 const Track = page.getByTestId("track");
 const Range = page.getByTestId("range");
 const Thumb = page.getByTestId("thumb");
-const Tooltip = page.getByTestId("tooltip");
+const HiddenInput = page.getByTestId("hidden-input");
 
 // Helper functions for complex locators - these return elements directly
 async function getStartThumb() {
@@ -46,7 +46,7 @@ const Hero = component$((props: PropsOf<typeof Slider.Root>) => {
 
 const RangeSlider = component$((props: PropsOf<typeof Slider.Root>) => {
   return (
-    <Slider.Root isRange value={[30, 70]} data-testid="root" {...props}>
+    <Slider.Root value={[30, 70]} data-testid="root" {...props}>
       <Slider.Track data-testid="track">
         <Slider.Range data-testid="range" />
         <Slider.Thumb type="start" data-testid="thumb" />
@@ -103,7 +103,7 @@ const WithCallbacks = component$((props: PropsOf<typeof Slider.Root>) => {
 const RangeWithMarks = component$((props: PropsOf<typeof Slider.Root>) => {
   const marks = [0, 20, 40, 60, 80, 100];
   return (
-    <Slider.Root isRange value={[20, 60]} data-testid="root" {...props}>
+    <Slider.Root value={[20, 60]} data-testid="root" {...props}>
       <Slider.Track data-testid="track">
         <Slider.Range data-testid="range" />
         <Slider.Thumb type="start" data-testid="thumb" />
@@ -145,7 +145,7 @@ const DisabledSlider = component$((props: PropsOf<typeof Slider.Root>) => {
       <Slider.Root
         {...props}
         value={50}
-        disabled={disabledSignal}
+        bind:disabled={disabledSignal}
         data-testid="root"
         onChange$={(_, __) => {
           console.log("This should not be called when disabled");
@@ -164,6 +164,81 @@ const DisabledSlider = component$((props: PropsOf<typeof Slider.Root>) => {
         }}
       >
         Toggle Disabled
+      </button>
+    </div>
+  );
+});
+
+const FormSlider = component$((props: PropsOf<typeof Slider.Root>) => {
+  const formDataSignal = useSignal<string>();
+
+  return (
+    <form
+      data-testid="form"
+      preventdefault:submit
+      onSubmit$={(e) => {
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
+        const volume = formData.get("volume");
+        formDataSignal.value = volume ? String(volume) : "";
+      }}
+    >
+      <Slider.Root {...props} name="volume" value={50} data-testid="root">
+        <Slider.Label>Volume</Slider.Label>
+        <Slider.Track data-testid="track">
+          <Slider.Range data-testid="range" />
+          <Slider.Thumb data-testid="thumb" />
+        </Slider.Track>
+        <Slider.HiddenInput data-testid="hidden-input" />
+      </Slider.Root>
+      <button type="submit" data-testid="submit">
+        Submit
+      </button>
+      {formDataSignal.value && (
+        <div data-testid="result">{JSON.stringify({ volume: formDataSignal.value })}</div>
+      )}
+    </form>
+  );
+});
+
+const RequiredSlider = component$((props: PropsOf<typeof Slider.Root>) => {
+  return (
+    <form data-testid="form">
+      <Slider.Root {...props} name="volume" required data-testid="root">
+        <Slider.Track data-testid="track">
+          <Slider.Range data-testid="range" />
+          <Slider.Thumb data-testid="thumb" />
+        </Slider.Track>
+        <Slider.HiddenInput data-testid="hidden-input" />
+      </Slider.Root>
+      <button type="submit" data-testid="submit">
+        Submit
+      </button>
+    </form>
+  );
+});
+
+const SliderWithSignalBinding = component$((props: PropsOf<typeof Slider.Root>) => {
+  const externalValue = useSignal(25);
+
+  return (
+    <div>
+      <Slider.Root {...props} data-testid="root" bind:value={externalValue}>
+        <Slider.Track data-testid="track">
+          <Slider.Range data-testid="range" />
+          <Slider.Thumb data-testid="thumb" />
+        </Slider.Track>
+        <Slider.HiddenInput data-testid="hidden-input" />
+      </Slider.Root>
+      <div data-testid="external-value">External: {externalValue.value}</div>
+      <button
+        type="button"
+        data-testid="update-external"
+        onClick$={() => {
+          externalValue.value = 75;
+        }}
+      >
+        Update External
       </button>
     </div>
   );
@@ -339,13 +414,66 @@ describe("callbacks", () => {
     expect(logText).toContain("Final value:");
   });
 
-  test.skip("dragging thumb should fire callbacks appropriately", async () => {
-    // TODO: This test is skipped because it requires dragging simulation
-    // which is complex with the slider's pointer event handlers
-
+  test("dragging thumb should fire callbacks appropriately", async () => {
     render(<WithCallbacks />);
 
-    // Implementation would go here
+    await expect.element(Thumb).toBeInTheDocument();
+
+    const thumbEl = (await Thumb.element()) as HTMLElement;
+    const trackEl = (await Track.element()) as HTMLElement;
+
+    // Get track position
+    const rect = trackEl.getBoundingClientRect();
+    const targetX = rect.left + rect.width * 0.5; // Target 50%
+
+    // Focus thumb first
+    thumbEl.focus();
+
+    // Simulate pointer down on thumb to start drag
+    const pointerDownEvent = new PointerEvent("pointerdown", {
+      bubbles: true,
+      cancelable: true,
+      clientX: rect.left + rect.width * 0.2,
+      pointerId: 1,
+      isPrimary: true
+    });
+    thumbEl.dispatchEvent(pointerDownEvent);
+
+    // Give time for the drag state to be set
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    // Simulate pointer move
+    const pointerMoveEvent = new PointerEvent("pointermove", {
+      bubbles: true,
+      cancelable: true,
+      clientX: targetX,
+      pointerId: 1,
+      isPrimary: true
+    });
+    thumbEl.dispatchEvent(pointerMoveEvent);
+
+    // Give time for the value to update
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    // Simulate pointer up to end drag
+    const pointerUpEvent = new PointerEvent("pointerup", {
+      bubbles: true,
+      cancelable: true,
+      clientX: targetX,
+      pointerId: 1,
+      isPrimary: true
+    });
+    thumbEl.dispatchEvent(pointerUpEvent);
+
+    // Wait for callbacks to be called
+    await expect.element(page.getByTestId("log")).toContainHTML("Final value:");
+
+    const logEl = await page.getByTestId("log").element();
+    const logText = logEl.textContent || "";
+
+    // Should have both onChange and onChangeEnd
+    expect(logText).toContain("Value changed:");
+    expect(logText).toContain("Final value:");
   });
 
   test("keyboard navigation should fire callbacks", async () => {
@@ -541,5 +669,188 @@ describe("disabled state", () => {
 
     await userEvent.keyboard("{ArrowRight}");
     await expect.element(Thumb).toHaveAttribute("aria-valuenow", "51");
+  });
+});
+
+describe("form integration", () => {
+  test("hidden input should be present in DOM", async () => {
+    render(<FormSlider />);
+
+    await expect.element(Root).toBeInTheDocument();
+
+    const hiddenInput = await HiddenInput.element();
+    expect(hiddenInput).toBeTruthy();
+    expect(hiddenInput.tagName).toBe("INPUT");
+    expect(hiddenInput.getAttribute("type")).toBe("hidden");
+    expect(hiddenInput.getAttribute("name")).toBe("volume");
+  });
+
+  test("hidden input should sync with slider value", async () => {
+    render(<FormSlider />);
+
+    await expect.element(Thumb).toBeInTheDocument();
+
+    const hiddenInput = (await page
+      .getByTestId("hidden-input")
+      .element()) as HTMLInputElement;
+    expect(hiddenInput.value).toBe("50");
+
+    const thumbEl = (await Thumb.element()) as HTMLElement;
+    thumbEl.focus();
+    await userEvent.keyboard("{ArrowRight}");
+
+    await expect.element(Thumb).toHaveAttribute("aria-valuenow", "51");
+    expect(hiddenInput.value).toBe("51");
+  });
+
+  test("form submission should include slider value", async () => {
+    render(<FormSlider />);
+
+    await expect.element(Root).toBeInTheDocument();
+
+    const submitBtn = await page.getByTestId("submit").element();
+    await userEvent.click(submitBtn);
+
+    const resultEl = await page.getByTestId("result");
+    await expect.element(resultEl).toContainHTML('"volume":"50"');
+  });
+
+  test("hidden input should have required attribute when specified", async () => {
+    render(<RequiredSlider />);
+
+    await expect.element(Root).toBeInTheDocument();
+    await expect.element(HiddenInput).toHaveAttribute("required");
+  });
+
+  test("hidden input should render comma-separated values for range sliders", async () => {
+    render(
+      <Slider.Root value={[30, 70]} data-testid="root">
+        <Slider.Track data-testid="track">
+          <Slider.Range data-testid="range" />
+          <Slider.Thumb type="start" data-testid="thumb" />
+          <Slider.Thumb type="end" data-testid="thumb" />
+        </Slider.Track>
+        <Slider.HiddenInput data-testid="hidden-input" />
+      </Slider.Root>
+    );
+
+    await expect.element(Root).toBeInTheDocument();
+
+    const hiddenInput = (await HiddenInput.element()) as HTMLInputElement;
+    expect(hiddenInput).toBeTruthy();
+    expect(hiddenInput.value).toBe("30,70");
+  });
+
+  test("range slider form submission should include comma-separated values", async () => {
+    const RangeFormSlider = component$(() => {
+      const formDataSignal = useSignal<string>();
+
+      return (
+        <form
+          data-testid="form"
+          preventdefault:submit
+          onSubmit$={(e) => {
+            const form = e.target as HTMLFormElement;
+            const formData = new FormData(form);
+            const range = formData.get("range");
+            formDataSignal.value = range ? String(range) : "";
+          }}
+        >
+          <Slider.Root name="range" value={[25, 75]} data-testid="root">
+            <Slider.Track data-testid="track">
+              <Slider.Range data-testid="range" />
+              <Slider.Thumb type="start" data-testid="thumb" />
+              <Slider.Thumb type="end" data-testid="thumb" />
+            </Slider.Track>
+            <Slider.HiddenInput data-testid="hidden-input" />
+          </Slider.Root>
+          <button type="submit" data-testid="submit">
+            Submit
+          </button>
+          {formDataSignal.value && (
+            <div data-testid="result">
+              {JSON.stringify({ range: formDataSignal.value })}
+            </div>
+          )}
+        </form>
+      );
+    });
+
+    render(<RangeFormSlider />);
+
+    await expect.element(Root).toBeInTheDocument();
+
+    const submitBtn = await page.getByTestId("submit").element();
+    await userEvent.click(submitBtn);
+
+    const resultEl = await page.getByTestId("result");
+    await expect.element(resultEl).toContainHTML('"range":"25,75"');
+  });
+
+  test("hidden input should be visually hidden but accessible", async () => {
+    render(<FormSlider />);
+
+    await expect.element(Root).toBeInTheDocument();
+
+    const hiddenInput = (await page
+      .getByTestId("hidden-input")
+      .element()) as HTMLInputElement;
+    const hiddenInputStyles = window.getComputedStyle(hiddenInput);
+
+    // Should be hidden visually
+    expect(hiddenInput.tabIndex).toBe(-1);
+
+    // Should still be in the DOM (accessible to forms)
+    expect(hiddenInput).toBeTruthy();
+    expect(hiddenInput.name).toBe("volume");
+  });
+
+  test("hidden input should reflect root's bound signal value", async () => {
+    render(<SliderWithSignalBinding />);
+
+    await expect.element(Root).toBeInTheDocument();
+
+    const hiddenInput = (await HiddenInput.element()) as HTMLInputElement;
+    const externalDisplay = await page.getByTestId("external-value");
+
+    // Initial value should be 25
+    expect(hiddenInput.value).toBe("25");
+    await expect.element(externalDisplay).toContainHTML("External: 25");
+
+    // Update external signal - hidden input should reflect the change
+    const updateBtn = await page.getByTestId("update-external").element();
+    await userEvent.click(updateBtn);
+
+    await expect.element(externalDisplay).toContainHTML("External: 75");
+    expect(hiddenInput.value).toBe("75");
+  });
+
+  test("hidden input should update when slider changes via keyboard", async () => {
+    render(<SliderWithSignalBinding />);
+
+    await expect.element(Root).toBeInTheDocument();
+
+    const hiddenInput = (await HiddenInput.element()) as HTMLInputElement;
+    const externalDisplay = await page.getByTestId("external-value");
+    const thumbEl = (await Thumb.element()) as HTMLElement;
+
+    // Initial value
+    expect(hiddenInput.value).toBe("25");
+    await expect.element(externalDisplay).toContainHTML("External: 25");
+
+    // Move slider with keyboard and wait for each update
+    thumbEl.focus();
+
+    await userEvent.keyboard("{ArrowRight}");
+    await expect.element(externalDisplay).toContainHTML("External: 26");
+
+    await userEvent.keyboard("{ArrowRight}");
+    await expect.element(externalDisplay).toContainHTML("External: 27");
+
+    await userEvent.keyboard("{ArrowRight}");
+    await expect.element(externalDisplay).toContainHTML("External: 28");
+
+    // Hidden input should reflect the final value
+    expect(hiddenInput.value).toBe("28");
   });
 });

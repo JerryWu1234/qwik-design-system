@@ -10,7 +10,7 @@ export const SliderLabel = component$((props: PublicLabelProps) => {
   const labelId = `${context.localId}-label`;
 
   return (
-    <Render {...props} id={labelId} data-qds-slider-label fallback="span">
+    <Render {...props} fallback="span" id={labelId} data-qds-slider-label>
       <Slot />
     </Render>
   );
