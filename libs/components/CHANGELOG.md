@@ -1,5 +1,24 @@
 # @qds.dev/ui-headless
 
+## 0.4.3
+
+### Patch Changes
+
+- 5d199cb: ### Collapsible Component Enhancements
+
+  - Added "hidden until found" behavior support for improved content discovery and browser search functionality
+  - Updated data attributes for better state management and styling hooks
+  - Enhanced collapsible attributes API
+
+  ### Bug Fixes
+
+  - Fixed Tree component example
+  - Fixed TypeScript type definitions
+
+  ### Testing
+
+  - Added browser tests for improved component coverage
+
 ## 0.4.2
 
 ### Patch Changes
