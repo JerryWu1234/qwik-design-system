@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.4.21...v2-migration
+
+[compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.4.21...v2-migration)
+
+### 🩹 Fixes
+
+- Bump handling ([c33d9c12](https://github.com/kunai-consulting/qwik-design-system/commit/c33d9c12))
+
+### ❤️ Contributors
+
+- Thejackshelton-kunaico <jack.shelton@kunaico.com>
+
 ## v0.4.20...v0.4.20
 
 [compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.4.20...v0.4.20)
