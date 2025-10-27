@@ -2,7 +2,7 @@
   "name": "qwik-design-system",
   "private": true,
   "type": "module",
-  "version": "0.4.23",
+  "version": "0.4.24",
   "packageManager": "pnpm@9.14.4",
   "scripts": {
     "dev": "pnpm --filter ./libs/tools dev:watch & sleep 0.7 && pnpm --filter ./docs dev & wait",

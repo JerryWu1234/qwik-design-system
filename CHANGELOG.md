@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.4.23...v2-migration
+
+[compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.4.23...v2-migration)
+
+### 🏡 Chore
+
+- Update release scripts in package.json to streamline publishing process ([d4411acb](https://github.com/kunai-consulting/qwik-design-system/commit/d4411acb))
+
+### ❤️ Contributors
+
+- Thejackshelton-kunaico <jack.shelton@kunaico.com>
+
 ## v0.4.22...v2-migration
 
 [compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.4.22...v2-migration)
