@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.4.19...v2-migration
+
+[compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.4.19...v2-migration)
+
+### 🩹 Fixes
+
+- Script ([bf67d75b](https://github.com/kunai-consulting/qwik-design-system/commit/bf67d75b))
+
+### ❤️ Contributors
+
+- Thejackshelton-kunaico <jack.shelton@kunaico.com>
+
 ## v0.4.4...v0.4.18
 
 [compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.4.4...v0.4.18)
