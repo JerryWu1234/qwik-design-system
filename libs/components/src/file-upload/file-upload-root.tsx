@@ -1,8 +1,8 @@
 import { useBindings } from "@qds.dev/utils";
 import {
+  component$,
   type PropsOf,
   Slot,
-  component$,
   useContextProvider,
   useSignal
 } from "@qwik.dev/core";
@@ -23,7 +23,13 @@ type PublicRootProps = Omit<PropsOf<"div">, "onChange$"> & PublicFileUploadProps
 /** Root component for file upload functionality
  * Provides context and state management for child components */
 export const FileUploadRoot = component$<PublicRootProps>((props) => {
-  const { multiple, accept, disabled, onChange$, ...rest } = props;
+  const {
+    multiple: _multiple,
+    accept: _accept,
+    disabled: _disabled,
+    onChange$,
+    ...rest
+  } = props;
 
   const inputRef = useSignal<HTMLInputElement>();
   const files = useSignal<FileInfo[]>([]);

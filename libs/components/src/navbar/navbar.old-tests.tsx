@@ -1,3 +1,4 @@
+// oxlint-disable no-empty-file
 // import { type PropsOf, component$, useSignal, useStore } from "@qwik.dev/core";
 // import { page, userEvent } from "vitest/browser";
 // import { expect, test } from "vitest";

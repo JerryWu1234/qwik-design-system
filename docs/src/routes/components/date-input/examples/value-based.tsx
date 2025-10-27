@@ -1,6 +1,5 @@
 import { DateInput } from "@qds.dev/ui";
-import { $, component$, useSignal } from "@qwik.dev/core";
-import { useStyles$ } from "@qwik.dev/core";
+import { $, component$, useSignal, useStyles$ } from "@qwik.dev/core";
 
 export default component$(() => {
   useStyles$(styles);
@@ -31,8 +30,10 @@ export default component$(() => {
       <div class="date-input-button-container">
         <button
           onClick$={() => {
-            const date = new Date().toISOString().split("T")[0] as DateInput.ISODate;
-            selectedDate.value = date;
+            const isoString = new Date().toISOString().split("T")[0];
+            if (isoString) {
+              selectedDate.value = isoString as DateInput.ISODate;
+            }
           }}
           type="button"
           class="set-value-button"

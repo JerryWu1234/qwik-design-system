@@ -1,13 +1,14 @@
 import {
   $,
+  component$,
   type PropsOf,
   Slot,
-  component$,
   sync$,
   useContext,
   useOnDocument
 } from "@qwik.dev/core";
 import { scrollAreaContextId } from "./scroll-area-context";
+
 type PublicViewPortProps = PropsOf<"div"> & {
   /** Event handler for scroll events */
   onScroll$?: (e: Event) => void;
@@ -21,11 +22,11 @@ export const ScrollAreaViewport = component$<PublicViewPortProps>((props) => {
     const hasHorizontalOverflow = viewport.scrollWidth > viewport.clientWidth;
     context.hasOverflow.value = hasVerticalOverflow || hasHorizontalOverflow;
   });
-  const onScroll$ = $((e: Event) => {
+  const onScroll$ = $(async (e: Event) => {
     const viewport = e.target as HTMLElement;
     const verticalScrollbar = context.verticalScrollbarRef.value;
     const horizontalScrollbar = context.horizontalScrollbarRef.value;
-    updateOverflow(viewport);
+    await updateOverflow(viewport);
     if (context.type === "scroll") {
       context.isScrolling.value = true;
       clearTimeout(context.scrollTimeout.value);
@@ -60,20 +61,20 @@ export const ScrollAreaViewport = component$<PublicViewPortProps>((props) => {
   });
   useOnDocument(
     "resize",
-    $((e) => {
+    $(async () => {
       const viewport = context.viewportRef.value;
       if (viewport) {
-        updateOverflow(viewport);
+        await updateOverflow(viewport);
       }
     })
   );
   useOnDocument(
     "wheel",
-    $((e: WheelEvent) => {
+    $(async (e: WheelEvent) => {
       if (e.ctrlKey || e.metaKey) {
         const viewport = context.viewportRef.value;
         if (viewport) {
-          updateOverflow(viewport);
+          await updateOverflow(viewport);
         }
       }
     })
@@ -101,10 +102,10 @@ export const ScrollAreaViewport = component$<PublicViewPortProps>((props) => {
       // The viewport container that wraps the scrollable content
       data-qds-scroll-area-viewport
       onScroll$={[onScroll$, props.onScroll$]}
-      onQdsoverflowcheck$={$(() => {
+      onQdsoverflowcheck$={$(async () => {
         const viewport = context.viewportRef.value;
         if (viewport) {
-          updateOverflow(viewport);
+          await updateOverflow(viewport);
         }
       })}
       window:onLoad$={
@@ -121,7 +122,7 @@ export const ScrollAreaViewport = component$<PublicViewPortProps>((props) => {
       ref={(el) => {
         context.viewportRef.value = el;
         if (el) {
-          updateOverflow(el);
+          void updateOverflow(el);
         }
       }}
       tabIndex={a11yTabIndex}

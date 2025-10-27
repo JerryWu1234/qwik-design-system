@@ -35,12 +35,12 @@ describe("jsx-utils", () => {
           const child = (node as unknown as Record<string, unknown>)[key];
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
+              if (c && typeof c === "object" && "type" in c) {
                 const result = findJSXExpressionContainer(c as Node);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
+          } else if (child && typeof child === "object" && "type" in child) {
             const result = findJSXExpressionContainer(child as Node);
             if (result) return result;
           }
@@ -67,12 +67,12 @@ describe("jsx-utils", () => {
           const child = (node as unknown as Record<string, unknown>)[key];
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
+              if (c && typeof c === "object" && "type" in c) {
                 const result = findJSXText(c as Node);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
+          } else if (child && typeof child === "object" && "type" in child) {
             const result = findJSXText(child as Node);
             if (result) return result;
           }
@@ -94,18 +94,18 @@ describe("jsx-utils", () => {
       const parsed = parseSync("test.tsx", code);
 
       function findJSXElement(node: Node): JSXElement | null {
-        if (node.type === "JSXElement") return node as JSXElement;
+        if (node.type === "JSXElement") return node;
 
         for (const key in node) {
           const child = (node as unknown as Record<string, unknown>)[key];
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
+              if (c && typeof c === "object" && "type" in c) {
                 const result = findJSXElement(c as Node);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
+          } else if (child && typeof child === "object" && "type" in child) {
             const result = findJSXElement(child as Node);
             if (result) return result;
           }
@@ -129,18 +129,18 @@ describe("jsx-utils", () => {
       const parsed = parseSync("test.tsx", code);
 
       function findJSXElement(node: Node): JSXElement | null {
-        if (node.type === "JSXElement") return node as JSXElement;
+        if (node.type === "JSXElement") return node;
 
         for (const key in node) {
           const child = (node as unknown as Record<string, unknown>)[key];
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
+              if (c && typeof c === "object" && "type" in c) {
                 const result = findJSXElement(c as Node);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
+          } else if (child && typeof child === "object" && "type" in child) {
             const result = findJSXElement(child as Node);
             if (result) return result;
           }
@@ -163,18 +163,18 @@ describe("jsx-utils", () => {
       const parsed = parseSync("test.tsx", code);
 
       function findJSXElement(node: Node): JSXElement | null {
-        if (node.type === "JSXElement") return node as JSXElement;
+        if (node.type === "JSXElement") return node;
 
         for (const key in node) {
           const child = (node as unknown as Record<string, unknown>)[key];
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
+              if (c && typeof c === "object" && "type" in c) {
                 const result = findJSXElement(c as Node);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
+          } else if (child && typeof child === "object" && "type" in child) {
             const result = findJSXElement(child as Node);
             if (result) return result;
           }
@@ -199,18 +199,18 @@ describe("jsx-utils", () => {
       const parsed = parseSync("test.tsx", code);
 
       function findJSXElement(node: Node): JSXElement | null {
-        if (node.type === "JSXElement") return node as JSXElement;
+        if (node.type === "JSXElement") return node;
 
         for (const key in node) {
           const child = (node as unknown as Record<string, unknown>)[key];
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
+              if (c && typeof c === "object" && "type" in c) {
                 const result = findJSXElement(c as Node);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
+          } else if (child && typeof child === "object" && "type" in child) {
             const result = findJSXElement(child as Node);
             if (result) return result;
           }
@@ -233,18 +233,18 @@ describe("jsx-utils", () => {
       const parsed = parseSync("test.tsx", code);
 
       function findJSXElement(node: Node): JSXElement | null {
-        if (node.type === "JSXElement") return node as JSXElement;
+        if (node.type === "JSXElement") return node;
 
         for (const key in node) {
           const child = (node as unknown as Record<string, unknown>)[key];
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
+              if (c && typeof c === "object" && "type" in c) {
                 const result = findJSXElement(c as Node);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
+          } else if (child && typeof child === "object" && "type" in child) {
             const result = findJSXElement(child as Node);
             if (result) return result;
           }
@@ -296,12 +296,12 @@ line4`;
           const child = (node as unknown as Record<string, unknown>)[key];
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
+              if (c && typeof c === "object" && "type" in c) {
                 const result = findIdentifier(c as Node);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
+          } else if (child && typeof child === "object" && "type" in child) {
             const result = findIdentifier(child as Node);
             if (result) return result;
           }
@@ -330,12 +330,12 @@ line4`;
           const child = (node as unknown as Record<string, unknown>)[key];
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
+              if (c && typeof c === "object" && "type" in c) {
                 const result = findConditional(c as Node);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
+          } else if (child && typeof child === "object" && "type" in child) {
             const result = findConditional(child as Node);
             if (result) return result;
           }

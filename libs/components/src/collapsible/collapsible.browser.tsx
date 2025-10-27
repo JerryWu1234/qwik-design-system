@@ -1,7 +1,8 @@
-import { $, type PropsOf, component$, useSignal, useStore } from "@qwik.dev/core";
+import { $, component$, type PropsOf, useSignal, useStore } from "@qwik.dev/core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
+import { focusElement } from "../../vitest/element";
 import { Collapsible } from "..";
 
 // Top-level locator constants using data-testid
@@ -50,7 +51,7 @@ test("content is visible when space key is pressed", async () => {
   render(<Basic />);
 
   await expect.element(Trigger).toBeVisible();
-  ((await Trigger.element()) as HTMLButtonElement).focus();
+  focusElement(Trigger);
   await expect.element(Trigger).toHaveFocus();
 
   await userEvent.keyboard("{Space}");
@@ -64,7 +65,7 @@ test("content is hidden when space key is pressed on open collapsible", async ()
 
   await expect.element(Content).toBeVisible();
   await expect.element(Trigger).toBeVisible();
-  ((await Trigger.element()) as HTMLButtonElement).focus();
+  focusElement(Trigger);
 
   await userEvent.keyboard("{Space}");
 
@@ -76,7 +77,7 @@ test("content is visible when enter key is pressed", async () => {
   render(<Basic />);
 
   await expect.element(Trigger).toBeVisible();
-  ((await Trigger.element()) as HTMLButtonElement).focus();
+  focusElement(Trigger);
   await expect.element(Trigger).toHaveFocus();
 
   await userEvent.keyboard("{Enter}");
@@ -90,7 +91,7 @@ test("content is hidden when enter key is pressed on open collapsible", async ()
 
   await expect.element(Content).toBeVisible();
   await expect.element(Trigger).toBeVisible();
-  ((await Trigger.element()) as HTMLButtonElement).focus();
+  focusElement(Trigger);
 
   await userEvent.keyboard("{Enter}");
 
@@ -105,8 +106,8 @@ test("trigger aria-controls matches content id", async () => {
   await userEvent.click(Trigger);
   await expect.element(Content).toBeVisible();
 
-  const triggerElement = await Trigger.element();
-  const contentElement = await Content.element();
+  const triggerElement = Trigger.element();
+  const contentElement = Content.element();
   const contentId = contentElement?.getAttribute("id");
   const ariaControls = triggerElement?.getAttribute("aria-controls");
 
@@ -427,7 +428,7 @@ test("content has hidden=until-found when closed", async () => {
 
   await expect.element(Content).not.toBeVisible();
 
-  const contentElement = await Content.element();
+  const contentElement = Content.element();
   const hiddenValue = contentElement?.getAttribute("hidden");
 
   expect(hiddenValue).toBe("until-found");
@@ -457,7 +458,7 @@ test("beforematch event syncs state when browser reveals content", async () => {
   await expect.element(Content).not.toBeVisible();
   await expect.element(OpenState).toHaveTextContent("open: false");
 
-  const contentElement = await Content.element();
+  const contentElement = Content.element();
 
   // Simulate the browser revealing content via find-in-page
   contentElement?.dispatchEvent(new Event("beforematch"));

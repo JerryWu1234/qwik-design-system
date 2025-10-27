@@ -1,4 +1,4 @@
-import { $, type PropsOf, Slot, component$, useContext } from "@qwik.dev/core";
+import { $, component$, type PropsOf, Slot, useContext } from "@qwik.dev/core";
 import { Render } from "../render/render";
 import { fileUploadContextId } from "./file-upload-context";
 
@@ -7,9 +7,9 @@ import { fileUploadContextId } from "./file-upload-context";
 export const FileUploadTrigger = component$((props: PropsOf<"button">) => {
   const context = useContext(fileUploadContextId);
 
-  const handleClick$ = $(async () => {
+  const handleClick$ = $(() => {
     if (context.isDisabled.value) return;
-    await context.inputRef.value?.showPicker();
+    context.inputRef.value?.showPicker();
   });
 
   return (

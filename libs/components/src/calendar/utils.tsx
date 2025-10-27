@@ -1,5 +1,11 @@
 import type { Month } from "./types";
 
+const formatDate = (y: number, m: number, d: number) => {
+  const mm = m < 10 ? `0${m}` : m;
+  const dd = d < 10 ? `0${d}` : d;
+  return `${y}-${mm}-${dd}`;
+};
+
 export const daysArrGenerator = ({
   month,
   year,
@@ -22,13 +28,6 @@ export const daysArrGenerator = ({
 
   const weeks = [];
   let currentWeek = [];
-
-  // Helper function to format date as 'yyyy-mm-dd'
-  const formatDate = (y: number, m: number, d: number) => {
-    const mm = m < 10 ? `0${m}` : m;
-    const dd = d < 10 ? `0${d}` : d;
-    return `${y}-${mm}-${dd}`;
-  };
 
   // Fill the previous month's days if fullWeeks is true
   if (fullWeeks) {

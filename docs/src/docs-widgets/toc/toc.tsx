@@ -1,8 +1,8 @@
 import {
   $,
+  component$,
   type PropsOf,
   Slot,
-  component$,
   useContext,
   useOnWindow,
   useSignal,
@@ -72,7 +72,6 @@ type TableOfContentsProps = { headings: ContentHeading[] };
 
 interface Node extends ContentHeading {
   children: Node[];
-  activeItem: string;
 }
 type Tree = Array<Node>;
 
@@ -81,6 +80,7 @@ const TableOfContents = component$<TableOfContentsProps>(({ headings }) => {
   const itemIds = headings.map(({ id }) => id);
   const activeHeading = useActiveItem(itemIds);
   const tree = buildTree(sanitizedHeadings);
+  if (!tree) return null;
   const fixStartingBug: Node = { ...tree, children: [tree] };
   return <RecursiveList tree={fixStartingBug} activeItem={activeHeading.value ?? ""} />;
 });
@@ -108,15 +108,22 @@ function deltaToStrg(
   );
 }
 
-function buildTree(nodes: ContentHeading[]) {
-  let currNode = nodes[0] as Node;
-  currNode.children = [];
-  const tree = [currNode];
+function buildTree(nodes: ContentHeading[]): Node | undefined {
+  if (nodes.length === 0) return undefined;
+
+  const firstNode = nodes[0];
+  if (!firstNode) return undefined;
+
+  let currNode: Node = { ...firstNode, children: [] };
+  const tree: Tree = [currNode];
   const childrenMap = new Map<number, Tree>();
   childrenMap.set(currNode.level, currNode.children);
+
   for (let index = 1; index < nodes.length; index++) {
-    const nextNode = nodes[index] as Node;
-    nextNode.children = [];
+    const nodeData = nodes[index];
+    if (!nodeData) continue;
+
+    const nextNode: Node = { ...nodeData, children: [] };
     childrenMap.set(nextNode.level, nextNode.children);
     const deltaStrg = deltaToStrg(currNode, nextNode);
     switch (deltaStrg) {

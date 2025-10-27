@@ -34,18 +34,18 @@ export function createMenuWalker(root: HTMLElement) {
  */
 export function getNextMenuItem(current: HTMLElement): HTMLElement | null {
   const root = current.closest('[role="menu"]');
-  if (!root) return null;
-  const walker = createMenuWalker(root as HTMLElement);
-  let node = walker.currentNode as HTMLElement;
+  if (!root || !(root instanceof HTMLElement)) return null;
+  const walker = createMenuWalker(root);
+  let node: Node | null = walker.currentNode;
   // Find the current node
   while (node && node !== current) {
-    node = walker.nextNode() as HTMLElement;
+    node = walker.nextNode();
   }
 
-  const next = walker.nextNode() as HTMLElement;
+  const next = walker.nextNode();
 
   // Get the next menu item
-  return next;
+  return next instanceof HTMLElement ? next : null;
 }
 
 /**
@@ -53,14 +53,16 @@ export function getNextMenuItem(current: HTMLElement): HTMLElement | null {
  */
 export function getPreviousMenuItem(current: HTMLElement): HTMLElement | null {
   const root = current.closest('[role="menu"]');
-  if (!root) return null;
-  const walker = createMenuWalker(root as HTMLElement);
-  let node = walker.currentNode as HTMLElement;
+  if (!root || !(root instanceof HTMLElement)) return null;
+  const walker = createMenuWalker(root);
+  let node: Node | null = walker.currentNode;
   let previousNode: HTMLElement | null = null;
   // Find the current node and keep track of the previous one
   while (node && node !== current) {
-    previousNode = node;
-    node = walker.nextNode() as HTMLElement;
+    if (node instanceof HTMLElement) {
+      previousNode = node;
+    }
+    node = walker.nextNode();
   }
   // Only return if previousNode is not the root
   if (previousNode === root) return null;
@@ -72,8 +74,8 @@ export function getPreviousMenuItem(current: HTMLElement): HTMLElement | null {
  */
 export function getFirstMenuItem(root: HTMLElement): HTMLElement | null {
   const walker = createMenuWalker(root);
-  const first = walker.nextNode() as HTMLElement;
-  return first;
+  const first = walker.nextNode();
+  return first instanceof HTMLElement ? first : null;
 }
 
 /**
@@ -82,27 +84,11 @@ export function getFirstMenuItem(root: HTMLElement): HTMLElement | null {
 export function getLastMenuItem(root: HTMLElement): HTMLElement | null {
   const walker = createMenuWalker(root);
   let lastNode: HTMLElement | null = null;
-  let node: HTMLElement | null;
-  while ((node = walker.nextNode() as HTMLElement)) {
-    lastNode = node;
+  let node: Node | null;
+  while ((node = walker.nextNode())) {
+    if (node instanceof HTMLElement) {
+      lastNode = node;
+    }
   }
   return lastNode;
-}
-
-/**
- * Waits for an element to be visible.
- * @param el - The element to wait for.
- * @param timeout - The timeout in milliseconds.
- * @param interval - The interval in milliseconds to check if the element is visible.
- */
-export async function waitForVisible(
-  el: HTMLElement,
-  timeout = 2000,
-  interval = 20
-): Promise<void> {
-  const start = Date.now();
-  while (el && !el.checkVisibility()) {
-    await new Promise((resolve) => setTimeout(resolve, interval));
-    if (Date.now() - start > timeout) break;
-  }
 }

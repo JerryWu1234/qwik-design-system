@@ -1,8 +1,15 @@
-import { type PropsOf, component$, useSignal } from "@qwik.dev/core";
+import { component$, type PropsOf, useSignal } from "@qwik.dev/core";
 import axe from "axe-core";
 import { describe, expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
+import {
+  focusElement,
+  focusRawElement,
+  getInputValue,
+  withElement
+} from "../../vitest/element";
+import { pointer } from "../../vitest/pointer";
 import * as Slider from "./index";
 
 // Locator constants
@@ -13,18 +20,18 @@ const Thumb = page.getByTestId("thumb");
 const HiddenInput = page.getByTestId("hidden-input");
 
 // Helper functions for complex locators - these return elements directly
-async function getStartThumb() {
-  const thumbs = await page.getByTestId("thumb").elements();
+function getStartThumb() {
+  const thumbs = page.getByTestId("thumb").elements();
   return thumbs.find((el) => el.getAttribute("data-thumb-type") === "start");
 }
 
-async function getEndThumb() {
-  const thumbs = await page.getByTestId("thumb").elements();
+function getEndThumb() {
+  const thumbs = page.getByTestId("thumb").elements();
   return thumbs.find((el) => el.getAttribute("data-thumb-type") === "end");
 }
 
-async function getAllThumbs() {
-  return await page.getByTestId("thumb").elements();
+function getAllThumbs() {
+  return page.getByTestId("thumb").elements();
 }
 
 function getMarkers() {
@@ -81,13 +88,13 @@ const WithCallbacks = component$((props: PropsOf<typeof Slider.Root>) => {
       <Slider.Root
         data-testid="root"
         {...props}
-        onChange$={(value: number | number[]) => {
+        onChange$={(value) => {
           console.log("Value changed:", value);
-          logSignal.value = `Value changed: ${value}`;
+          logSignal.value = `Value changed: ${JSON.stringify(value)}`;
         }}
         onChangeEnd$={(value) => {
           console.log("Final value:", value);
-          logSignal.value += ` | Final value: ${value}`;
+          logSignal.value += ` | Final value: ${JSON.stringify(value)}`;
         }}
       >
         <Slider.Track data-testid="track">
@@ -147,7 +154,7 @@ const DisabledSlider = component$((props: PropsOf<typeof Slider.Root>) => {
         value={50}
         bind:disabled={disabledSignal}
         data-testid="root"
-        onChange$={(_, __) => {
+        onChange$={() => {
           console.log("This should not be called when disabled");
         }}
       >
@@ -177,10 +184,11 @@ const FormSlider = component$((props: PropsOf<typeof Slider.Root>) => {
       data-testid="form"
       preventdefault:submit
       onSubmit$={(e) => {
-        const form = e.target as HTMLFormElement;
+        const form = e.target;
+        if (!(form instanceof HTMLFormElement)) return;
         const formData = new FormData(form);
         const volume = formData.get("volume");
-        formDataSignal.value = volume ? String(volume) : "";
+        formDataSignal.value = typeof volume === "string" ? volume : "";
       }}
     >
       <Slider.Root {...props} name="volume" value={50} data-testid="root">
@@ -259,11 +267,11 @@ describe("critical functionality", () => {
 
     await expect.element(Root).toBeInTheDocument();
 
-    const thumbs = await getAllThumbs();
+    const thumbs = getAllThumbs();
     expect(thumbs.length).toBe(2);
 
-    const startThumb = await getStartThumb();
-    const endThumb = await getEndThumb();
+    const startThumb = getStartThumb();
+    const endThumb = getEndThumb();
     expect(startThumb).toBeTruthy();
     expect(endThumb).toBeTruthy();
   });
@@ -273,23 +281,13 @@ describe("critical functionality", () => {
 
     await expect.element(Track).toBeInTheDocument();
 
-    const trackEl = await Track.element();
+    const trackEl = Track.element();
     const rect = trackEl.getBoundingClientRect();
 
-    // Click in the middle of the track using PointerEvent
-    trackEl.dispatchEvent(
-      new PointerEvent("pointerdown", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-        clientX: rect.left + rect.width / 2,
-        clientY: rect.top + rect.height / 2,
-        button: 0,
-        pointerId: 1,
-        pointerType: "mouse",
-        isPrimary: true
-      })
-    );
+    // Click in the middle of the track
+    await pointer.down(Track, {
+      client: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+    });
 
     await expect.element(Thumb).toHaveAttribute("aria-valuenow", "50");
   });
@@ -314,21 +312,19 @@ describe("keyboard navigation", () => {
 
     await expect.element(Thumb).toBeInTheDocument();
 
-    const thumbEl = (await Thumb.element()) as HTMLElement;
+    withElement(Thumb, HTMLElement, (thumbEl) => {
+      const initialValue = Number(thumbEl.getAttribute("aria-valuenow"));
+      expect(initialValue).toBe(0);
+    });
 
-    const initialValue = Number(thumbEl.getAttribute("aria-valuenow"));
-    expect(initialValue).toBe(0);
-
-    thumbEl.focus();
+    focusElement(Thumb);
     await userEvent.keyboard("{ArrowRight}");
 
-    await expect
-      .element(Thumb)
-      .toHaveAttribute("aria-valuenow", String(initialValue + 1));
+    await expect.element(Thumb).toHaveAttribute("aria-valuenow", "1");
 
     await userEvent.keyboard("{ArrowLeft}");
 
-    await expect.element(Thumb).toHaveAttribute("aria-valuenow", String(initialValue));
+    await expect.element(Thumb).toHaveAttribute("aria-valuenow", "0");
   });
 
   test("arrow keys with shift should change by larger step", async () => {
@@ -336,16 +332,16 @@ describe("keyboard navigation", () => {
 
     await expect.element(Thumb).toBeInTheDocument();
 
-    const thumbEl = (await Thumb.element()) as HTMLElement;
-    thumbEl.focus();
+    focusElement(Thumb);
 
-    const valueBefore = Number(thumbEl.getAttribute("aria-valuenow"));
+    withElement(Thumb, HTMLElement, (thumbEl) => {
+      const valueBefore = Number(thumbEl.getAttribute("aria-valuenow"));
+      expect(valueBefore).toBe(0);
+    });
 
     await userEvent.keyboard("{Shift>}{ArrowRight}{/Shift}");
 
-    await expect
-      .element(Thumb)
-      .toHaveAttribute("aria-valuenow", String(valueBefore + 10));
+    await expect.element(Thumb).toHaveAttribute("aria-valuenow", "10");
   });
 
   test("Home/End keys should go to min/max", async () => {
@@ -353,8 +349,7 @@ describe("keyboard navigation", () => {
 
     await expect.element(Thumb).toBeInTheDocument();
 
-    const thumbEl = (await Thumb.element()) as HTMLElement;
-    thumbEl.focus();
+    focusElement(Thumb);
 
     await userEvent.keyboard("{End}");
     await expect.element(Thumb).toHaveAttribute("aria-valuenow", "100");
@@ -388,25 +383,15 @@ describe("callbacks", () => {
 
     await expect.element(Track).toBeInTheDocument();
 
-    const trackEl = await Track.element();
+    const trackEl = Track.element();
     const rect = trackEl.getBoundingClientRect();
 
-    // Use PointerEvent
-    trackEl.dispatchEvent(
-      new PointerEvent("pointerdown", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-        clientX: rect.left + rect.width * 0.75,
-        clientY: rect.top + rect.height / 2,
-        button: 0,
-        pointerId: 1,
-        pointerType: "mouse",
-        isPrimary: true
-      })
-    );
+    // Click at 75% on the track
+    await pointer.down(Track, {
+      client: { x: rect.left + rect.width * 0.75, y: rect.top + rect.height / 2 }
+    });
 
-    const logEl = await page.getByTestId("log").element();
+    const logEl = page.getByTestId("log").element();
     await expect.element(page.getByTestId("log")).toContainHTML("Final value:");
 
     const logText = logEl.textContent || "";
@@ -419,56 +404,26 @@ describe("callbacks", () => {
 
     await expect.element(Thumb).toBeInTheDocument();
 
-    const thumbEl = (await Thumb.element()) as HTMLElement;
-    const trackEl = (await Track.element()) as HTMLElement;
-
-    // Get track position
-    const rect = trackEl.getBoundingClientRect();
-    const targetX = rect.left + rect.width * 0.5; // Target 50%
-
     // Focus thumb first
-    thumbEl.focus();
+    focusElement(Thumb);
 
-    // Simulate pointer down on thumb to start drag
-    const pointerDownEvent = new PointerEvent("pointerdown", {
-      bubbles: true,
-      cancelable: true,
-      clientX: rect.left + rect.width * 0.2,
-      pointerId: 1,
-      isPrimary: true
-    });
-    thumbEl.dispatchEvent(pointerDownEvent);
+    // Get track position for calculating target
+    const trackEl = Track.element();
+    const rect = trackEl.getBoundingClientRect();
+    const startX = rect.left + rect.width * 0.2;
+    const targetX = rect.left + rect.width * 0.5;
 
-    // Give time for the drag state to be set
-    await new Promise((resolve) => setTimeout(resolve, 10));
-
-    // Simulate pointer move
-    const pointerMoveEvent = new PointerEvent("pointermove", {
-      bubbles: true,
-      cancelable: true,
-      clientX: targetX,
-      pointerId: 1,
-      isPrimary: true
-    });
-    thumbEl.dispatchEvent(pointerMoveEvent);
-
-    // Give time for the value to update
-    await new Promise((resolve) => setTimeout(resolve, 10));
-
-    // Simulate pointer up to end drag
-    const pointerUpEvent = new PointerEvent("pointerup", {
-      bubbles: true,
-      cancelable: true,
-      clientX: targetX,
-      pointerId: 1,
-      isPrimary: true
-    });
-    thumbEl.dispatchEvent(pointerUpEvent);
+    // Use pointer utility to simulate drag from 20% to 50%
+    await pointer.drag(
+      Thumb,
+      { client: { x: startX, y: rect.top + rect.height / 2 } },
+      { client: { x: targetX, y: rect.top + rect.height / 2 } }
+    );
 
     // Wait for callbacks to be called
     await expect.element(page.getByTestId("log")).toContainHTML("Final value:");
 
-    const logEl = await page.getByTestId("log").element();
+    const logEl = page.getByTestId("log").element();
     const logText = logEl.textContent || "";
 
     // Should have both onChange and onChangeEnd
@@ -481,12 +436,11 @@ describe("callbacks", () => {
 
     await expect.element(Thumb).toBeInTheDocument();
 
-    const thumbEl = (await Thumb.element()) as HTMLElement;
-    thumbEl.focus();
+    focusElement(Thumb);
 
     await userEvent.keyboard("{ArrowRight}");
 
-    const logEl = await page.getByTestId("log").element();
+    const logEl = page.getByTestId("log").element();
     await expect.element(page.getByTestId("log")).toContainHTML("Final value: 1");
 
     const logText = logEl.textContent || "";
@@ -501,8 +455,8 @@ describe("range mode", () => {
 
     await expect.element(Root).toBeInTheDocument();
 
-    const startThumb = await getStartThumb();
-    const endThumb = await getEndThumb();
+    const startThumb = getStartThumb();
+    const endThumb = getEndThumb();
 
     expect(startThumb).toBeTruthy();
     expect(endThumb).toBeTruthy();
@@ -516,16 +470,17 @@ describe("range mode", () => {
 
     await expect.element(Root).toBeInTheDocument();
 
-    const startThumbEl = (await getStartThumb()) as HTMLElement;
-    startThumbEl.focus();
+    const startThumbElement = getStartThumb();
+    focusRawElement(startThumbElement);
 
     // Try to move start thumb past end thumb
     for (let i = 0; i < 10; i++) {
       await userEvent.keyboard("{ArrowRight}");
     }
 
-    const startValue = Number(startThumbEl.getAttribute("aria-valuenow"));
-    const endThumbEl = await getEndThumb();
+    const startThumbEl = getStartThumb();
+    const startValue = Number(startThumbEl?.getAttribute("aria-valuenow"));
+    const endThumbEl = getEndThumb();
     const endValue = Number(endThumbEl?.getAttribute("aria-valuenow"));
 
     expect(startValue).toBeLessThanOrEqual(endValue);
@@ -536,16 +491,17 @@ describe("range mode", () => {
 
     await expect.element(Root).toBeInTheDocument();
 
-    const endThumbEl = (await getEndThumb()) as HTMLElement;
-    endThumbEl.focus();
+    const endThumbElement = getEndThumb();
+    focusRawElement(endThumbElement);
 
     // Try to move end thumb past start thumb
     for (let i = 0; i < 10; i++) {
       await userEvent.keyboard("{ArrowLeft}");
     }
 
-    const endValue = Number(endThumbEl.getAttribute("aria-valuenow"));
-    const startThumbEl = await getStartThumb();
+    const endThumbEl = getEndThumb();
+    const endValue = Number(endThumbEl?.getAttribute("aria-valuenow"));
+    const startThumbEl = getStartThumb();
     const startValue = Number(startThumbEl?.getAttribute("aria-valuenow"));
 
     expect(endValue).toBeGreaterThanOrEqual(startValue);
@@ -556,27 +512,30 @@ describe("range mode", () => {
 
     await expect.element(Root).toBeInTheDocument();
 
-    const startThumbEl = (await getStartThumb()) as HTMLElement;
-    const endThumbEl = (await getEndThumb()) as HTMLElement;
+    const startThumbElement = getStartThumb();
+    const endThumbElement = getEndThumb();
 
-    startThumbEl.focus();
+    if (!(startThumbElement instanceof HTMLElement)) return;
+    if (!(endThumbElement instanceof HTMLElement)) return;
+
+    focusRawElement(startThumbElement);
     await userEvent.keyboard("{Home}");
 
-    expect(startThumbEl.getAttribute("aria-valuenow")).toBe("0");
+    expect(startThumbElement.getAttribute("aria-valuenow")).toBe("0");
 
     await userEvent.keyboard("{End}");
 
-    const endValue = endThumbEl.getAttribute("aria-valuenow");
-    expect(startThumbEl.getAttribute("aria-valuenow")).toBe(String(endValue));
+    const endValue = endThumbElement.getAttribute("aria-valuenow");
+    expect(startThumbElement.getAttribute("aria-valuenow")).toBe(String(endValue));
 
-    endThumbEl.focus();
+    focusRawElement(endThumbElement);
     await userEvent.keyboard("{End}");
-    expect(endThumbEl.getAttribute("aria-valuenow")).toBe("100");
+    expect(endThumbElement.getAttribute("aria-valuenow")).toBe("100");
 
     await userEvent.keyboard("{Home}");
 
-    const startValue = startThumbEl.getAttribute("aria-valuenow");
-    expect(endThumbEl.getAttribute("aria-valuenow")).toBe(String(startValue));
+    const startValue = startThumbElement.getAttribute("aria-valuenow");
+    expect(endThumbElement.getAttribute("aria-valuenow")).toBe(String(startValue));
   });
 });
 
@@ -586,7 +545,7 @@ describe("style customization", () => {
 
     await expect.element(Thumb).toBeInTheDocument();
 
-    const thumbEl = await Thumb.element();
+    const thumbEl = Thumb.element();
     const computedStyle = window.getComputedStyle(thumbEl);
 
     expect(computedStyle.backgroundColor).toBe("rgb(255, 0, 0)");
@@ -595,7 +554,7 @@ describe("style customization", () => {
     // Note: border style might vary by browser, so we just check that it exists
     expect(computedStyle.borderWidth).toBe("3px");
 
-    const trackEl = await Track.element();
+    const trackEl = Track.element();
     const trackRect = trackEl.getBoundingClientRect();
     const thumbRect = thumbEl.getBoundingClientRect();
 
@@ -615,30 +574,20 @@ describe("disabled state", () => {
     await expect.element(Thumb).toHaveAttribute("aria-disabled", "true");
     await expect.element(Thumb).toHaveAttribute("tabindex", "-1");
 
-    const thumbEl = await Thumb.element();
+    const thumbEl = Thumb.element();
     const initialValue = String(thumbEl.getAttribute("aria-valuenow"));
 
-    const trackEl = await Track.element();
+    const trackEl = Track.element();
     const rect = trackEl.getBoundingClientRect();
 
-    trackEl.dispatchEvent(
-      new PointerEvent("pointerdown", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-        clientX: rect.left + rect.width * 0.75,
-        clientY: rect.top + rect.height / 2,
-        button: 0,
-        pointerId: 1,
-        pointerType: "mouse",
-        isPrimary: true
-      })
-    );
+    // Try to click at 75% on the track (should be ignored)
+    await pointer.down(Track, {
+      client: { x: rect.left + rect.width * 0.75, y: rect.top + rect.height / 2 }
+    });
 
     await expect.element(Thumb).toHaveAttribute("aria-valuenow", initialValue);
 
-    const thumbElHtml = (await Thumb.element()) as HTMLElement;
-    thumbElHtml.focus();
+    focusElement(Thumb);
     await userEvent.keyboard("{ArrowRight}");
     await userEvent.keyboard("{ArrowLeft}");
     await userEvent.keyboard("{Home}");
@@ -653,13 +602,12 @@ describe("disabled state", () => {
     await expect.element(Thumb).toBeInTheDocument();
     await expect.element(Root).toHaveAttribute("aria-disabled", "true");
 
-    const toggleBtn = await page.getByTestId("toggle").element();
+    const toggleBtn = page.getByTestId("toggle").element();
     await userEvent.click(toggleBtn);
 
     await expect.element(Root).toHaveAttribute("aria-disabled", "false");
 
-    const thumbEl = (await Thumb.element()) as HTMLElement;
-    thumbEl.focus();
+    focusElement(Thumb);
     await userEvent.keyboard("{ArrowRight}");
 
     await expect.element(Thumb).toHaveAttribute("aria-valuenow", "51"); // 50 + 1
@@ -678,7 +626,7 @@ describe("form integration", () => {
 
     await expect.element(Root).toBeInTheDocument();
 
-    const hiddenInput = await HiddenInput.element();
+    const hiddenInput = HiddenInput.element();
     expect(hiddenInput).toBeTruthy();
     expect(hiddenInput.tagName).toBe("INPUT");
     expect(hiddenInput.getAttribute("type")).toBe("hidden");
@@ -690,17 +638,13 @@ describe("form integration", () => {
 
     await expect.element(Thumb).toBeInTheDocument();
 
-    const hiddenInput = (await page
-      .getByTestId("hidden-input")
-      .element()) as HTMLInputElement;
-    expect(hiddenInput.value).toBe("50");
+    expect(getInputValue(HiddenInput)).toBe("50");
 
-    const thumbEl = (await Thumb.element()) as HTMLElement;
-    thumbEl.focus();
+    focusElement(Thumb);
     await userEvent.keyboard("{ArrowRight}");
 
     await expect.element(Thumb).toHaveAttribute("aria-valuenow", "51");
-    expect(hiddenInput.value).toBe("51");
+    expect(getInputValue(HiddenInput)).toBe("51");
   });
 
   test("form submission should include slider value", async () => {
@@ -708,10 +652,10 @@ describe("form integration", () => {
 
     await expect.element(Root).toBeInTheDocument();
 
-    const submitBtn = await page.getByTestId("submit").element();
+    const submitBtn = page.getByTestId("submit").element();
     await userEvent.click(submitBtn);
 
-    const resultEl = await page.getByTestId("result");
+    const resultEl = page.getByTestId("result");
     await expect.element(resultEl).toContainHTML('"volume":"50"');
   });
 
@@ -736,9 +680,7 @@ describe("form integration", () => {
 
     await expect.element(Root).toBeInTheDocument();
 
-    const hiddenInput = (await HiddenInput.element()) as HTMLInputElement;
-    expect(hiddenInput).toBeTruthy();
-    expect(hiddenInput.value).toBe("30,70");
+    expect(getInputValue(HiddenInput)).toBe("30,70");
   });
 
   test("range slider form submission should include comma-separated values", async () => {
@@ -750,10 +692,11 @@ describe("form integration", () => {
           data-testid="form"
           preventdefault:submit
           onSubmit$={(e) => {
-            const form = e.target as HTMLFormElement;
+            const form = e.target;
+            if (!(form instanceof HTMLFormElement)) return;
             const formData = new FormData(form);
             const range = formData.get("range");
-            formDataSignal.value = range ? String(range) : "";
+            formDataSignal.value = typeof range === "string" ? range : "";
           }}
         >
           <Slider.Root name="range" value={[25, 75]} data-testid="root">
@@ -780,10 +723,10 @@ describe("form integration", () => {
 
     await expect.element(Root).toBeInTheDocument();
 
-    const submitBtn = await page.getByTestId("submit").element();
+    const submitBtn = page.getByTestId("submit").element();
     await userEvent.click(submitBtn);
 
-    const resultEl = await page.getByTestId("result");
+    const resultEl = page.getByTestId("result");
     await expect.element(resultEl).toContainHTML('"range":"25,75"');
   });
 
@@ -792,17 +735,14 @@ describe("form integration", () => {
 
     await expect.element(Root).toBeInTheDocument();
 
-    const hiddenInput = (await page
-      .getByTestId("hidden-input")
-      .element()) as HTMLInputElement;
-    const hiddenInputStyles = window.getComputedStyle(hiddenInput);
+    withElement(HiddenInput, HTMLInputElement, (hiddenInput) => {
+      // Should be hidden visually
+      expect(hiddenInput.tabIndex).toBe(-1);
 
-    // Should be hidden visually
-    expect(hiddenInput.tabIndex).toBe(-1);
-
-    // Should still be in the DOM (accessible to forms)
-    expect(hiddenInput).toBeTruthy();
-    expect(hiddenInput.name).toBe("volume");
+      // Should still be in the DOM (accessible to forms)
+      expect(hiddenInput).toBeTruthy();
+      expect(hiddenInput.name).toBe("volume");
+    });
   });
 
   test("hidden input should reflect root's bound signal value", async () => {
@@ -810,19 +750,18 @@ describe("form integration", () => {
 
     await expect.element(Root).toBeInTheDocument();
 
-    const hiddenInput = (await HiddenInput.element()) as HTMLInputElement;
-    const externalDisplay = await page.getByTestId("external-value");
+    const externalDisplay = page.getByTestId("external-value");
 
     // Initial value should be 25
-    expect(hiddenInput.value).toBe("25");
+    expect(getInputValue(HiddenInput)).toBe("25");
     await expect.element(externalDisplay).toContainHTML("External: 25");
 
     // Update external signal - hidden input should reflect the change
-    const updateBtn = await page.getByTestId("update-external").element();
+    const updateBtn = page.getByTestId("update-external").element();
     await userEvent.click(updateBtn);
 
     await expect.element(externalDisplay).toContainHTML("External: 75");
-    expect(hiddenInput.value).toBe("75");
+    expect(getInputValue(HiddenInput)).toBe("75");
   });
 
   test("hidden input should update when slider changes via keyboard", async () => {
@@ -830,16 +769,14 @@ describe("form integration", () => {
 
     await expect.element(Root).toBeInTheDocument();
 
-    const hiddenInput = (await HiddenInput.element()) as HTMLInputElement;
-    const externalDisplay = await page.getByTestId("external-value");
-    const thumbEl = (await Thumb.element()) as HTMLElement;
+    const externalDisplay = page.getByTestId("external-value");
 
     // Initial value
-    expect(hiddenInput.value).toBe("25");
+    expect(getInputValue(HiddenInput)).toBe("25");
     await expect.element(externalDisplay).toContainHTML("External: 25");
 
     // Move slider with keyboard and wait for each update
-    thumbEl.focus();
+    focusElement(Thumb);
 
     await userEvent.keyboard("{ArrowRight}");
     await expect.element(externalDisplay).toContainHTML("External: 26");
@@ -851,6 +788,6 @@ describe("form integration", () => {
     await expect.element(externalDisplay).toContainHTML("External: 28");
 
     // Hidden input should reflect the final value
-    expect(hiddenInput.value).toBe("28");
+    expect(getInputValue(HiddenInput)).toBe("28");
   });
 });

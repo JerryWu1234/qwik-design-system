@@ -1,7 +1,8 @@
-import { $, type PropsOf, component$, useSignal } from "@qwik.dev/core";
+import { $, component$, type PropsOf, useSignal } from "@qwik.dev/core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
+import { focusElement } from "../../vitest/element";
 import { Toggle } from "..";
 
 // Top-level locator constants using data-testid
@@ -142,7 +143,7 @@ test("toggle can be toggled with Space key", async () => {
   await expect.element(Root).not.toHaveAttribute("data-pressed");
 
   await expect.element(Root).toBeVisible();
-  ((await Root.element()) as HTMLButtonElement).focus();
+  focusElement(Root);
   await userEvent.keyboard("{Space}");
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "true");
@@ -156,7 +157,7 @@ test("pressed toggle can be unpressed with Space key", async () => {
   await expect.element(Root).toHaveAttribute("data-pressed");
 
   await expect.element(Root).toBeVisible();
-  ((await Root.element()) as HTMLButtonElement).focus();
+  focusElement(Root);
   await userEvent.keyboard("{Space}");
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "false");
@@ -170,7 +171,7 @@ test("toggle can be toggled with Enter key", async () => {
   await expect.element(Root).not.toHaveAttribute("data-pressed");
 
   await expect.element(Root).toBeVisible();
-  ((await Root.element()) as HTMLButtonElement).focus();
+  focusElement(Root);
   await userEvent.keyboard("{Enter}");
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "true");
@@ -184,7 +185,7 @@ test("pressed toggle can be unpressed with Enter key", async () => {
   await expect.element(Root).toHaveAttribute("data-pressed");
 
   await expect.element(Root).toBeVisible();
-  ((await Root.element()) as HTMLButtonElement).focus();
+  focusElement(Root);
   await userEvent.keyboard("{Enter}");
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "false");

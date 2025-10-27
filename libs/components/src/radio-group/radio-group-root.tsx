@@ -1,10 +1,10 @@
 import { useBoundSignal } from "@qds.dev/utils";
 import {
   $,
+  component$,
   type PropsOf,
   type Signal,
   Slot,
-  component$,
   useComputed$,
   useContextProvider,
   useId,
@@ -13,8 +13,8 @@ import {
   useTask$
 } from "@qwik.dev/core";
 import { Render } from "../render/render";
-import { radioGroupContextId } from "./radio-group-context";
 import styles from "./radio-group.css?inline";
+import { radioGroupContextId } from "./radio-group-context";
 
 type PublicRootProps = {
   value?: string;
@@ -28,7 +28,7 @@ type PublicRootProps = {
 } & Omit<PropsOf<"div">, "onChange$">;
 
 interface TriggerRef {
-  ref: Signal;
+  ref: Signal<HTMLButtonElement | undefined>;
   value: string;
 }
 
@@ -37,13 +37,13 @@ export const RadioGroupRoot = component$((props: PublicRootProps) => {
 
   const {
     "bind:value": givenValueSig,
-    onChange$,
-    disabled,
-    name,
-    required,
-    orientation,
-    isError,
-    onKeyDown$,
+    onChange$: _onChange$,
+    disabled: _disabled,
+    name: _name,
+    required: _required,
+    orientation: _orientation,
+    isError: _isError,
+    onKeyDown$: _onKeyDown$,
     ...rest
   } = props;
 
@@ -89,7 +89,7 @@ export const RadioGroupRoot = component$((props: PublicRootProps) => {
     const trigger = triggerData.ref.value;
     const value = triggerData.value;
 
-    if (value) {
+    if (value && trigger) {
       selectedValueSig.value = value;
       trigger.focus();
     }
@@ -135,7 +135,7 @@ export const RadioGroupRoot = component$((props: PublicRootProps) => {
       nextIndex = 0;
     }
 
-    activateItemAt(nextIndex, enabledTriggerIndexes);
+    await activateItemAt(nextIndex, enabledTriggerIndexes);
   });
 
   useContextProvider(radioGroupContextId, {

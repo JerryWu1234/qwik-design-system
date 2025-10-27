@@ -11,7 +11,8 @@ export default component$(() => {
     <form
       preventdefault:submit
       onSubmit$={(e) => {
-        const form = e.target as HTMLFormElement;
+        const form = e.target;
+        if (!(form instanceof HTMLFormElement)) return;
         formData.value = Object.fromEntries(new FormData(form));
       }}
       class="flex flex-col gap-4"

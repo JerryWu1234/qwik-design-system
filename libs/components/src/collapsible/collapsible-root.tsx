@@ -1,17 +1,15 @@
+import { type BindableProps, useBindings } from "@qds.dev/utils";
 import {
+  component$,
+  createContextId,
   type PropsOf,
-  type QRL,
   type Signal,
   Slot,
-  component$,
   useContextProvider,
   useId,
   useSignal,
   useTask$
 } from "@qwik.dev/core";
-
-import { type BindableProps, useBindings } from "@qds.dev/utils";
-import { createContextId } from "@qwik.dev/core";
 import { Render } from "../render/render";
 
 export const collapsibleContextId = createContextId<CollapsibleContext>("Collapsible");
@@ -26,10 +24,10 @@ export interface CollapsibleContext {
   disableUntilFound: boolean | undefined;
 }
 
-export type CollapsibleRootProps = PropsOf<"div"> & {
+export type CollapsibleRootProps = Omit<PropsOf<"div">, "onChange$"> & {
   id?: string;
   open?: boolean | undefined;
-  onChange$?: QRL<(open: boolean) => void>;
+  onChange$?: (open: boolean) => void;
   disabled?: boolean;
   collapsible?: boolean;
   /** If true, collapsible will be hidden instead of hidden until found */

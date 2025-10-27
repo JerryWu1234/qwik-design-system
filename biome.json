@@ -1,27 +1,23 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.0/schema.json",
   "files": {
-    "ignore": [
-      ".git",
-      "build",
-      "dist",
-      "node_modules",
-      "server",
-      "docs/public/pagefind",
-      "lib-types",
-      "libs/components/lib/*",
-      "libs/components/node_modules",
-      "libs/icons/lib/*",
-      "libs/icons/node_modules",
-      "libs/icons/src/downloads",
-      "libs/icons/src/icons",
-      "libs/icons/src/page",
-      "libs/components/virtual-qds-icons.d.ts",
-      "libs/components/src/icons-runtime.ts",
-      "libs/components/styles/tailwind/qds-tailwind.css",
-      "libs/utils/lib/*",
-      ".vscode",
-      "test-results"
+    "includes": [
+      "**",
+      "!**/.git",
+      "!**/build",
+      "!**/dist",
+      "!**/node_modules",
+      "!**/server",
+      "!**/docs/public/pagefind",
+      "!**/lib-types",
+      "!**/libs/components/lib/**/*",
+      "!**/libs/components/node_modules",
+      "!**/libs/components/virtual-qds-icons.d.ts",
+      "!**/libs/components/src/icons-runtime.ts",
+      "!**/libs/components/styles/tailwind/qds-tailwind.css",
+      "!**/libs/utils/lib/**/*",
+      "!**/.vscode",
+      "!**/test-results"
     ]
   },
 
@@ -29,7 +25,7 @@
     "enabled": true,
     "formatWithErrors": false,
     "indentStyle": "space",
-    "lineEnding": "lf",
+    "lineEnding": "auto",
     "lineWidth": 90
   },
 
@@ -53,55 +49,24 @@
     }
   },
 
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "a11y": {
-        "recommended": true,
-        "useSemanticElements": "off",
-        "useGenericFontNames": "off"
-      },
-      "complexity": {
-        "recommended": true,
-        "useSimplifiedLogicExpression": "off"
-      },
-      "correctness": {
-        "noUndeclaredVariables": "error",
-        "noUnusedImports": "error",
-        "recommended": true
-      },
-      "performance": {
-        "recommended": true
-      },
-      "recommended": true,
-      "style": {
-        "recommended": true,
-        "useBlockStatements": "off",
-        "useCollapsedElseIf": "warn",
-        "useShorthandArrayType": "off",
-        "useShorthandAssign": "error",
-        "useSingleCaseStatement": "error"
-      },
-      "suspicious": {
-        "noApproximativeNumericConstant": "error",
-        "noMisrefactoredShorthandAssign": "warn",
-        "recommended": true,
-        "noAssignInExpressions": "off",
-        "noShadowRestrictedNames": "off"
-      },
-      "security": {
-        "noDangerouslySetInnerHtml": "error"
-      }
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    },
+    "formatter": {
+      "enabled": true
     }
   },
 
-  "organizeImports": {
-    "enabled": true
+  "linter": {
+    "enabled": false
   },
+
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
 
   "overrides": [
     {
-      "include": [".vscode/**"],
+      "includes": ["**/.vscode/**"],
       "json": {
         "parser": {
           "allowComments": true
@@ -109,22 +74,9 @@
       }
     },
     {
-      "include": ["**/package.json"],
+      "includes": ["**/package.json"],
       "formatter": {
         "enabled": false
-      }
-    },
-    {
-      "include": [
-        "apps/docs/src/root.tsx",
-        "libs/components/src/qr-code/qr-code-canvas.tsx"
-      ],
-      "linter": {
-        "rules": {
-          "security": {
-            "noDangerouslySetInnerHtml": "off"
-          }
-        }
       }
     }
   ],

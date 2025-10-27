@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 export { sanitizeIconName, generateIconTypes, generateRuntimeProxies };
 
 // Import shared utilities
-import { discoverAllIconifyCollections, toPascalCase } from "../utils/icons/naming";
+import { discoverAllIconifyCollections, toPascalCase } from "../utils/icons/naming.ts";
 
 // Export shared utilities for convenience
 export { discoverAllIconifyCollections, toPascalCase };
@@ -35,7 +35,6 @@ async function generateIconTypes(packs?: Record<string, { iconifyPrefix: string 
 
   const packsToUse = packs || discoverAllIconifyCollections();
   const scriptDir = dirname(fileURLToPath(import.meta.url));
-  const outputPath = join(scriptDir, "../../components/lib-types/virtual-qds-icons.d.ts");
   const declarations: string[] = [];
   const iconCounts: Record<string, number> = {};
 
@@ -64,7 +63,9 @@ async function generateIconTypes(packs?: Record<string, { iconifyPrefix: string 
 
     try {
       // Use direct import instead of lookupCollection
-      const collectionModule = await import(`@iconify/json/json/${iconifyPrefix}.json`);
+      const collectionModule = (await import(`@iconify/json/json/${iconifyPrefix}.json`, {
+        with: { type: "json" }
+      })) as { default: { icons?: Record<string, unknown> } };
       const collection = collectionModule.default;
 
       if (!collection) {
@@ -79,7 +80,7 @@ async function generateIconTypes(packs?: Record<string, { iconifyPrefix: string 
       }
 
       const icons = collection.icons;
-      const iconNames = Object.keys(icons).sort();
+      const iconNames = Object.keys(icons).toSorted();
 
       console.log(`Found ${iconNames.length} icons in ${packName}`);
 
@@ -184,7 +185,7 @@ async function generateRuntimeProxies(
   declarations.push("");
 
   // Generate proxy exports for each pack (skip packs with 0 icons)
-  const packNames = Object.keys(packsToUse).sort();
+  const packNames = Object.keys(packsToUse).toSorted();
 
   // First, check which collections actually have icons by trying to load them
   const packsWithIcons: string[] = [];
@@ -192,14 +193,15 @@ async function generateRuntimeProxies(
   for (const packName of packNames) {
     const packConfig = packsToUse[packName];
     try {
-      const collectionModule = await import(
-        `@iconify/json/json/${packConfig.iconifyPrefix}.json`
-      );
+      const collectionModule = (await import(
+        `@iconify/json/json/${packConfig.iconifyPrefix}.json`,
+        { with: { type: "json" } }
+      )) as { default: { icons?: Record<string, unknown> } };
       const collection = collectionModule.default;
       if (collection?.icons && Object.keys(collection.icons).length > 0) {
         packsWithIcons.push(packName);
       }
-    } catch (error) {
+    } catch {
       console.log(`⚠ Skipping ${packName}: failed to load or no icons`);
     }
   }
@@ -252,5 +254,5 @@ async function main() {
 
 // Only run if this file is executed directly (not imported in tests)
 if (fileURLToPath(import.meta.url) === process.argv[1]) {
-  main();
+  void main();
 }

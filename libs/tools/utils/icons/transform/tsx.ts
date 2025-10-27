@@ -1,10 +1,4 @@
-import type {
-  JSXAttribute,
-  JSXElement,
-  JSXIdentifier,
-  JSXMemberExpression,
-  Program
-} from "@oxc-project/types";
+import type { JSXElement, Program } from "@oxc-project/types";
 import MagicString from "magic-string";
 import { walk } from "oxc-walker";
 import type { PacksMap } from "../../../vite/icons";
@@ -16,7 +10,7 @@ import {
   propsObjectToAttributes
 } from "../ast/jsx";
 import { resolveIconNames, sanitizeIconName } from "../naming";
-import { type TransformContext, buildSVGElement, generateIconImport } from "./shared";
+import { buildSVGElement, generateIconImport, type TransformContext } from "./shared";
 
 /**
  * Check if a JSX element is an icon element based on its structure
@@ -37,21 +31,17 @@ export function isIconElement(
     return false;
   }
 
-  const memberExpr = name as JSXMemberExpression;
-  if (
-    memberExpr.object.type !== "JSXIdentifier" ||
-    memberExpr.property.type !== "JSXIdentifier"
-  ) {
+  if (name.object.type !== "JSXIdentifier" || name.property.type !== "JSXIdentifier") {
     return false;
   }
 
-  const memberName = (memberExpr.object as JSXIdentifier).name;
+  const memberName = name.object.name;
   if (!aliasToPack.has(memberName)) {
     return false;
   }
 
   const collectionName = collectionNames.get(memberName) || aliasToPack.get(memberName);
-  return availableCollections.has(collectionName);
+  return collectionName ? availableCollections.has(collectionName) : false;
 }
 
 /**
@@ -116,17 +106,13 @@ export function transformIconElement(
     return false;
   }
 
-  const memberExpr = name as JSXMemberExpression;
-  if (
-    memberExpr.object.type !== "JSXIdentifier" ||
-    memberExpr.property.type !== "JSXIdentifier"
-  ) {
+  if (name.object.type !== "JSXIdentifier" || name.property.type !== "JSXIdentifier") {
     debug("[TRANSFORM_ICON] Invalid member expression structure");
     return false;
   }
 
-  const alias = (memberExpr.object as JSXIdentifier).name;
-  const iconName = (memberExpr.property as JSXIdentifier).name;
+  const alias = name.object.name;
+  const iconName = name.property.name;
 
   debug(`[TRANSFORM_ICON] Processing ${alias}.${iconName}`);
 
@@ -142,7 +128,6 @@ export function transformIconElement(
   const packConfig = packs?.[pack] || {
     iconifyPrefix: pack.toLowerCase()
   };
-  const prefix = packConfig.iconifyPrefix;
 
   const sanitizedIconName = sanitizeIconName(iconName, pack, packConfig.sanitizeIcon);
   const iconNames = resolveIconNames(sanitizedIconName);
@@ -176,10 +161,9 @@ export function transformIconElement(
 
   const otherAttributes = attributes.filter((attr) => {
     if (attr.type === "JSXAttribute") {
-      const attrName = (attr.name as JSXIdentifier).name;
+      const attrName = attr.name.type === "JSXIdentifier" ? attr.name.name : "";
       if (attrName === "title") {
-        const jsxAttr = attr as JSXAttribute;
-        const value = jsxAttr.value;
+        const value = attr.value;
         if (value) {
           if (value.type === "JSXExpressionContainer" && value.expression) {
             // Extract just the expression content, not the surrounding braces
@@ -192,8 +176,7 @@ export function transformIconElement(
         return false;
       }
       if (attrName === "description") {
-        const jsxAttr = attr as JSXAttribute;
-        const value = jsxAttr.value;
+        const value = attr.value;
         if (value) {
           if (value.type === "JSXExpressionContainer" && value.expression) {
             // Extract just the expression content, not the surrounding braces
@@ -232,7 +215,7 @@ export function transformIconElement(
   const svgAttrList = propsObjectToAttributes(propsObj);
 
   // Build SVG element using shared function
-  const svgElement = buildSVGElement(svgAttrList, importVar, childrenCode);
+  const svgElement = buildSVGElement(svgAttrList, importVar, childrenCode ?? undefined);
 
   debug(`Generated JSX element: ${svgElement}`);
 

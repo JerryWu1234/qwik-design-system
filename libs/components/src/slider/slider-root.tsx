@@ -1,10 +1,9 @@
 import { type BindableProps, useBindings } from "@qds.dev/utils";
 import {
   $,
-  type PropsOf,
-  type QRL,
-  Slot,
   component$,
+  type PropsOf,
+  Slot,
   useComputed$,
   useConstant,
   useContextProvider,
@@ -14,14 +13,17 @@ import {
   useTask$
 } from "@qwik.dev/core";
 import { Render } from "../render/render";
-import { type SliderValue, type ThumbType, sliderContextId } from "./slider-context";
 import styles from "./slider.css?inline";
+import { type SliderValue, sliderContextId, type ThumbType } from "./slider-context";
 
-type DivProps = Omit<PropsOf<"div">, "value" | "min" | "max" | "step" | "disabled">;
+type DivProps = Omit<
+  PropsOf<"div">,
+  "value" | "min" | "max" | "step" | "disabled" | "onChange$"
+>;
 
 interface PublicSliderProps {
-  onChange$?: QRL<(value: SliderValue) => void> | ((value: SliderValue) => void);
-  onChangeEnd$?: QRL<(value: SliderValue) => void> | ((value: SliderValue) => void);
+  onChange$?: (value: SliderValue) => void;
+  onChangeEnd$?: (value: SliderValue) => void;
   name?: string;
   required?: boolean;
 }
@@ -149,9 +151,11 @@ export const SliderRoot = component$<PublicRootProps>((props) => {
     return typeof sliderValue.value === "number" ? sliderValue.value : undefined;
   });
 
+  const { onChange$: _onChange$, onChangeEnd$: _onChangeEnd$, ...rest } = props;
+
   return (
     <Render
-      {...props}
+      {...rest}
       fallback="div"
       data-qds-slider-root
       role={isRange ? "group" : "slider"}

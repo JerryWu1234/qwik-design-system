@@ -9,7 +9,7 @@ type PackageJson = {
 };
 
 // Use require to avoid TypeScript module resolution issues
-const pkg = require("./package.json") as PackageJson;
+const pkg = require("./package.json") as unknown as PackageJson;
 const { dependencies = {}, peerDependencies = {} } = pkg;
 const makeRegex = (dep: string) => new RegExp(`^${dep}(/.*)?$`);
 const excludeAll = (obj: Record<string, string>) => Object.keys(obj).map(makeRegex);

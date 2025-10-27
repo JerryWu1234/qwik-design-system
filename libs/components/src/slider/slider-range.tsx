@@ -1,4 +1,4 @@
-import { type PropsOf, component$, useComputed$, useContext } from "@qwik.dev/core";
+import { component$, type PropsOf, useComputed$, useContext } from "@qwik.dev/core";
 import { Render } from "../render/render";
 import { sliderContextId } from "./slider-context";
 
@@ -12,8 +12,7 @@ export const SliderRange = component$((props: PropsOf<"div">) => {
 
     // Check if this is a range slider by checking if value is an array
     if (!Array.isArray(context.sliderValue.value)) {
-      const percentage =
-        (((context.sliderValue.value as number) - context.min.value) / range) * 100;
+      const percentage = ((context.sliderValue.value - context.min.value) / range) * 100;
       return {
         left: "0%",
         width: `${Math.min(100, Math.max(0, percentage))}%`

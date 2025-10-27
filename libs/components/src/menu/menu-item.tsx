@@ -1,5 +1,5 @@
 import { type BindableProps, useBindings } from "@qds.dev/utils";
-import { $, type PropsOf, Slot, component$, useContext, useSignal } from "@qwik.dev/core";
+import { $, component$, type PropsOf, Slot, useContext, useSignal } from "@qwik.dev/core";
 import { Render } from "../render/render";
 import { menuContextId } from "./menu-root";
 import {
@@ -35,13 +35,15 @@ export const MenuItem = component$<PublicMenuItemProps>(
     });
 
     const handleFocus$ = $((e: FocusEvent) => {
-      context.currentFocusEl.value = e.target as HTMLElement;
+      if (e.target instanceof HTMLElement) {
+        context.currentFocusEl.value = e.target;
+      }
     });
 
     const handleSelect = $(async () => {
       if (context.disabled.value || isDisabledSig.value) return;
       onSelect$?.(valueSig.value);
-      context.onItemSelection$?.(valueSig.value);
+      await context.onItemSelection$?.(valueSig.value);
       if (closeOnSelect) {
         context.isOpenSig.value = false;
       }
@@ -109,8 +111,8 @@ export const MenuItem = component$<PublicMenuItemProps>(
             navContext.isOpenSig.value = false;
             const parent = navContext.parentContext;
             const parentRoot = parent?.contentRef?.value || parent?.rootRef?.value;
-            if (parentRoot) {
-              nextItem = navContext.triggerRef.value as HTMLElement;
+            if (parentRoot && navContext.triggerRef.value instanceof HTMLElement) {
+              nextItem = navContext.triggerRef.value;
             }
           }
           break;

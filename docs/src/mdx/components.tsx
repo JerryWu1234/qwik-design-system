@@ -1,5 +1,5 @@
 import type { Component, PropsOf } from "@qwik.dev/core";
-import { Slot, component$ } from "@qwik.dev/core";
+import { component$, Slot } from "@qwik.dev/core";
 
 import { Features } from "~/docs-widgets/features/features";
 import { cn } from "~/utils/cn";
@@ -7,7 +7,6 @@ import { AnatomyTable } from "../docs-widgets/anatomy-table/anatomy-table";
 import { APITable } from "../docs-widgets/api-table/api-table";
 import { Image } from "../docs-widgets/image/image";
 import { MainHeading, SubHeading } from "../docs-widgets/toc/toc";
-import { Showcase } from "./showcase";
 export const components: Record<string, Component> = {
   p: component$<PropsOf<"p">>(({ ...props }) => {
     return (
@@ -200,7 +199,6 @@ export const components: Record<string, Component> = {
       </strong>
     );
   }),
-  Showcase,
   APITable,
   AnatomyTable,
   Features,

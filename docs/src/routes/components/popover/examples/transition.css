@@ -1,6 +1,9 @@
 .popover-transition {
   opacity: 0;
-  transition: opacity 0.3s, overlay 0.3s, display 0.3s;
+  transition:
+    opacity 0.3s,
+    overlay 0.3s,
+    display 0.3s;
   transition-behavior: allow-discrete;
 }
 

@@ -1,6 +1,5 @@
-import { component$, useSignal, useStyles$ } from "@qwik.dev/core";
-
 import { DateInput } from "@qds.dev/ui";
+import { component$, useSignal, useStyles$ } from "@qwik.dev/core";
 
 export default component$(() => {
   useStyles$(styles);
@@ -13,7 +12,8 @@ export default component$(() => {
       class="date-input-container"
       preventdefault:submit
       onSubmit$={(e) => {
-        const form = e.target as HTMLFormElement;
+        const form = e.target;
+        if (!(form instanceof HTMLFormElement)) return;
         formData.value = Object.fromEntries(new FormData(form));
       }}
     >

@@ -1,8 +1,8 @@
 import { type BindableProps, useBindings } from "@qds.dev/utils";
 import {
+  component$,
   type QRL,
   Slot,
-  component$,
   useComputed$,
   useContextProvider,
   useId,
@@ -46,6 +46,16 @@ export type CalendarRootBoundProps = {
 // Regular expression for validating ISO date format (yyyy-mm-dd)
 const isoDateRegex = /^\d{1,4}-(0[1-9]|1[0-2])-\d{2}$/;
 
+function createISODate(year: number, month: number, day: number): ISODate {
+  const monthStr = String(month).padStart(2, "0");
+  const dayStr = String(day).padStart(2, "0");
+  return `${year}-${monthStr}-${dayStr}` as ISODate;
+}
+
+function extractMonth(date: ISODate): Month {
+  return date.split("-")[1] as Month;
+}
+
 /** The root calendar component that manages state and provides context */
 export const CalendarRoot = component$<PublicCalendarRootProps>((props) => {
   useStyles$(styles);
@@ -54,7 +64,7 @@ export const CalendarRoot = component$<PublicCalendarRootProps>((props) => {
     locale = "en",
     showWeekNumber = false,
     showDaysOfWeek = true,
-    onChange$,
+    onChange$: _onChange$,
     mode = "inline",
     ...otherProps
   } = props;
@@ -66,11 +76,14 @@ export const CalendarRoot = component$<PublicCalendarRootProps>((props) => {
   const labelStr = props["aria-label"] ?? ARIA_LABELS[locale].root;
   const daysOfWeek = WEEKDAYS[locale];
   const date = new Date();
-  const currentDate =
-    `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}` as ISODate;
+  const currentDate = createISODate(
+    date.getFullYear(),
+    date.getMonth() + 1,
+    date.getDate()
+  );
   const initialDate = dateSig.value ?? currentDate;
   const yearToRender = useSignal<number>(+initialDate.split("-")[0]);
-  const monthToRender = useSignal<Month>(initialDate.split("-")[1] as Month);
+  const monthToRender = useSignal<Month>(extractMonth(initialDate));
   const dateToFocus = useSignal<ISODate>(initialDate);
   const localId = useId();
 
@@ -116,17 +129,17 @@ export const CalendarRoot = component$<PublicCalendarRootProps>((props) => {
     const datesArr = track(() => datesArray.value);
 
     if (datesArr.flat().includes(dateToFocus.value)) {
-      const btn = document.querySelector(
-        `button[data-value="${dateToFocus.value}"]`
-      ) as HTMLButtonElement | null;
-      btn?.focus();
+      const btn = document.querySelector(`button[data-value="${dateToFocus.value}"]`);
+      if (btn instanceof HTMLButtonElement) {
+        btn.focus();
+      }
     }
 
     cleanup(() => {
-      const btn = document.querySelector(
-        `button[data-value="${dateToFocus.value}"]`
-      ) as HTMLButtonElement | null;
-      btn?.blur();
+      const btn = document.querySelector(`button[data-value="${dateToFocus.value}"]`);
+      if (btn instanceof HTMLButtonElement) {
+        btn.blur();
+      }
     });
   });
 
@@ -135,7 +148,7 @@ export const CalendarRoot = component$<PublicCalendarRootProps>((props) => {
 
     if (newDate) {
       yearToRender.value = +newDate.split("-")[0];
-      monthToRender.value = newDate.split("-")[1] as Month;
+      monthToRender.value = extractMonth(newDate);
       dateToFocus.value = newDate;
     }
   });

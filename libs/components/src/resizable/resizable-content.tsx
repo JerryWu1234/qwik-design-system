@@ -1,7 +1,7 @@
 import {
+  component$,
   type PropsOf,
   Slot,
-  component$,
   useConstant,
   useContext,
   useId,
@@ -56,7 +56,7 @@ export const ResizableContent = component$<PublicResizableContentProps>((props) 
     collapsible = false,
     collapsedSize = 0,
     collapseThreshold = 0.05,
-    onResize$,
+    onResize$: _onResize$,
     ...rest
   } = props;
 

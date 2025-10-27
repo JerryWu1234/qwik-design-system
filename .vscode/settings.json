@@ -13,6 +13,11 @@
   // Prevent conflicts between tools.
   "eslint.enable": false,
   "prettier.enable": false,
+  
+  // Oxlint configuration
+  "oxc.enable": true,
+  "oxc.lint.run": "onType",
+  
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },

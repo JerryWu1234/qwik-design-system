@@ -1,8 +1,8 @@
 import {
   $,
+  component$,
   type PropsOf,
   Slot,
-  component$,
   sync$,
   useComputed$,
   useContext,
@@ -19,7 +19,7 @@ type PublicTriggerProps = PropsOf<"button">;
 export const RadioGroupItemTrigger = component$((props: PublicTriggerProps) => {
   const context = useContext(radioGroupContextId);
   const itemContext = useContext(radioGroupItemContextId);
-  const triggerRef = useSignal<HTMLElement>();
+  const triggerRef = useSignal<HTMLButtonElement>();
   const { ...restProps } = props;
   const value = itemContext.itemValue;
   const itemLabelId = `${itemContext.itemId}-label`;

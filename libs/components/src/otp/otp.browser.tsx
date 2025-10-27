@@ -1,17 +1,17 @@
-import { $, type PropsOf, component$, useSignal, useStore } from "@qwik.dev/core";
+import { $, component$, type PropsOf, useSignal, useStore } from "@qwik.dev/core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
 import { Otp } from "..";
 
 // Top-level locator constants using data-testid
 const Root = page.getByTestId("root");
 const Items = page.getByTestId("item");
 const Input = page.getByTestId("input");
-const ItemIndicators = page.getByTestId("item-indicator");
+// const ItemIndicators = page.getByTestId("item-indicator");
 
 const Basic = component$((props: PropsOf<typeof Otp.Root>) => {
-  const slots = [...Array(4).keys()];
+  const slots = Array.from({ length: 4 }, (_, i) => i);
   return (
     <Otp.Root {...props} data-testid="root">
       <Otp.HiddenInput data-testid="input" />
@@ -203,7 +203,7 @@ test("backspace and arrow right should maintain highlight position", async () =>
 });
 
 const CompleteHandler = component$(() => {
-  const slots = [...Array(4).keys()];
+  const slots = Array.from({ length: 4 }, (_, i) => i);
   const isDisabled = useSignal(false);
   const handleComplete$ = $(() => {
     isDisabled.value = true;
@@ -236,7 +236,7 @@ test("onComplete handler should be called when OTP is full", async () => {
   await expect.element(Input).toHaveValue("1234");
 
   await expect.element(Input).toHaveAttribute("disabled");
-  await expect(Input).toBeDisabled();
+  expect(Input).toBeDisabled();
 });
 
 test("initial value should be displayed", async () => {
@@ -261,7 +261,7 @@ const ExternalState = component$(() => {
         }}
       >
         <Otp.HiddenInput data-testid="input" />
-        {[...Array(4).keys()].map((slot) => (
+        {Array.from({ length: 4 }, (_, slot) => (
           <Otp.Item key={slot} data-testid="item">
             <Otp.ItemIndicator data-testid="item-indicator" />
           </Otp.Item>
@@ -308,7 +308,7 @@ test("external signal changes update OTP", async () => {
 
 const ChangeHandler = component$(() => {
   const hasChanged = useSignal(false);
-  const slots = [...Array(4).keys()];
+  const slots = Array.from({ length: 4 }, (_, i) => i);
   const handleChange$ = $(() => {
     hasChanged.value = true;
   });
@@ -340,7 +340,7 @@ test("onChange handler should be called when value changes", async () => {
 
 const ExternalDisable = component$(() => {
   const isDisabled = useSignal(false);
-  const slots = [...Array(4).keys()];
+  const slots = Array.from({ length: 4 }, (_, i) => i);
 
   return (
     <div>

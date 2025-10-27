@@ -1,8 +1,8 @@
 import type { Component } from "@qwik.dev/core";
 import {
-  Slot,
   component$,
   createContextId,
+  Slot,
   useContext,
   useContextProvider
 } from "@qwik.dev/core";
@@ -10,7 +10,7 @@ import {
 export const MDXContext = createContextId<Components>("MDXContext");
 
 export interface Components {
-  [tag: string]: Component<unknown>;
+  [tag: string]: Component;
 }
 
 /**

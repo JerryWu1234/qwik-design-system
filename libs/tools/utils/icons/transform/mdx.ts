@@ -1,18 +1,19 @@
+import type { Node } from "@oxc-project/types";
 import MagicString from "magic-string";
 import { walk } from "oxc-walker";
 import { remark } from "remark";
 import remarkMdx from "remark-mdx";
 import type { PacksMap } from "../../../vite/icons";
 import { extractMDXImportAliases } from "../import-resolver";
-import { type TransformContext, buildSVGElement, generateIconImport } from "./shared";
+import type { MDXJSXElement, MDXNode } from "../types/mdx-ast";
+import { buildSVGElement, generateIconImport, type TransformContext } from "./shared";
 
 /**
  * Extract attributes from MDX JSX node, handling title and description specially
  * @param jsxNode - MDX JSX node
  * @returns Object with attributes array and special props
  */
-// biome-ignore lint/suspicious/noExplicitAny: MDX AST node types
-export function extractMDXAttributes(jsxNode: any): {
+export function extractMDXAttributes(jsxNode: MDXJSXElement): {
   attrs: string[];
   titleProp?: string;
   descriptionProp?: string;
@@ -140,18 +141,20 @@ export function transformMDXFile(
     let hasChanges = false;
 
     // Use oxc-walker to traverse MDAST (it's ESTree-compatible at runtime!)
-    // biome-ignore lint/suspicious/noExplicitAny: MDAST is ESTree-compatible but types don't match
-    walk(mdast as any, {
+    walk(mdast as unknown as Node, {
       enter(node) {
-        // @ts-expect-error - MDAST node types are not in oxc-walker's type definitions
-        if (node.type !== "mdxJsxFlowElement" && node.type !== "mdxJsxTextElement") {
+        // Type guard for MDX JSX nodes
+        const mdxNode = node as unknown as MDXNode;
+
+        if (
+          mdxNode.type !== "mdxJsxFlowElement" &&
+          mdxNode.type !== "mdxJsxTextElement"
+        ) {
           return;
         }
 
-        // biome-ignore lint/suspicious/noExplicitAny: MDX AST node types
-        const jsxNode = node as any;
+        const jsxNode = mdxNode as MDXJSXElement;
 
-        // Type guard checks for MDX JSX nodes
         if (!jsxNode.name || typeof jsxNode.name !== "string") {
           return;
         }
@@ -162,7 +165,12 @@ export function transformMDXFile(
           return;
         }
 
-        const [alias, iconName] = parts;
+        const alias = parts[0];
+        const iconName = parts[1];
+        if (!alias || !iconName) {
+          return;
+        }
+
         const packName = aliasToPack.get(alias);
         if (!packName) {
           return;
@@ -212,8 +220,8 @@ export function transformMDXFile(
           jsxNode.position?.start?.offset !== undefined &&
           jsxNode.position?.end?.offset !== undefined
         ) {
-          const start = jsxNode.position.start.offset;
-          const end = jsxNode.position.end.offset;
+          const start: number = jsxNode.position.start.offset;
+          const end: number = jsxNode.position.end.offset;
           s.overwrite(start, end, svgReplacement);
           hasChanges = true;
 

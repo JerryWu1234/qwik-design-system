@@ -1,6 +1,18 @@
-import fs from "node:fs";
-import path from "node:path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import { parseSync } from "oxc-parser";
+
+interface ASTNode {
+  type: string;
+  id?: { name?: string };
+  declaration?: ASTNode;
+  declarations?: Array<{ id: { type: string; name?: string } }>;
+}
+
+interface ParsedAST {
+  body?: ASTNode[];
+  program?: { body?: ASTNode[] };
+}
 
 const EXCLUDED_PATHS = [
   path.normalize("apps/docs/dist/build"),
@@ -8,15 +20,15 @@ const EXCLUDED_PATHS = [
   path.normalize("apps/component-tests"),
   path.normalize("apps/docs/src/docs-widgets"),
   path.normalize("apps/docs/src/mdx")
-];
+] as const;
 
-function isExcluded(filepath) {
+function isExcluded(filepath: string): boolean {
   return EXCLUDED_PATHS.some((excluded) => filepath.includes(excluded));
 }
 
-function getAllFiles(dir, filelist = []) {
+function getAllFiles(dir: string, filelist: string[] = []): string[] {
   const files = fs.readdirSync(dir);
-  // biome-ignore lint/complexity/noForEach: <explanation>
+  // biome-ignore lint/complexity/noForEach: iterating through files
   files.forEach((file) => {
     const filepath = path.join(dir, file);
     if (isExcluded(filepath)) return;
@@ -33,23 +45,23 @@ function getAllFiles(dir, filelist = []) {
   return filelist;
 }
 
-function extractExportsWithOxc(content, filepath = "") {
+function extractExportsWithOxc(content: string, filepath = ""): string[] {
   try {
-    const ast = parseSync(filepath, content);
+    const ast = parseSync(filepath, content) as unknown as ParsedAST;
     const program = ast?.body ?? ast?.program?.body;
 
     if (!Array.isArray(program)) {
       throw new Error("ast.body is not iterable");
     }
 
-    const exports = [];
+    const exports: (string | undefined)[] = [];
 
     for (const node of program) {
       if (node.type === "ExportNamedDeclaration" && node.declaration) {
         const decl = node.declaration;
         if (decl.type === "FunctionDeclaration" || decl.type === "ClassDeclaration") {
           exports.push(decl.id?.name);
-        } else if (decl.type === "VariableDeclaration") {
+        } else if (decl.type === "VariableDeclaration" && decl.declarations) {
           for (const v of decl.declarations) {
             if (v.id.type === "Identifier") {
               exports.push(v.id.name);
@@ -66,20 +78,23 @@ function extractExportsWithOxc(content, filepath = "") {
       }
     }
 
-    return exports.filter(Boolean);
+    return exports.filter(Boolean) as string[];
   } catch (e) {
-    console.warn(`Failed to parse ${filepath}: ${e.message}`);
+    const error = e as Error;
+    console.warn(`Failed to parse ${filepath}: ${error.message}`);
     return [];
   }
 }
 
-function getDescription(folderPath) {
+function getDescription(folderPath: string): string {
   const pkgPath = path.join(folderPath, "package.json");
   const readmePath = path.join(folderPath, "README.md");
 
   if (fs.existsSync(pkgPath)) {
     try {
-      const json = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
+      const json = JSON.parse(fs.readFileSync(pkgPath, "utf-8")) as {
+        description?: string;
+      };
       if (json.description) return json.description;
     } catch {}
   }
@@ -92,7 +107,7 @@ function getDescription(folderPath) {
   return "";
 }
 
-function generateSummary(rootDir) {
+function generateSummary(rootDir: string): string {
   const folders = fs
     .readdirSync(rootDir)
     .filter(
@@ -139,7 +154,7 @@ We use [Vitest](https://github.com/kunai-consulting/qwik-design-system/blob/main
     if (desc) output += `- Description: ${desc}\n`;
 
     const files = getAllFiles(fullPath);
-    const fileSummaries = [];
+    const fileSummaries: string[] = [];
 
     for (const file of files) {
       const content = fs.readFileSync(file, "utf-8");

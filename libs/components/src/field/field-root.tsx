@@ -1,10 +1,10 @@
 import { type BindableProps, useBindings } from "@qds.dev/utils";
 import {
+  component$,
+  createContextId,
   type PropsOf,
   type Signal,
   Slot,
-  component$,
-  createContextId,
   useContextProvider,
   useId,
   useSignal,
@@ -55,12 +55,12 @@ export const FieldRoot = component$((props: FieldRootProps) => {
     value: undefined as unknown
   });
 
-  useTask$(async ({ track, cleanup }) => {
+  useTask$(({ track, cleanup }) => {
     if (!props.onChange$) return;
     const value = track(() => rootValue.value);
 
     if (!isInitialRender.value) {
-      await props.onChange$(value);
+      props.onChange$(value);
     }
 
     cleanup(() => {

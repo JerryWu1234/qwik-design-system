@@ -1,7 +1,7 @@
 import { Checkbox } from "@qds.dev/ui";
 import {
-  type Signal,
   component$,
+  type Signal,
   useComputed$,
   useSignal,
   useStyles$
@@ -21,7 +21,8 @@ export default component$(() => {
       preventdefault:submit
       noValidate
       onSubmit$={(e) => {
-        const form = e.target as HTMLFormElement;
+        const form = e.target;
+        if (!(form instanceof HTMLFormElement)) return;
         if (!isChecked.value) {
           isSubmitAttempt.value = true;
           return;

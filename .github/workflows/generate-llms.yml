@@ -30,7 +30,7 @@ jobs:
       - name: 🟢 Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: lts/*
+          node-version: 24.9.0
 
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2.1.0

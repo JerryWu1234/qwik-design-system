@@ -1,10 +1,20 @@
 import { lookupCollection } from "@iconify/json";
 import type { IconifyJSON } from "@iconify/types";
 import { parseSync } from "oxc-parser";
+import type { Plugin as VitePlugin } from "vite";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { icons } from "./icons";
 
 type TransformResult = { code: string; map: unknown } | null;
+
+interface TestPlugin extends VitePlugin {
+  collections?: Map<string, IconifyJSON>;
+  lazyCollections?: Map<string, Promise<IconifyJSON>>;
+  availableCollections?: Set<string>;
+  transform: (code: string, id: string) => TransformResult;
+  resolveId: (source: string) => string | null;
+  handleHotUpdate: (ctx: unknown) => Promise<unknown>;
+}
 
 function validateJSXSyntax(code: string): { isValid: boolean; errors: string[] } {
   try {
@@ -29,12 +39,11 @@ function validateJSXSyntax(code: string): { isValid: boolean; errors: string[] }
 }
 
 describe("icons", () => {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  let plugin: any;
+  let plugin: TestPlugin;
   let transform: (code: string, id: string) => TransformResult;
 
   beforeAll(async () => {
-    plugin = icons({ debug: true });
+    plugin = icons({ debug: true }) as TestPlugin;
 
     const collections: Map<string, IconifyJSON> = new Map();
     try {
@@ -47,7 +56,7 @@ describe("icons", () => {
     // Set the collections on the plugin
     plugin.collections = collections;
 
-    transform = plugin.transform as (code: string, id: string) => TransformResult;
+    transform = plugin.transform;
   });
 
   it("should skip non-JSX files", () => {
@@ -456,9 +465,6 @@ describe("icons", () => {
     expect(svgMatches).toHaveLength(2);
 
     // Extract the variable names used in both SVG elements
-    const firstMatch = result.code.match(
-      /dangerouslySetInnerHTML=\{(__qds_i_lucide_check(?:_\d+)?)\}/
-    );
     const allMatches = result.code.matchAll(
       /dangerouslySetInnerHTML=\{(__qds_i_lucide_check(?:_\d+)?)\}/g
     );
@@ -604,11 +610,8 @@ describe("icons", () => {
   describe("debug mode", () => {
     it("should log debug messages when debug is enabled", () => {
       const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-      const debugPlugin = icons({ debug: true });
-      const debugTransform = debugPlugin.transform as (
-        code: string,
-        id: string
-      ) => TransformResult;
+      const debugPlugin = icons({ debug: true }) as TestPlugin;
+      const debugTransform = debugPlugin.transform;
 
       const code = `
         import { Lucide } from "@qds.dev/ui";
@@ -631,13 +634,13 @@ describe("icons", () => {
 
   describe("virtual modules", () => {
     it("should resolve virtual icon modules", () => {
-      const resolveId = plugin.resolveId as (source: string) => string | null;
+      const resolveId = plugin.resolveId;
       const result = resolveId("virtual:icons/lucide/check");
       expect(result).toBe("\0virtual:icons/lucide/check");
     });
 
     it("should not resolve non-virtual modules", () => {
-      const resolveId = plugin.resolveId as (source: string) => string | null;
+      const resolveId = plugin.resolveId;
       const result = resolveId("react");
       expect(result).toBeNull();
     });
@@ -981,12 +984,11 @@ describe("icons", () => {
 });
 
 describe("JSX Syntax Validation", () => {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  let plugin: any;
+  let plugin: TestPlugin;
   let transform: (code: string, id: string) => TransformResult;
 
-  beforeAll(async () => {
-    plugin = icons();
+  beforeAll(() => {
+    plugin = icons() as TestPlugin;
     transform = plugin.transform.bind(plugin);
   });
 
@@ -1393,13 +1395,11 @@ export default component$(() => {
 });
 
 describe("HMR (Hot Module Replacement)", () => {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  let plugin: any;
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  let handleHotUpdate: any;
+  let plugin: TestPlugin;
+  let handleHotUpdate: (ctx: unknown) => Promise<unknown>;
 
   beforeAll(async () => {
-    plugin = icons({ debug: true });
+    plugin = icons({ debug: true }) as TestPlugin;
     handleHotUpdate = plugin.handleHotUpdate.bind(plugin);
 
     // Wait for plugin initialization
@@ -1434,7 +1434,7 @@ describe("HMR (Hot Module Replacement)", () => {
         }
       };
 
-      const result = await handleHotUpdate(mockCtx);
+      const result = (await handleHotUpdate(mockCtx)) as unknown[];
 
       expect(mockCtx.server.ws.send).toHaveBeenCalledWith({ type: "full-reload" });
       expect(result).toEqual([]);
@@ -1456,7 +1456,7 @@ describe("HMR (Hot Module Replacement)", () => {
         }
       };
 
-      const result = await handleHotUpdate(mockCtx);
+      const result = (await handleHotUpdate(mockCtx)) as unknown[];
 
       expect(mockCtx.server.ws.send).toHaveBeenCalledWith({ type: "full-reload" });
       expect(result).toEqual([]);
@@ -1525,7 +1525,7 @@ describe("HMR (Hot Module Replacement)", () => {
         }
       };
 
-      const result = await handleHotUpdate(mockCtx);
+      const result = (await handleHotUpdate(mockCtx)) as unknown[];
 
       expect(mockCtx.server.ws.send).toHaveBeenCalledWith({ type: "full-reload" });
       expect(result).toEqual([]);
@@ -1614,7 +1614,7 @@ describe("HMR (Hot Module Replacement)", () => {
         }
       };
 
-      const result = await handleHotUpdate(mockCtx);
+      const result = (await handleHotUpdate(mockCtx)) as unknown[];
 
       expect(mockCtx.server.ws.send).toHaveBeenCalledWith({ type: "full-reload" });
       expect(result).toEqual([]);
@@ -1643,7 +1643,7 @@ describe("HMR (Hot Module Replacement)", () => {
         }
       };
 
-      const result = await handleHotUpdate(mockCtx);
+      const result = (await handleHotUpdate(mockCtx)) as unknown[];
 
       expect(mockCtx.server.ws.send).toHaveBeenCalledWith({ type: "full-reload" });
       expect(result).toEqual([]);
@@ -1652,12 +1652,11 @@ describe("HMR (Hot Module Replacement)", () => {
 });
 
 describe("MDX file support", () => {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  let plugin: any;
+  let plugin: TestPlugin;
   let transform: (code: string, id: string) => TransformResult;
 
   beforeAll(async () => {
-    plugin = icons({ debug: true });
+    plugin = icons({ debug: true }) as TestPlugin;
 
     const collections: Map<string, IconifyJSON> = new Map();
     try {
@@ -1668,7 +1667,9 @@ describe("MDX file support", () => {
     }
 
     plugin.collections = collections;
-    transform = plugin.transform as (code: string, id: string) => TransformResult;
+    if (plugin.transform) {
+      transform = plugin.transform;
+    }
   });
 
   it("should transform icon in basic MDX file", () => {

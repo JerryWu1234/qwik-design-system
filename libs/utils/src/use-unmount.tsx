@@ -1,9 +1,9 @@
 import {
-  type QRL,
-  type Signal,
   implicit$FirstArg,
   isBrowser,
   isServer,
+  type QRL,
+  type Signal,
   sync$,
   useOnDocument,
   useSignal,
@@ -131,7 +131,7 @@ export function useMountTaskQrl(
   const cleanupFn = useSignal<QRL<() => void> | undefined>();
 
   useTask$(({ cleanup }) => {
-    taskFn({
+    void taskFn({
       /**
        * NOTE: cleanup gets wrapped in QRL for useTask$-style DX via qdsTransformPlugin / environment agnostic unmount behavior.
        */
@@ -142,7 +142,7 @@ export function useMountTaskQrl(
     });
 
     if (isBrowser) {
-      cleanup(() => cleanupFn.value?.());
+      cleanup(() => void cleanupFn.value?.());
     }
   });
 
@@ -151,7 +151,7 @@ export function useMountTaskQrl(
       const element = elementRef.value;
       if (!element) return;
 
-      const cleanup = () => cleanupFn.value?.();
+      const cleanup = () => void cleanupFn.value?.();
 
       globalUnmountObserver.register(element, cleanup);
     });

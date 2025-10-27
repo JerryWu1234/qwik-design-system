@@ -50,7 +50,7 @@ export function getPaginationItems(
 
     // Convert set to sorted array with ellipsis
     return Array.from(visiblePages)
-      .sort((a, b) => a - b)
+      .toSorted((a, b) => a - b)
       .reduce<PaginationItem[]>((items, pageNum, idx, array) => {
         if (idx > 0 && pageNum - array[idx - 1] > 1) {
           items.push({ type: "ellipsis", key: `ellipsis-${items.length}` });

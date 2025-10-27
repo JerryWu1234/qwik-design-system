@@ -4,29 +4,30 @@ import { qwikVite } from "@qwik.dev/core/optimizer";
 import { qwikRouter } from "@qwik.dev/router/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { resolve } from "pathe";
-import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
-
 /**
  * This is the base config for vite.
  * When building, the adapter config is used which loads this file and extends it.
  */
-import { type UserConfig, defineConfig } from "vite";
+import { defineConfig, type UserConfig } from "vite";
+import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 import tsconfigPaths from "vite-tsconfig-paths";
 import pkg from "./package.json";
 
 type PkgDep = Record<string, string>;
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const { dependencies = {}, devDependencies = {} } = pkg as any as {
-  dependencies: PkgDep;
-  devDependencies: PkgDep;
+
+interface PackageJson {
+  dependencies?: PkgDep;
+  devDependencies?: PkgDep;
   [key: string]: unknown;
-};
+}
+
+const { dependencies = {}, devDependencies = {} } = pkg as unknown as PackageJson;
 errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 
 /**
  * Note that Vite normally starts from `index.html` but the qwikCity plugin makes start at `src/entry.ssr.tsx` instead.
  */
-export default defineConfig(({ command, mode }): UserConfig => {
+export default defineConfig((): UserConfig => {
   const mainQuality = {
     quality: 80
   };

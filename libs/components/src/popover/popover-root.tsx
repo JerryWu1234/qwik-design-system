@@ -1,12 +1,12 @@
 import polyfill from "@oddbird/css-anchor-positioning/fn";
 import {
   $,
-  type PropsOf,
-  type Signal,
-  Slot,
   component$,
   createContextId,
   isServer,
+  type PropsOf,
+  type Signal,
+  Slot,
   useComputed$,
   useContextProvider,
   useId,
@@ -15,8 +15,8 @@ import {
   useTask$,
   useVisibleTask$
 } from "@qwik.dev/core";
-import { Render } from "../render/render";
 import type { AllowedFallbacks } from "../render/render";
+import { Render } from "../render/render";
 
 export type PopoverRootProps<Fallback extends "div" | "li" = "div"> = Omit<
   PropsOf<Fallback>,
@@ -91,7 +91,7 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
 
   useContextProvider(popoverContextId, context);
 
-  const handleExternalToggle$ = $(async () => {
+  const handleExternalToggle$ = $(() => {
     if (!canExternallyChange.value) return;
     if (!contentRef.value) return;
 
@@ -100,9 +100,9 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
 
     try {
       if (isOpen.value) {
-        await contentRef.value.showPopover();
+        contentRef.value.showPopover();
       } else {
-        await contentRef.value.hidePopover();
+        contentRef.value.hidePopover();
       }
     } catch (error) {
       // Reset flag on error so next attempt can proceed
@@ -143,7 +143,7 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
     track(() => isOpen.value);
 
     if (!isInitialRender.value) {
-      await onChange$?.(isOpen.value);
+      onChange$?.(isOpen.value);
     }
 
     await handlePolyfill$();

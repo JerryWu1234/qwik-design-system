@@ -1,9 +1,10 @@
-import { type PropsOf, component$, useSignal } from "@qwik.dev/core";
+import { component$, type PropsOf, useSignal } from "@qwik.dev/core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page, userEvent } from "vitest/browser";
-import { Modal } from "..";
+import { render } from "vitest-browser-qwik";
+import { focusElement } from "../../vitest/element";
 import { pointer } from "../../vitest/pointer";
+import { Modal } from "..";
 
 pointer.showDebugDots = true;
 
@@ -12,7 +13,7 @@ const Root = page.getByTestId("root");
 const Trigger = page.getByTestId("trigger");
 const Content = page.getByTestId("content"); // This is the <dialog> element
 const Title = page.getByTestId("title");
-const Description = page.getByTestId("description");
+// const Description = page.getByTestId("description");
 const CloseButton = page.getByTestId("close");
 const ParentTrigger = page.getByTestId("parent-trigger");
 const ParentContent = page.getByTestId("parent-content");
@@ -221,8 +222,8 @@ test("nested modal opens with enter key", async () => {
   await userEvent.click(ParentTrigger);
   await expect.element(ParentContent).toBeVisible();
 
-  await expect(NestedTrigger).toBeVisible();
-  ((await NestedTrigger.element()) as HTMLButtonElement).focus();
+  expect(NestedTrigger).toBeVisible();
+  focusElement(NestedTrigger);
   await userEvent.keyboard("{Enter}");
 
   await expect.element(NestedContent).toBeVisible();

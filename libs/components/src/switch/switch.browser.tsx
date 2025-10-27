@@ -1,13 +1,14 @@
-import { $, type PropsOf, component$, useComputed$, useSignal } from "@qwik.dev/core";
+import { $, component$, type PropsOf, useComputed$, useSignal } from "@qwik.dev/core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
+import { focusElement } from "../../vitest/element";
 import { Switch } from "..";
 
 // Top-level locator constants using data-testid
 const Root = page.getByTestId("root");
 const Trigger = page.getByTestId("trigger");
-const Thumb = page.getByTestId("thumb");
+// const Thumb = page.getByTestId("thumb");
 const Label = page.getByTestId("label");
 const Description = page.getByTestId("description");
 const HiddenInput = page.getByTestId("hidden-input");
@@ -65,8 +66,7 @@ const FormWithValidation = component$((props: PropsOf<typeof Switch.Root>) => {
   const isSubmitAttempt = useSignal(false);
   const isError = useComputed$(() => !isChecked.value && isSubmitAttempt.value);
 
-  const handleSubmit$ = $((e: SubmitEvent) => {
-    const form = e.target as HTMLFormElement;
+  const handleSubmit$ = $(() => {
     if (!isChecked.value) {
       isSubmitAttempt.value = true;
       return;
@@ -127,7 +127,7 @@ test("should toggle state with space key", async () => {
   render(<Basic />);
 
   await expect.element(Trigger).toBeVisible();
-  ((await Trigger.element()) as HTMLButtonElement).focus();
+  focusElement(Trigger);
 
   await userEvent.keyboard("{Space}");
   await expect.element(Root).toHaveAttribute("aria-checked", "true");
@@ -140,7 +140,7 @@ test("should toggle state with enter key", async () => {
   render(<Basic />);
 
   await expect.element(Trigger).toBeVisible();
-  ((await Trigger.element()) as HTMLButtonElement).focus();
+  focusElement(Trigger);
 
   await userEvent.keyboard("{Enter}");
   await expect.element(Root).toHaveAttribute("aria-checked", "true");
@@ -170,7 +170,7 @@ test("should not toggle when disabled and using keyboard", async () => {
   render(<Basic disabled />);
 
   await expect.element(Trigger).toBeVisible();
-  ((await Trigger.element()) as HTMLButtonElement).focus();
+  focusElement(Trigger);
 
   await userEvent.keyboard("{Space}");
   await expect.element(Root).toHaveAttribute("aria-checked", "false");
@@ -221,11 +221,13 @@ test("should connect error message with aria-errormessage", async () => {
 
   await userEvent.click(SubmitButton);
 
-  const errorElements = await Errors.elements();
+  const errorElements = Errors.elements();
   const errorId = errorElements[0]?.id;
 
   expect(errorId).toBeTruthy();
-  await expect.element(Root).toHaveAttribute("aria-errormessage", errorId as string);
+  if (errorId) {
+    await expect.element(Root).toHaveAttribute("aria-errormessage", errorId);
+  }
 });
 
 test("should display description when provided", async () => {

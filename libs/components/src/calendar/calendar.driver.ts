@@ -1,3 +1,4 @@
+// oxlint-disable no-empty-file
 // import type { Locator, Page } from "@playwright/test";
 // export type DriverLocator = Locator | Page;
 

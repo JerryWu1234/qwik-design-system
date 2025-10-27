@@ -1,7 +1,8 @@
-import { type PropsOf, component$, useSignal, useStore } from "@qwik.dev/core";
+import { component$, type PropsOf, useSignal, useStore } from "@qwik.dev/core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
+import { focusElement } from "../../vitest/element";
 import { Popover } from "..";
 
 // Top-level locator constants using data-testid
@@ -104,7 +105,7 @@ test("Enter key on trigger opens popover", async () => {
   render(<Basic />);
 
   await expect.element(Trigger).toBeVisible();
-  ((await Trigger.element()) as HTMLButtonElement).focus();
+  focusElement(Trigger);
   await userEvent.keyboard("{Enter}");
 
   await expect.element(Content).toBeVisible();
@@ -114,7 +115,7 @@ test("Enter key toggles popover", async () => {
   render(<Basic />);
 
   await expect.element(Trigger).toBeVisible();
-  ((await Trigger.element()) as HTMLButtonElement).focus();
+  focusElement(Trigger);
 
   await userEvent.keyboard("{Enter}");
   await expect.element(Content).toBeVisible();
@@ -127,7 +128,7 @@ test("Space key on trigger opens popover", async () => {
   render(<Basic />);
 
   await expect.element(Trigger).toBeVisible();
-  ((await Trigger.element()) as HTMLButtonElement).focus();
+  focusElement(Trigger);
   await userEvent.keyboard("{Space}");
 
   await expect.element(Content).toBeVisible();
@@ -137,7 +138,7 @@ test("Space key toggles popover", async () => {
   render(<Basic />);
 
   await expect.element(Trigger).toBeVisible();
-  ((await Trigger.element()) as HTMLButtonElement).focus();
+  focusElement(Trigger);
 
   await userEvent.keyboard("{Space}");
   await expect.element(Content).toBeVisible();
@@ -216,10 +217,10 @@ test("trigger and content are connected via id", async () => {
   render(<Basic />);
 
   await expect.element(Trigger).toBeVisible();
-  const triggerTarget = (await Trigger.element()).getAttribute("popovertarget");
+  const triggerTarget = Trigger.element().getAttribute("popovertarget");
   await userEvent.click(Trigger);
   await expect.element(Content).toBeVisible();
-  const contentId = (await Content.element()).getAttribute("id");
+  const contentId = Content.element().getAttribute("id");
 
   expect(triggerTarget).toBe(contentId);
 });

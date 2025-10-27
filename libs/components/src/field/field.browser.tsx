@@ -1,8 +1,8 @@
-import { $, type PropsOf, component$, useSignal, useStore } from "@qwik.dev/core";
+import { $, component$, type PropsOf, useSignal, useStore } from "@qwik.dev/core";
 import axe from "axe-core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
 import { Field } from "..";
 
 // Top-level locator constants using data-testid
@@ -73,8 +73,8 @@ test("label is associated with input", async () => {
   await expect.element(Label).toBeVisible();
   await expect.element(Input).toBeVisible();
 
-  const inputElement = await Input.element();
-  const labelElement = await Label.element();
+  const inputElement = Input.element();
+  const labelElement = Label.element();
   const inputId = inputElement?.getAttribute("id");
   const labelFor = labelElement?.getAttribute("for");
 
@@ -88,8 +88,8 @@ test("label is associated with textarea", async () => {
   await expect.element(Label).toBeVisible();
   await expect.element(Textarea).toBeVisible();
 
-  const textareaElement = await Textarea.element();
-  const labelElement = await Label.element();
+  const textareaElement = Textarea.element();
+  const labelElement = Label.element();
   const textareaId = textareaElement?.getAttribute("id");
   const labelFor = labelElement?.getAttribute("for");
 
@@ -141,12 +141,12 @@ test("description is linked to input via aria-describedby", async () => {
   await expect.element(Description).toHaveAttribute("id");
   await expect.element(Input).toHaveAttribute("aria-describedby");
 
-  const inputElement = await Input.element();
-  const descriptionElement = await Description.element();
+  const inputElement = Input.element();
+  const descriptionElement = Description.element();
   const descriptionId = descriptionElement?.getAttribute("id");
   const describedBy = inputElement?.getAttribute("aria-describedby");
 
-  expect(describedBy).toContain(descriptionId as string);
+  expect(describedBy).toContain(descriptionId!);
 });
 
 const WithError = component$(() => {
@@ -180,12 +180,12 @@ test("error message is linked to input via aria-describedby", async () => {
   await expect.element(Error).toHaveAttribute("id");
   await expect.element(Input).toHaveAttribute("aria-describedby");
 
-  const inputElement = await Input.element();
-  const errorElement = await Error.element();
+  const inputElement = Input.element();
+  const errorElement = Error.element();
   const errorId = errorElement?.getAttribute("id");
   const describedBy = inputElement?.getAttribute("aria-describedby");
 
-  expect(describedBy).toContain(errorId as string);
+  expect(describedBy).toContain(errorId!);
 });
 
 test("input has aria-invalid when error is present", async () => {
@@ -223,15 +223,15 @@ test("both description and error are linked via aria-describedby", async () => {
   await expect.element(Error).toHaveAttribute("id");
   await expect.element(Input).toHaveAttribute("aria-describedby");
 
-  const inputElement = await Input.element();
-  const descriptionElement = await Description.element();
-  const errorElement = await Error.element();
+  const inputElement = Input.element();
+  const descriptionElement = Description.element();
+  const errorElement = Error.element();
   const descriptionId = descriptionElement?.getAttribute("id");
   const errorId = errorElement?.getAttribute("id");
   const describedBy = inputElement?.getAttribute("aria-describedby");
 
-  expect(describedBy).toContain(descriptionId as string);
-  expect(describedBy).toContain(errorId as string);
+  expect(describedBy).toContain(descriptionId!);
+  expect(describedBy).toContain(errorId!);
 });
 
 test("disabled field prevents input", async () => {
@@ -255,8 +255,8 @@ test("readonly attribute prevents editing", async () => {
 const FormValidation = component$(() => {
   const isError = useSignal(false);
   const handleSubmit$ = $((e: SubmitEvent) => {
-    const form = e.target as HTMLFormElement;
-    if (!form.checkValidity()) {
+    const form = e.target;
+    if (!(form instanceof HTMLFormElement) || !form.checkValidity()) {
       isError.value = true;
     } else {
       isError.value = false;
@@ -310,7 +310,7 @@ const ExternalStateInput = component$(() => {
         bind:value={signalValue}
         value={storeValue.text}
         onChange$={(newValue) => {
-          storeValue.text = newValue as string;
+          storeValue.text = typeof newValue === "string" ? newValue : String(newValue);
         }}
       >
         <Field.Label data-testid="label">Name</Field.Label>

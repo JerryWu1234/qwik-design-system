@@ -1,8 +1,6 @@
 import { Tree } from "@qds.dev/ui";
-import { $, type PropsOf, component$ } from "@qwik.dev/core";
-import { useSignal } from "@qwik.dev/core";
-import { Link } from "@qwik.dev/router";
-import { useNavigate } from "@qwik.dev/router";
+import { $, component$, type PropsOf, useSignal } from "@qwik.dev/core";
+import { Link, useNavigate } from "@qwik.dev/router";
 import { LuChevronRight } from "@qwikest/icons/lucide";
 
 type TreeItemType = {
@@ -129,7 +127,7 @@ export const Sidebar = component$((props: PropsOf<"nav">) => {
       {...props}
     >
       <Tree.Root class="flex flex-col p-2">
-        {treeData.map((node) => renderTreeItem(node))}
+        {treeData.map(async (node) => renderTreeItem(node))}
       </Tree.Root>
     </nav>
   );
@@ -162,7 +160,7 @@ export const TreeBranch = component$<{
         </Tree.ItemTrigger>
       </div>
       <Tree.ItemContent class="pl-4 transition-all overflow-hidden">
-        {node.children?.map((child: TreeItemType) => renderTreeItem(child))}
+        {node.children?.map(async (child: TreeItemType) => renderTreeItem(child))}
       </Tree.ItemContent>
     </Tree.Item>
   );
@@ -184,7 +182,7 @@ export const TreeLeaves = component$<{
       key={node.id}
       onKeyDown$={(e: KeyboardEvent) => {
         if (e.key === "Enter") {
-          nav(node.id);
+          void nav(node.id);
         }
       }}
     >

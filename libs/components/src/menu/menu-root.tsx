@@ -1,11 +1,11 @@
 import { type BindableProps, useBindings } from "@qds.dev/utils";
 import {
   $,
+  component$,
+  createContextId,
   type PropsOf,
   type Signal,
   Slot,
-  component$,
-  createContextId,
   sync$,
   useContextProvider,
   useId,
@@ -47,7 +47,7 @@ export type MenuContext = {
   /** Whether the menu was opened via context menu */
   isContextMenu?: Signal<boolean>;
   /** The function to call when an item is selected */
-  onItemSelection$: (value: string) => void;
+  onItemSelection$: (value: string) => void | Promise<void>;
   /** The direction to focus on when the menu is opened */
   openFocusDirection: Signal<"first" | "last" | undefined>;
 };

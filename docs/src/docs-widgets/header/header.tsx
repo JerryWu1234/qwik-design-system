@@ -1,5 +1,4 @@
-import { Lucide, Modal } from "@qds.dev/ui";
-import { Navbar } from "@qds.dev/ui";
+import { Lucide, Modal, Navbar } from "@qds.dev/ui";
 import { component$, useStyles$ } from "@qwik.dev/core";
 import componentsImg from "~/assets/decor/components.webp";
 import compositionImg from "~/assets/decor/composition.webp";
@@ -10,6 +9,47 @@ import introductionImg from "~/assets/decor/introduction.webp";
 import utilitiesImg from "~/assets/decor/utilities.webp";
 import { Action } from "../action/action";
 import styles from "./header.css?inline";
+
+type NavLink = {
+  href: string;
+  label: string;
+  description: string | undefined;
+  image: string | undefined;
+  fullColumn?: boolean;
+  halfHeight?: boolean;
+};
+
+const getImageObjectPosition = (link: NavLink) => {
+  if (link.label === "Icons") return "center 80%";
+  if (link.label === "Composition") return "70% 90%";
+  if (link.halfHeight) return "center 75%";
+  return "center bottom";
+};
+
+const getGradientBackground = (link: NavLink) => {
+  if (link.halfHeight) {
+    return "linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 35%, transparent 70%)";
+  }
+  return `linear-gradient(180deg, transparent 0%, transparent 75%, var(--color-light-950) 90%),
+          radial-gradient(ellipse 180% 120% at 10% 90%, var(--color-light-950) 0%, transparent 40%)`;
+};
+
+const getGridStyles = (item: { label: string }, link: NavLink) => {
+  if (item.label !== "Tools") return {};
+
+  return {
+    gridRow: link.fullColumn ? "1 / 3" : link.halfHeight ? "span 1" : "auto",
+    gridColumn: link.halfHeight ? "2" : "auto"
+  };
+};
+
+const getContentGridTemplate = (label: string) => {
+  const hasMultipleColumns = ["UI", "Tools", "Learn"].includes(label);
+  return {
+    gridTemplateColumns: hasMultipleColumns ? "1fr 1fr" : "1fr",
+    gridTemplateRows: label === "Tools" ? "max-content max-content" : "max-content"
+  };
+};
 
 export const Header = component$(() => {
   useStyles$(styles);
@@ -29,47 +69,6 @@ export const Header = component$(() => {
 });
 
 const DesktopNav = component$(() => {
-  type NavLink = {
-    href: string;
-    label: string;
-    description: string | undefined;
-    image: string | undefined;
-    fullColumn?: boolean;
-    halfHeight?: boolean;
-  };
-
-  const getImageObjectPosition = (link: NavLink) => {
-    if (link.label === "Icons") return "center 80%";
-    if (link.label === "Composition") return "70% 90%";
-    if (link.halfHeight) return "center 75%";
-    return "center bottom";
-  };
-
-  const getGradientBackground = (link: NavLink) => {
-    if (link.halfHeight) {
-      return "linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 35%, transparent 70%)";
-    }
-    return `linear-gradient(180deg, transparent 0%, transparent 75%, var(--color-light-950) 90%),
-            radial-gradient(ellipse 180% 120% at 10% 90%, var(--color-light-950) 0%, transparent 40%)`;
-  };
-
-  const getGridStyles = (item: { label: string }, link: NavLink) => {
-    if (item.label !== "Tools") return {};
-
-    return {
-      gridRow: link.fullColumn ? "1 / 3" : link.halfHeight ? "span 1" : "auto",
-      gridColumn: link.halfHeight ? "2" : "auto"
-    };
-  };
-
-  const getContentGridTemplate = (label: string) => {
-    const hasMultipleColumns = ["UI", "Tools", "Learn"].includes(label);
-    return {
-      gridTemplateColumns: hasMultipleColumns ? "1fr 1fr" : "1fr",
-      gridTemplateRows: label === "Tools" ? "max-content max-content" : "max-content"
-    };
-  };
-
   const navData = [
     {
       href: "/",

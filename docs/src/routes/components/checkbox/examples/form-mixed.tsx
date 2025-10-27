@@ -1,5 +1,5 @@
 import { Checkbox } from "@qds.dev/ui";
-import { type Signal, component$, useSignal, useStyles$ } from "@qwik.dev/core";
+import { component$, type Signal, useSignal, useStyles$ } from "@qwik.dev/core";
 import { LuCheck } from "@qwikest/icons/lucide";
 
 export default component$(() => {
@@ -13,7 +13,8 @@ export default component$(() => {
     <form
       preventdefault:submit
       onSubmit$={(e) => {
-        const form = e.target as HTMLFormElement;
+        const form = e.target;
+        if (!(form instanceof HTMLFormElement)) return;
         formData.value = Object.fromEntries(new FormData(form));
       }}
       style={{ display: "flex", flexDirection: "column", gap: "8px" }}

@@ -1,8 +1,8 @@
 import {
+  component$,
   type JSXOutput,
   type PropsOf,
   Slot,
-  component$,
   useComputed$,
   useContext
 } from "@qwik.dev/core";
@@ -18,9 +18,7 @@ export const ToggleIndicator = component$((props: ToggleIndicatorProps) => {
 
   const context = useContext(toggleContextId);
 
-  const isFallbackSig = useComputed$(
-    () => props.fallback && context.isPressedSig.value === false
-  );
+  const isFallbackSig = useComputed$(() => props.fallback && !context.isPressedSig.value);
 
   return (
     <Render

@@ -1,7 +1,8 @@
-import { type PropsOf, component$, useSignal } from "@qwik.dev/core";
+import { component$, type PropsOf, useSignal } from "@qwik.dev/core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { type Locator, page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
+import { focusElement } from "../../vitest/element";
 import { Resizable } from "..";
 
 // Top-level locator constants using data-testid
@@ -130,18 +131,18 @@ const Disabled = component$(() => {
 });
 
 // Helper function to get content size
-async function getContentSize(
+function getContentSize(
   content: Locator,
   orientation: "horizontal" | "vertical" = "horizontal"
 ) {
-  const element = await content.element();
+  const element = content.element();
   const rect = element.getBoundingClientRect();
   return orientation === "vertical" ? rect.height : rect.width;
 }
 
 // Helper function to drag handle
 async function dragHandleBy(handle: Locator, dx: number, dy: number) {
-  const element = await handle.element();
+  const element = handle.element();
   const rect = element.getBoundingClientRect();
 
   const startX = rect.left + rect.width / 2;
@@ -235,7 +236,7 @@ test("should have correct initial size", async () => {
   const content = Contents.nth(0);
   await expect.element(content).toBeVisible();
 
-  const initialWidth = await getContentSize(content);
+  const initialWidth = getContentSize(content);
   expect(initialWidth).toBe(200);
 });
 
@@ -250,13 +251,13 @@ test("contents should resize proportionally when handle is dragged", async () =>
   await expect.element(secondContent).toBeVisible();
   await expect.element(handle).toBeVisible();
 
-  const initialFirstWidth = await getContentSize(firstContent);
-  const initialSecondWidth = await getContentSize(secondContent);
+  const initialFirstWidth = getContentSize(firstContent);
+  const initialSecondWidth = getContentSize(secondContent);
 
   await dragHandleBy(handle, 100, 0);
 
-  const newFirstWidth = await getContentSize(firstContent);
-  const newSecondWidth = await getContentSize(secondContent);
+  const newFirstWidth = getContentSize(firstContent);
+  const newSecondWidth = getContentSize(secondContent);
 
   // Allow for some tolerance due to rounding and boundaries
   expect(newFirstWidth).toBeGreaterThan(initialFirstWidth + 80);
@@ -274,7 +275,7 @@ test("should not resize below minimum", async () => {
 
   await dragHandleBy(handle, -200, 0);
 
-  const width = await getContentSize(content);
+  const width = getContentSize(content);
   expect(width).toBeGreaterThanOrEqual(100); // minWidth is 100
   expect(width).toBeLessThanOrEqual(110); // Should be close to minimum
 });
@@ -290,7 +291,7 @@ test("should not resize above maximum", async () => {
 
   await dragHandleBy(handle, 500, 0);
 
-  const width = await getContentSize(content);
+  const width = getContentSize(content);
   expect(width).toBeLessThanOrEqual(400); // maxWidth is 400
   expect(width).toBeGreaterThanOrEqual(390); // Should be close to maximum
 });
@@ -311,11 +312,11 @@ test("vertical resizable should resize vertically", async () => {
   await expect.element(content).toBeVisible();
   await expect.element(handle).toBeVisible();
 
-  const initialHeight = await getContentSize(content, "vertical");
+  const initialHeight = getContentSize(content, "vertical");
 
   await dragHandleBy(handle, 0, 50);
 
-  const newHeight = await getContentSize(content, "vertical");
+  const newHeight = getContentSize(content, "vertical");
   expect(newHeight).toBeGreaterThan(initialHeight + 30);
 });
 
@@ -363,15 +364,14 @@ test("arrow keys should resize by step", async () => {
   await expect.element(content).toBeVisible();
   await expect.element(handle).toBeVisible();
 
-  const initialSize = await getContentSize(content);
+  const initialSize = getContentSize(content);
 
-  const handleElement = await handle.element();
-  (handleElement as HTMLElement).focus();
+  focusElement(handle);
 
   await userEvent.keyboard("{ArrowRight}");
   await new Promise((resolve) => setTimeout(resolve, 200));
 
-  const newSize = await getContentSize(content);
+  const newSize = getContentSize(content);
   expect(newSize).toBeGreaterThan(initialSize);
 });
 
@@ -384,15 +384,14 @@ test("Shift+Arrow should resize by larger step", async () => {
   await expect.element(content).toBeVisible();
   await expect.element(handle).toBeVisible();
 
-  const initialSize = await getContentSize(content);
+  const initialSize = getContentSize(content);
 
-  const handleElement = await handle.element();
-  (handleElement as HTMLElement).focus();
+  focusElement(handle);
 
   await userEvent.keyboard("{Shift>}{ArrowRight}{/Shift}");
   await new Promise((resolve) => setTimeout(resolve, 200));
 
-  const newSize = await getContentSize(content);
+  const newSize = getContentSize(content);
   expect(newSize).toBeGreaterThan(initialSize);
 });
 
@@ -405,21 +404,20 @@ test("Home/End keys should collapse/expand to limits", async () => {
   await expect.element(content).toBeVisible();
   await expect.element(handle).toBeVisible();
 
-  const handleElement = await handle.element();
-  (handleElement as HTMLElement).focus();
+  focusElement(handle);
 
   // Press Home to go to minimum
   await userEvent.keyboard("{Home}");
   await new Promise((resolve) => setTimeout(resolve, 200));
 
-  const minWidth = await getContentSize(content);
+  const minWidth = getContentSize(content);
   expect(minWidth).toBeCloseTo(100, 0); // minWidth is 100
 
   // Press End to go to maximum
   await userEvent.keyboard("{End}");
   await new Promise((resolve) => setTimeout(resolve, 200));
 
-  const maxWidth = await getContentSize(content);
+  const maxWidth = getContentSize(content);
   expect(maxWidth).toBeGreaterThanOrEqual(395); // maxWidth is 400, allow some tolerance
   expect(maxWidth).toBeLessThanOrEqual(405);
 });
@@ -434,7 +432,7 @@ test("onResize$ callback should fire with new size", async () => {
 
   await dragHandleBy(handle, 100, 0);
 
-  const logText = await log.element();
+  const logText = log.element();
   expect(logText.textContent).toContain("Left content size:");
   // The callback should have fired with a size around 300px (200 + 100)
   expect(logText.textContent).toMatch(/\d+px/);
@@ -451,7 +449,7 @@ test.skip("collapse/expand callbacks should fire", async () => {
 
   await dragHandleBy(handle, -110, 0);
 
-  const statusEl = await status.element();
+  const statusEl = status.element();
   expect(statusEl.textContent).toBe("Content collapsed");
 
   await dragHandleBy(handle, 20, 0);
@@ -468,11 +466,11 @@ test("disabled resizable should not resize on drag", async () => {
   await expect.element(handle).toBeVisible();
   await expect.element(Root).toHaveAttribute("data-disabled", "true");
 
-  const initialSize = await getContentSize(content);
+  const initialSize = getContentSize(content);
 
   await dragHandleBy(handle, 100, 0);
 
-  const newSize = await getContentSize(content);
+  const newSize = getContentSize(content);
   expect(newSize).toBe(initialSize);
 });
 
@@ -485,14 +483,13 @@ test("disabled resizable should not resize with keyboard", async () => {
   await expect.element(content).toBeVisible();
   await expect.element(handle).toBeVisible();
 
-  const initialSize = await getContentSize(content);
+  const initialSize = getContentSize(content);
 
-  const handleElement = await handle.element();
-  (handleElement as HTMLElement).focus();
+  focusElement(handle);
 
   await userEvent.keyboard("{ArrowRight}");
   await new Promise((resolve) => setTimeout(resolve, 200));
 
-  const newSize = await getContentSize(content);
+  const newSize = getContentSize(content);
   expect(newSize).toBe(initialSize);
 });

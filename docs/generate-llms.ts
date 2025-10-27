@@ -1,5 +1,5 @@
-import fs from "node:fs";
-import path from "node:path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 
 const baseDir = process.cwd();
 const routesDir = path.join(baseDir, "apps/docs/src/routes");
@@ -7,7 +7,7 @@ const publicDir = path.join(baseDir, "apps/docs/public");
 const llmsDir = path.join(publicDir, "llms");
 const outputFile = path.join(publicDir, "llms.txt");
 
-function toSlug(filePath) {
+function toSlug(filePath: string): string {
   return filePath
     .replace(/\/index\.mdx$/, "")
     .replace(/\.mdx$/, "")
@@ -15,15 +15,15 @@ function toSlug(filePath) {
     .replace(/^\.+/, "");
 }
 
-function toRoute(filePath) {
+function toRoute(filePath: string): string {
   return `/${filePath
     .replace(/\/index\.mdx$/, "")
     .replace(/\.mdx$/, "")
     .replace(/\\/g, "/")}`;
 }
 
-function findRouteFiles(dir) {
-  let results = [];
+function findRouteFiles(dir: string): string[] {
+  let results: string[] = [];
   for (const entry of fs.readdirSync(dir)) {
     const fullPath = path.join(dir, entry);
     const stat = fs.statSync(fullPath);
@@ -36,7 +36,7 @@ function findRouteFiles(dir) {
   return results;
 }
 
-function ensureMdFile(slug, route, originalFilePath) {
+function ensureMdFile(slug: string, route: string, originalFilePath: string): void {
   const mdPath = path.join(llmsDir, `${slug}.md`);
   let content = "";
 
@@ -44,7 +44,7 @@ function ensureMdFile(slug, route, originalFilePath) {
     content = fs.readFileSync(originalFilePath, "utf8");
   }
 
-  const heading = `# ${slug.replace(/\./g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}`;
+  const heading = `# ${slug.replace(/\./g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase())}`;
   const metadata = `\n\nAccessible via: \`${route}\`\n`;
   const description = "\n> TODO: Add description.\n";
 
@@ -52,7 +52,7 @@ function ensureMdFile(slug, route, originalFilePath) {
   console.log("Updated:", mdPath);
 }
 
-function generate() {
+function generate(): void {
   if (!fs.existsSync(llmsDir)) {
     fs.mkdirSync(llmsDir, { recursive: true });
   }

@@ -8,7 +8,8 @@ export default component$(() => {
     { label: "Pro - $20/month", value: "pro" }
   ];
   const handleSubmit$ = $((e: SubmitEvent) => {
-    const form = e.target as HTMLFormElement;
+    const form = e.target;
+    if (!(form instanceof HTMLFormElement)) return;
     if (!form.checkValidity()) {
       console.log("Form submitted with error");
       isError.value = true;
@@ -22,7 +23,6 @@ export default component$(() => {
     <form preventdefault:submit noValidate onSubmit$={handleSubmit$}>
       <RadioGroup.Root
         required
-        isDescription
         isError={isError.value}
         name="subscription"
         class="radio-group-root"

@@ -1,5 +1,5 @@
 import { LinearClient } from "@linear/sdk";
-import { changesetData, convertChangesetToMarkdown } from "./changeset-md";
+import { changesetData, convertChangesetToMarkdown } from "./changeset-md.ts";
 
 async function main() {
   const linearClient = new LinearClient({

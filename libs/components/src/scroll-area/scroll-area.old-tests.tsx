@@ -1,3 +1,4 @@
+// oxlint-disable no-empty-file
 // import { component$ } from "@qwik.dev/core";
 // import { describe, expect, test } from "vitest";
 // import { render } from "vitest-browser-qwik";

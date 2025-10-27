@@ -7,8 +7,6 @@ export default component$(() => {
       multiple
       onChange$={(files) => {
         console.log("Files changed:", files);
-        // @ts-ignore - for tests
-        window.onFilesChange?.(files);
       }}
     >
       <FileUpload.HiddenInput />

@@ -35,7 +35,7 @@ export const ExampleComp = component$(() => {
 
 In Qwik, you can use `bind:value` or `bind:checked` to pass your own signal state to update form controls.
 
-<Showcase name="two-way" />
+{/* <Showcase name="two-way" /> */}
 
 This is [two-way data binding](https://www.geeksforgeeks.org/two-way-data-binding-in-javascript/). Unlike traditional two-way binding that can be performance-heavy in other frameworks, Qwik's signals make it efficient by updating **only what needs to change**, with no unnecessary re-renders.
 
@@ -45,7 +45,7 @@ The `useBindings` helper intends to simplify state management from multiple sour
 
 It looks at what the user passed to your component - whether it's a plain value like `value="hello"` or a reactive signal like `bind:value={mySignal}`. Then it creates a simple signal for you to use in your component that automatically stays in sync with whatever the user provided.
 
-<Showcase name="bindings" />
+{/* <Showcase name="bindings" /> */}
 
 #### Usage
 
@@ -118,7 +118,7 @@ The `useBoundSignal` hook takes three arguments:
 
 In this case we've provided the initial value of `"Jim"` to the signal, but it could be an initial value from a prop passed by the consumer as well from value based state.
 
-<Showcase name="bound-signal" />
+{/* <Showcase name="bound-signal" /> */}
 
 Above is an example of a component that uses the `useBoundSignal` hook to combine the signal from the consumer with our internal signal.
 
@@ -140,7 +140,7 @@ Another example:
 
 Stores can also be two-way bound, in this case we use the `useStoreSignal` hook to create a signal from the store.
 
-<Showcase name="store-signal" />
+{/* <Showcase name="store-signal" /> */}
 
 Now the store property is updated whenever the internal signal is updated and vice versa. This can be useful if you want to use the store as a source of truth for the component's state.
 
@@ -196,7 +196,7 @@ Keep in mind, that value based state is **not reactive**. This means that the co
 
 This is especially evident when you're passing state through context, where consumers expect to be able to update the state and see the changes.
 
-<Showcase name="value-and-context" />
+{/* <Showcase name="value-and-context" /> */}
 
 In the example above, notice how the button doesn't update when we toggle the state. This is because context values are not reactive - they're just snapshots at render time.
 
@@ -208,7 +208,7 @@ To get the latest values from context, you need to turn value based state into *
 
 We can do this by tracking whenever the specific property changes on the props object.
 
-<Showcase name="signal-and-context" />
+{/* <Showcase name="signal-and-context" /> */}
 
 Another example:
 

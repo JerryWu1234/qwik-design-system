@@ -22,7 +22,7 @@
     "dev": "tsdown",
     "dev:watch": "tsdown --watch",
     "test": "vitest",
-    "generate-icon-types": "tsx src/generate-icon-types.ts"
+    "generate-icon-types": "node src/generate-icon-types.ts"
   },
   "devDependencies": {
     "@iconify/types": "^2",

@@ -17,7 +17,7 @@ export const runCommand = server$(
       }
       return { success: true, output: stdout };
     } catch (error) {
-      console.error(`Exception: ${error}`);
+      console.error(`Exception: ${String(error)}`);
       return { success: false, error: String(error) };
     }
   }

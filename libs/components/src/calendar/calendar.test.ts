@@ -1,3 +1,4 @@
+// oxlint-disable no-empty-file
 // import { type Page, expect, test } from "@playwright/test";
 // import { createTestDriver } from "./calendar.driver";
 

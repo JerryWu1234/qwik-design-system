@@ -1,7 +1,8 @@
 import { $, component$, useComputed$, useSignal } from "@qwik.dev/core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
+import { focusElement } from "../../vitest/element";
 import { Checkbox } from "..";
 import type { PublicCheckboxRootProps } from "./checkbox-root";
 
@@ -141,7 +142,8 @@ const BasicForm = component$((props: PublicCheckboxRootProps) => {
       preventdefault:submit
       noValidate
       onSubmit$={(e) => {
-        const form = e.target as HTMLFormElement;
+        if (!(e.target instanceof HTMLFormElement)) return;
+        const form = e.target;
         // @ts-ignore - FormData is iterable but TypeScript doesn't recognize it in this context
         formData.value = Object.fromEntries(new FormData(form));
       }}
@@ -178,7 +180,8 @@ const BasicFormWithMixed = component$(
 
     const formData = useSignal<Record<string, FormDataEntryValue>>();
     const handleSubmit$ = $((e: SubmitEvent) => {
-      const form = e.target as HTMLFormElement;
+      if (!(e.target instanceof HTMLFormElement)) return;
+      const form = e.target;
       const formDataInstance = new FormData(form);
       const result: Record<string, FormDataEntryValue> = {};
       formDataInstance.forEach((value, key) => {
@@ -221,7 +224,7 @@ const BasicFormWithMixed = component$(
   }
 );
 
-const BasicFormWithValidation = component$((props: PublicCheckboxRootProps) => {
+const BasicFormWithValidation = component$(() => {
   const formData = useSignal<Record<string, FormDataEntryValue>>();
   const isChecked = useSignal(false);
   const isSubmitAttempt = useSignal(false);
@@ -232,7 +235,8 @@ const BasicFormWithValidation = component$((props: PublicCheckboxRootProps) => {
       preventdefault:submit
       noValidate
       onSubmit$={(e) => {
-        const form = e.target as HTMLFormElement;
+        if (!(e.target instanceof HTMLFormElement)) return;
+        const form = e.target;
         if (!isChecked.value) {
           isSubmitAttempt.value = true;
           return;
@@ -299,8 +303,7 @@ test("should toggle with space key when focused", async () => {
 
   await expect.element(Trigger).toBeVisible();
 
-  const trigger = Trigger.element() as HTMLElement;
-  trigger.focus();
+  focusElement(Trigger);
 
   await expect.element(Trigger).toHaveFocus();
 
@@ -410,11 +413,13 @@ test("should connect label to trigger with proper attributes", async () => {
   await expect.element(Trigger).toBeVisible();
 
   // Now get the DOM elements
-  const triggerElements = await Trigger.elements();
+  const triggerElements = Trigger.elements();
   const triggerId = triggerElements[0]?.id;
 
   expect(triggerId).toBeTruthy();
-  await expect.element(Label).toHaveAttribute("for", triggerId as string);
+  if (triggerId) {
+    await expect.element(Label).toHaveAttribute("for", triggerId);
+  }
 });
 
 test("should toggle when label is clicked", async () => {
@@ -519,9 +524,9 @@ test(`should submit checkbox with custom value "checked" in form`, async () => {
   render(<BasicForm value="checked" />);
 
   await userEvent.click(Trigger);
-  await expect(HiddenInput).toBeChecked();
+  expect(HiddenInput).toBeChecked();
   await userEvent.click(SubmitButton);
-  await expect(Submitted).toHaveTextContent(`Submitted: { "terms": "checked" }`);
+  expect(Submitted).toHaveTextContent(`Submitted: { "terms": "checked" }`);
 });
 
 const Description = page.getByTestId("description");
@@ -551,12 +556,12 @@ test("description is linked to trigger via aria-describedby", async () => {
   await expect.element(Trigger).toHaveAttribute("aria-describedby");
 
   // Now safely get the values
-  const triggerElement = await Trigger.element();
-  const descriptionElement = await Description.element();
+  const triggerElement = Trigger.element();
+  const descriptionElement = Description.element();
   const descriptionId = descriptionElement?.getAttribute("id");
   const describedBy = triggerElement?.getAttribute("aria-describedby");
 
-  expect(describedBy).toContain(descriptionId as string);
+  expect(describedBy).toContain(descriptionId!);
 });
 
 test("error message is visible when present", async () => {
@@ -583,12 +588,12 @@ test("error message is linked to trigger via aria-describedby", async () => {
   await expect.element(Trigger).toHaveAttribute("aria-describedby");
 
   // Now safely get the values
-  const triggerElement = await Trigger.element();
-  const errorElement = await CheckboxError.element();
+  const triggerElement = Trigger.element();
+  const errorElement = CheckboxError.element();
   const errorId = errorElement?.getAttribute("id");
   const describedBy = triggerElement?.getAttribute("aria-describedby");
 
-  expect(describedBy).toContain(errorId as string);
+  expect(describedBy).toContain(errorId!);
 });
 
 test("trigger has aria-invalid when error is present", async () => {
@@ -632,15 +637,15 @@ test("both description and error are linked via aria-describedby", async () => {
   await expect.element(CheckboxError).toHaveAttribute("id");
   await expect.element(Trigger).toHaveAttribute("aria-describedby");
 
-  const triggerElement = await Trigger.element();
-  const descriptionElement = await Description.element();
-  const errorElement = await CheckboxError.element();
+  const triggerElement = Trigger.element();
+  const descriptionElement = Description.element();
+  const errorElement = CheckboxError.element();
   const descriptionId = descriptionElement?.getAttribute("id");
   const errorId = errorElement?.getAttribute("id");
   const describedBy = triggerElement?.getAttribute("aria-describedby");
 
-  expect(describedBy).toContain(descriptionId as string);
-  expect(describedBy).toContain(errorId as string);
+  expect(describedBy).toContain(descriptionId!);
+  expect(describedBy).toContain(errorId!);
 });
 
 test("checkbox root has data-qds-scope attribute", async () => {

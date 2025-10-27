@@ -1,7 +1,7 @@
-import { type ReadonlySignal, type Signal, createContextId } from "@qwik.dev/core";
+import { createContextId, type ReadonlySignal, type Signal } from "@qwik.dev/core";
 
 type TriggerRef = {
-  ref: Signal;
+  ref: Signal<HTMLButtonElement | undefined>;
   value: string | undefined;
 };
 

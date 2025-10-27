@@ -1,6 +1,7 @@
-import { $, type PropsOf, type QRL, Slot, component$, useContext } from "@qwik.dev/core";
+import { $, component$, type PropsOf, type QRL, Slot, useContext } from "@qwik.dev/core";
 import { calendarContextId } from "./calendar-context";
 import type { ISODate, Month } from "./types";
+
 type PublicCalendarGridProps = PropsOf<"div"> & {
   /** Event handler called when a date is selected */
   onDateChange$?: QRL<(date: ISODate) => void>;
@@ -19,6 +20,20 @@ const ACTION_KEYS = [
   "pagedown"
 ] as const;
 
+type ActionKey = (typeof ACTION_KEYS)[number];
+
+const isActionKey = (key: string): key is ActionKey => {
+  return (ACTION_KEYS as readonly string[]).includes(key);
+};
+
+const isISODate = (value: string): value is ISODate => {
+  return /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(value);
+};
+
+const isMonth = (value: string): value is Month => {
+  return /^(0[1-9]|1[0-2])$/.test(value);
+};
+
 /** A component that renders the main calendar grid structure */
 export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
   const context = useContext(calendarContextId);
@@ -32,7 +47,10 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
       return;
     }
 
-    context.monthToRender.value = String(currentMonth - 1).padStart(2, "0") as Month;
+    const newMonth = String(currentMonth - 1).padStart(2, "0");
+    if (isMonth(newMonth)) {
+      context.monthToRender.value = newMonth;
+    }
   });
 
   const increaseMonth = $(() => {
@@ -44,19 +62,24 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
       return;
     }
 
-    context.monthToRender.value = String(currentMonth + 1).padStart(2, "0") as Month;
+    const newMonth = String(currentMonth + 1).padStart(2, "0");
+    if (isMonth(newMonth)) {
+      context.monthToRender.value = newMonth;
+    }
   });
 
-  const updateDateFocused = $((e: KeyboardEvent, gridBody: HTMLDivElement) => {
-    if (!ACTION_KEYS.includes(e.key.toLowerCase() as (typeof ACTION_KEYS)[number]))
-      return;
+  const updateDateFocused = $(async (e: KeyboardEvent, gridBody: HTMLDivElement) => {
+    const key = e.key.toLowerCase();
+    if (!isActionKey(key)) return;
     const elFocus = document.activeElement;
     if (elFocus?.tagName.toLowerCase() !== "button") return;
 
     const buttons = Array.from(gridBody.getElementsByTagName("button"));
-    const idx = buttons.indexOf(elFocus as HTMLButtonElement);
-    const currentDate = elFocus?.getAttribute("data-value") as ISODate;
-    const key = e.key.toLowerCase();
+    if (!(elFocus instanceof HTMLButtonElement)) return;
+    const idx = buttons.indexOf(elFocus);
+    const currentDateValue = elFocus?.getAttribute("data-value");
+    if (!currentDateValue || !isISODate(currentDateValue)) return;
+    const currentDate = currentDateValue;
 
     const getNewIndex = (step: number) => {
       const newIdx = idx + step;
@@ -64,11 +87,17 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
       return buttons[newIdx].hasAttribute("disabled") ? idx : newIdx;
     };
 
-    const handleDateChange = (step: number, newIdx: number) => {
+    const handleDateChange = async (step: number, newIdx: number) => {
       if (idx === newIdx) {
         const newDate = adjustDate(currentDate, { days: step });
-        updateFocus(newIdx, newDate);
-        step < 0 ? decreaseMonth() : increaseMonth();
+        if (newDate) {
+          updateFocus(newIdx, newDate);
+          if (step < 0) {
+            await decreaseMonth();
+          } else {
+            await increaseMonth();
+          }
+        }
       } else {
         updateFocus(newIdx);
       }
@@ -80,24 +109,31 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
         days?: number;
         months?: number;
       }
-    ): ISODate => {
+    ): ISODate | null => {
       const d = new Date(date);
       if (adjustment.days) d.setDate(d.getDate() + adjustment.days);
       if (adjustment.months) d.setMonth(d.getMonth() + adjustment.months);
-      return d.toISOString().split("T")[0] as ISODate;
+      const isoString = d.toISOString().split("T")[0];
+      return isISODate(isoString) ? isoString : null;
     };
 
     const updateFocus = (newIdx: number, newDate: ISODate | null = null) => {
-      const dateToSet =
-        newDate ?? (buttons[newIdx].getAttribute("data-value") as ISODate);
+      const dateValue = buttons[newIdx].getAttribute("data-value");
+      const validDateValue = dateValue && isISODate(dateValue) ? dateValue : null;
+      const dateToSet = newDate ?? validDateValue;
+      if (!dateToSet) return;
       context.dateToFocus.value = dateToSet;
       buttons[newIdx].focus({ preventScroll: true });
     };
 
-    const handleMonthChange = (date: ISODate, currentMonth: string) => {
+    const handleMonthChange = async (date: ISODate, currentMonth: string) => {
       const month = date.split("-")[1];
       if (month !== currentMonth) {
-        month < currentMonth ? decreaseMonth() : increaseMonth();
+        if (month < currentMonth) {
+          await decreaseMonth();
+        } else {
+          await increaseMonth();
+        }
       }
     };
 
@@ -105,20 +141,20 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
       case "arrowup":
       case "arrowdown": {
         const step = key === "arrowup" ? -7 : 7;
-        handleDateChange(step, getNewIndex(step));
+        await handleDateChange(step, getNewIndex(step));
         break;
       }
 
       case "arrowleft":
       case "arrowright": {
         const step = key === "arrowleft" ? -1 : 1;
-        handleDateChange(step, getNewIndex(step));
+        await handleDateChange(step, getNewIndex(step));
         break;
       }
 
       case " ":
       case "enter": {
-        (elFocus as HTMLButtonElement).click();
+        elFocus.click();
         break;
       }
 
@@ -126,15 +162,23 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
       case "pagedown": {
         const step = key === "pageup" ? -1 : 1;
         const newDate = adjustDate(currentDate, { months: step });
-        updateFocus(idx, newDate);
-        step < 0 ? decreaseMonth() : increaseMonth();
+        if (newDate) {
+          updateFocus(idx, newDate);
+          if (step < 0) {
+            await decreaseMonth();
+          } else {
+            await increaseMonth();
+          }
+        }
         break;
       }
 
       case "home": {
         const rowStartIndex = Math.floor(idx / 7) * 7;
-        const newDate = buttons[rowStartIndex].getAttribute("data-value") as ISODate;
-        handleMonthChange(newDate, context.monthToRender.value);
+        const newDateValue = buttons[rowStartIndex].getAttribute("data-value");
+        if (!newDateValue || !isISODate(newDateValue)) break;
+        const newDate = newDateValue;
+        await handleMonthChange(newDate, context.monthToRender.value);
         updateFocus(rowStartIndex, newDate);
         break;
       }
@@ -144,15 +188,17 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
           Math.ceil((idx + 1) / 7) * 7 - 1,
           buttons.length - 1
         );
-        const newDate = buttons[rowEndIndex].getAttribute("data-value") as ISODate;
-        handleMonthChange(newDate, context.monthToRender.value);
+        const newDateValue = buttons[rowEndIndex].getAttribute("data-value");
+        if (!newDateValue || !isISODate(newDateValue)) break;
+        const newDate = newDateValue;
+        await handleMonthChange(newDate, context.monthToRender.value);
         updateFocus(rowEndIndex, newDate);
         break;
       }
     }
   });
 
-  const { onDateChange$, ...divProps } = props;
+  const { onDateChange$: _onDateChange$, ...divProps } = props;
 
   return (
     // The main calendar grid container
@@ -189,8 +235,8 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
         data-qds-calendar-grid-body
         preventdefault:keydown
         onKeyDown$={[
-          $((e: KeyboardEvent, target: HTMLDivElement) => {
-            updateDateFocused(e, target);
+          $(async (e: KeyboardEvent, target: HTMLDivElement) => {
+            await updateDateFocused(e, target);
           })
         ]}
       >

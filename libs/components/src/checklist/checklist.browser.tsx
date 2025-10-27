@@ -1,18 +1,19 @@
-import { $, type PropsOf, component$, useSignal } from "@qwik.dev/core";
+import { $, component$, type PropsOf, useSignal } from "@qwik.dev/core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
+import { focusElement } from "../../vitest/element";
 import { Checklist } from "..";
 
 // Top-level locator constants using data-testid
 const Root = page.getByTestId("root");
 const MainTrigger = page.getByTestId("main-trigger");
 const MainIndicator = page.getByTestId("main-indicator");
-const MainLabel = page.getByTestId("main-label");
+// const MainLabel = page.getByTestId("main-label");
 const Triggers = page.getByTestId("trigger");
 const Indicators = page.getByTestId("indicator");
-const Labels = page.getByTestId("label");
-const Items = page.getByTestId("item");
+// const Labels = page.getByTestId("label");
+// const Items = page.getByTestId("item");
 const SubmitButton = page.getByTestId("submit-button");
 const SubmittedData = page.getByTestId("submitted-data");
 
@@ -32,7 +33,7 @@ const SelectAllExample = component$((props: PropsOf<typeof Checklist.Root>) => {
         <Checklist.Label data-testid="main-label">All items</Checklist.Label>
       </div>
       <div style={{ marginLeft: "32px" }}>
-        {items.map((item, index) => (
+        {items.map((item) => (
           <Checklist.Item
             style={{ marginBottom: "8px", marginTop: "8px" }}
             data-testid="item"
@@ -56,7 +57,8 @@ const FormExample = component$(() => {
   const formData = useSignal<Record<string, FormDataEntryValue>>();
 
   const handleSubmit$ = $((e: SubmitEvent) => {
-    const form = e.target as HTMLFormElement;
+    if (!(e.target instanceof HTMLFormElement)) return;
+    const form = e.target;
     const data = new FormData(form);
     const result: Record<string, FormDataEntryValue> = {};
     data.forEach((value, key) => {
@@ -117,7 +119,7 @@ async function allCheckboxes(action: "click" | { key: string }) {
       await userEvent.click(Triggers.nth(i));
     } else if ("key" in action) {
       await expect.element(Triggers.nth(i)).toBeVisible();
-      ((await Triggers.nth(i).element()) as HTMLButtonElement).focus();
+      focusElement(Triggers.nth(i));
       await userEvent.keyboard(`{${action.key}}`);
     }
   }
@@ -194,7 +196,7 @@ test("main checkbox toggles with Space key", async () => {
   render(<SelectAllExample />);
 
   await expect.element(MainTrigger).toBeVisible();
-  ((await MainTrigger.element()) as HTMLButtonElement).focus();
+  focusElement(MainTrigger);
   await userEvent.keyboard("{Space}");
   await expect.element(MainTrigger).toHaveAttribute("aria-checked", "true");
   await expect.element(MainIndicator).toBeVisible();
@@ -212,7 +214,7 @@ test("Space key on main checkbox toggles all items", async () => {
   render(<SelectAllExample />);
 
   await expect.element(MainTrigger).toBeVisible();
-  ((await MainTrigger.element()) as HTMLButtonElement).focus();
+  focusElement(MainTrigger);
   await userEvent.keyboard("{Space}");
   await verifyAllCheckboxStates(true);
 

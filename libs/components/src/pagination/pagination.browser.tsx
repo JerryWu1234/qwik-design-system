@@ -1,7 +1,8 @@
 import { $, component$, useSignal } from "@qwik.dev/core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
+import { focusElement } from "../../vitest/element";
 import { Pagination } from "..";
 import type { PublicPaginationRootProps } from "./pagination-root";
 
@@ -18,7 +19,7 @@ const Ellipsis = page.getByTestId("ellipsis");
 const Basic = component$((props: Partial<PublicPaginationRootProps>) => {
   const totalPages = props.totalPages ?? 10;
   const paginationItems =
-    props.pages ?? [...Array(totalPages)].map((_, index) => index + 1);
+    props.pages ?? Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
     <Pagination.Root
@@ -44,7 +45,7 @@ const Basic = component$((props: Partial<PublicPaginationRootProps>) => {
 const FirstLast = component$((props: Partial<PublicPaginationRootProps>) => {
   const totalPages = props.totalPages ?? 10;
   const paginationItems =
-    props.pages ?? [...Array(totalPages)].map((_, index) => index + 1);
+    props.pages ?? Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
     <Pagination.Root
@@ -77,7 +78,7 @@ const CustomPage = component$((props: Partial<PublicPaginationRootProps>) => {
   const totalPages = props.totalPages ?? 10;
   const pageSig = useSignal(5);
   const paginationItems =
-    props.pages ?? [...Array(totalPages)].map((_, index) => index + 1);
+    props.pages ?? Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
     <Pagination.Root
@@ -104,7 +105,7 @@ const CustomPage = component$((props: Partial<PublicPaginationRootProps>) => {
 const PerPage = component$((props: Partial<PublicPaginationRootProps>) => {
   const totalPages = props.totalPages ?? 10;
   const paginationItems =
-    props.pages ?? [...Array(totalPages)].map((_, index) => index + 1);
+    props.pages ?? Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
     <Pagination.Root
@@ -177,7 +178,7 @@ test("last button navigates to last page", async () => {
   await userEvent.click(LastButton);
   // After clicking last, the last visible item should be current
   // We need to find which item is actually the last page
-  const lastItem = await Items.all();
+  const lastItem = Items.all();
   const lastIndex = lastItem.length - 1;
   await expect.element(Items.nth(lastIndex)).toHaveAttribute("data-current");
 });
@@ -261,7 +262,7 @@ test("currently active page has aria-current attribute", async () => {
 test("page change callback is triggered", async () => {
   const PageChangeCallback = component$(() => {
     const totalPages = 10;
-    const paginationItems = [...Array(totalPages)].map((_, index) => index + 1);
+    const paginationItems = Array.from({ length: totalPages }, (_, index) => index + 1);
     const pageChangedSig = useSignal(false);
 
     return (
@@ -298,7 +299,7 @@ test("page change callback is triggered", async () => {
 test("disabled pagination does not respond to clicks", async () => {
   const DisabledPagination = component$(() => {
     const totalPages = 10;
-    const paginationItems = [...Array(totalPages)].map((_, index) => index + 1);
+    const paginationItems = Array.from({ length: totalPages }, (_, index) => index + 1);
 
     return (
       <Pagination.Root
@@ -329,7 +330,7 @@ test("keyboard navigation with arrow keys", async () => {
 
   // Focus on first item
   await expect.element(Items.nth(0)).toBeVisible();
-  ((await Items.nth(0).element()) as HTMLButtonElement).focus();
+  focusElement(Items.nth(0));
 
   // Press ArrowRight to move focus
   await userEvent.keyboard("{ArrowRight}");
@@ -351,7 +352,7 @@ test("home key navigates to first page", async () => {
 
   // Focus and press Home
   await expect.element(Items.nth(2)).toBeVisible();
-  ((await Items.nth(2).element()) as HTMLButtonElement).focus();
+  focusElement(Items.nth(2));
   await userEvent.keyboard("{Home}");
 
   // Wait for focus to move to first item
@@ -370,13 +371,13 @@ test("end key navigates to last page", async () => {
   await expect.element(Items.nth(0)).toHaveAttribute("data-current");
 
   // Focus on first item
-  ((await Items.nth(0).element()) as HTMLButtonElement).focus();
+  focusElement(Items.nth(0));
 
   // Press End key to move focus to last visible item
   await userEvent.keyboard("{End}");
 
   // Click to select the focused item
-  const allItems = await Items.all();
+  const allItems = Items.all();
   const lastIndex = allItems.length - 1;
   await userEvent.click(Items.nth(lastIndex));
 

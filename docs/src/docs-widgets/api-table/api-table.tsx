@@ -3,9 +3,8 @@ import type {
   ComponentEntry,
   ParsedProps
 } from "@kunai-consulting/code-notate-core";
-import { component$, useContext, useTask$ } from "@qwik.dev/core";
-
 import { Popover } from "@qds.dev/ui";
+import { component$, useContext, useTask$ } from "@qwik.dev/core";
 import { rootContextId } from "~/routes/layout";
 import { MainHeading, SubHeading } from "../toc/toc";
 
@@ -48,8 +47,10 @@ const sortByPropsCount = (
   a: AnatomyItem | ComponentEntry,
   b: AnatomyItem | ComponentEntry
 ) => {
-  const aProps = getItemPropsCount(a as Record<string, ItemProps>);
-  const bProps = getItemPropsCount(b as Record<string, ItemProps>);
+  const aRecord = a as unknown as Record<string, ItemProps>;
+  const bRecord = b as unknown as Record<string, ItemProps>;
+  const aProps = getItemPropsCount(aRecord);
+  const bProps = getItemPropsCount(bRecord);
   return bProps - aProps;
 };
 
@@ -62,7 +63,7 @@ export const APITable = component$(({ api }: { api: ComponentParts }) => {
 
   const items = api[componentName]
     .filter((item): item is ComponentEntry => !("anatomy" in item || "key" in item))
-    .sort(sortByPropsCount);
+    .toSorted(sortByPropsCount);
 
   useTask$(() => {
     context.allHeadingsSig.value = [

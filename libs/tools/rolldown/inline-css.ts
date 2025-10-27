@@ -4,13 +4,21 @@ import { readFileSync } from "node:fs";
  * Rolldown plugin to handle CSS imports with ?inline query parameter
  * Mimics Vite's ?inline behavior by returning CSS content as a string
  */
+interface PluginContext {
+  error: (msg: string) => void;
+}
+
 export function inlineCssPlugin() {
   return {
     name: "rolldown-plugin-inline-css",
 
-    resolveId(source, importer, options) {
+    resolveId(source: string, _importer?: string, _options?: unknown) {
       // Check if this is a CSS file with ?inline query
-      if (source.includes("?inline") && /\.css(\?|$)/.test(source)) {
+      if (
+        typeof source === "string" &&
+        source.includes("?inline") &&
+        /\.css(\?|$)/.test(source)
+      ) {
         // Let Rolldown resolve the file path normally
         // We'll handle the transformation in the load hook
         return null;
@@ -18,11 +26,16 @@ export function inlineCssPlugin() {
       return null;
     },
 
-    load(id) {
+    load(this: PluginContext, id: string) {
       // Check if this is a CSS file with ?inline query
-      if (id.includes("?inline") && /\.css(\?|$)/.test(id)) {
+      if (typeof id === "string" && id.includes("?inline") && /\.css(\?|$)/.test(id)) {
         // Remove query parameters to get the actual file path
-        const filePath = id.split("?")[0];
+        const parts = id.split("?");
+        const filePath = parts[0];
+
+        if (!filePath) {
+          return null;
+        }
 
         try {
           // Read the CSS file content
@@ -35,7 +48,7 @@ export function inlineCssPlugin() {
             map: null
           };
         } catch (error) {
-          this.error(`Failed to read CSS file: ${filePath}`);
+          this.error(`Failed to read CSS file: ${filePath}\n${error}`);
           return null;
         }
       }

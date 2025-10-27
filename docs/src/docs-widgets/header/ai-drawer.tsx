@@ -1,5 +1,5 @@
 import { Modal } from "@qds.dev/ui";
-import { $, Slot, component$, useSignal } from "@qwik.dev/core";
+import { $, component$, Slot, useSignal } from "@qwik.dev/core";
 import { useLocation } from "@qwik.dev/router";
 import { AIButton } from "../docs-ai/ai-button";
 import { Sparkles } from "../sparkles/sparkles";
@@ -10,8 +10,7 @@ export const AIDrawer = component$(() => {
   const location = useLocation();
   const route = location.url.pathname
     .split("/")
-    .filter((segment) => segment.length > 0)
-    .pop();
+    .findLast((segment) => segment.length > 0);
   const path = `../../libs/components/src/${route}`;
   const isGeneratingApiSig = useSignal(false);
   const isGeneratingDocsSig = useSignal(false);

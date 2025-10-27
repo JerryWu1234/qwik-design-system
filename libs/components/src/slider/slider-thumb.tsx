@@ -1,9 +1,9 @@
 import {
   $,
   type CSSProperties,
+  component$,
   type PropsOf,
   Slot,
-  component$,
   sync$,
   useComputed$,
   useContext,
@@ -13,7 +13,8 @@ import {
   useVisibleTask$
 } from "@qwik.dev/core";
 import { Render } from "../render/render";
-import { type SliderContext, type ThumbType, sliderContextId } from "./slider-context";
+import { type SliderContext, sliderContextId, type ThumbType } from "./slider-context";
+
 interface PublicThumbProps extends PropsOf<"div"> {
   /** The type of thumb - either 'start' or 'end' for range sliders */
   type?: ThumbType;
@@ -63,8 +64,8 @@ export const SliderThumb = component$((props: PublicThumbProps) => {
     const range = context.max.value - context.min.value;
     if (range === 0) return 0;
 
-    if (!isRange.value) {
-      const value = context.sliderValue.value as number;
+    if (!Array.isArray(context.sliderValue.value)) {
+      const value = context.sliderValue.value;
       return Math.min(100, Math.max(0, ((value - context.min.value) / range) * 100));
     }
     const value = type === "start" ? context.startValue.value : context.endValue.value;
@@ -141,7 +142,7 @@ export const SliderThumb = component$((props: PublicThumbProps) => {
 
     const step = event.shiftKey ? context.step.value * 10 : context.step.value;
     let newValue = !Array.isArray(context.sliderValue.value)
-      ? (context.sliderValue.value as number)
+      ? context.sliderValue.value
       : type === "start"
         ? context.startValue.value
         : context.endValue.value;
@@ -198,7 +199,7 @@ export const SliderThumb = component$((props: PublicThumbProps) => {
       data-thumb-type={Array.isArray(context.sliderValue.value) ? type : undefined}
       style={{
         ...((rest.style ?? {}) as CSSProperties),
-        "--thumb-position": `${percentage}%`
+        "--thumb-position": `${percentage.value}%`
       }}
       preventdefault:pointerdown
       preventdefault:pointermove

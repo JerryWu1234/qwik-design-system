@@ -56,7 +56,7 @@ Tasks *initially* run in the same place where your component is created.
 
 When a component is created from a user interaction (like clicking a button), the task runs in the browser:
 
-<Showcase name="task-conditional" />
+{/* <Showcase name="task-conditional" /> */}
 
 ## Environment rendering strategies
 
@@ -122,7 +122,7 @@ useTask$(() => {
 
 Applications using [SSR](https://www.youtube.com/watch?v=0bvo6UKkNDA) and [SSG](https://www.youtube.com/watch?v=1zhT23VDVDc) will *initially* run your tasks on the server.
 
-<Showcase name="task-server" />
+{/* <Showcase name="task-server" /> */}
 
 This grants access to powerful operations like data fetching and complex calculations before the page reaches the browser.
 
@@ -232,7 +232,7 @@ Now that you know how to check *where* your code is running, it's important to k
 
 Tasks run before the JSX has been rendered, meaning they **block rendering** until they complete. Taking a look at our earlier example, we can see that the task changed the signal value before the page was server rendered:
 
-<Showcase name="task-server" />
+{/* <Showcase name="task-server" /> */}
 
 > An exception to this rule is `useVisibleTask$` - the callback function passed to the hook runs after the JSX has been rendered.
 
@@ -332,7 +332,7 @@ When the signal value changes, the task will re-run. What's important to note is
 
 For example, if you have a signal value, and the signal value was changed in the browser, the task will run in the browser.
 
-<Showcase name="environment-transition" />
+{/* <Showcase name="environment-transition" /> */}
 
 > To reiterate, this function will re-run, and do a server to client handoff if the application was server rendered. Otherwise, it would always run in the browser.
 

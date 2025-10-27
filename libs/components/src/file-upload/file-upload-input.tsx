@@ -1,6 +1,7 @@
-import { $, type PropsOf, component$, noSerialize, useContext } from "@qwik.dev/core";
+import { $, component$, noSerialize, type PropsOf, useContext } from "@qwik.dev/core";
 import { VisuallyHidden } from "../visually-hidden/visually-hidden";
 import { type FileInfo, fileUploadContextId } from "./file-upload-context";
+
 type PublicInputProps = PropsOf<"input">;
 /**
  * Hidden file input component that handles file selection via system dialog
@@ -10,7 +11,8 @@ export const FileUploadHiddenInput = component$<PublicInputProps>((props) => {
   const context = useContext(fileUploadContextId);
 
   const onChange$ = $((e: Event) => {
-    const input = e.target as HTMLInputElement;
+    if (!(e.target instanceof HTMLInputElement)) return;
+    const input = e.target;
     if (!input.files) return;
 
     const newFiles: FileInfo[] = Array.from(input.files).map((file) => ({

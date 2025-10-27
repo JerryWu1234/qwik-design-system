@@ -8,8 +8,8 @@
 
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { generateAllVariants } from "./data-attrs";
-import { generateLayerOrder } from "./layers";
+import { generateAllVariants } from "./data-attrs.ts";
+import { generateLayerOrder } from "./layers.ts";
 
 /**
  * Generate the complete CSS file

@@ -44,7 +44,7 @@ jobs:
       - name: 🟢 Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: "lts/*"
+          node-version: "24.9.0"
 
       - name: 🥡 Setup pnpm
         uses: pnpm/action-setup@v2
@@ -77,4 +77,4 @@ jobs:
           PR_TITLE: ${{ github.event.issue.title }}
           COMMENT_AUTHOR: ${{ needs.check-pr.outputs.comment_author }}
           COMMENT_AUTHOR_PROFILE: ${{ needs.check-pr.outputs.comment_author_profile }}
-        run: pnpm vite-node .github/scripts/sync-pr-to-linear.ts
+        run: node .github/scripts/sync-pr-to-linear.ts

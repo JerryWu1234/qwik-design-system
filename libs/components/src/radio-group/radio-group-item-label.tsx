@@ -1,4 +1,4 @@
-import { $, type PropsOf, Slot, component$, useContext } from "@qwik.dev/core";
+import { $, component$, type PropsOf, Slot, useContext } from "@qwik.dev/core";
 import { Render } from "../render/render";
 import { radioGroupContextId } from "./radio-group-context";
 import { radioGroupItemContextId } from "./radio-group-item";
@@ -10,10 +10,10 @@ export const RadioGroupItemLabel = component$((props: PublicLabelProps) => {
   const itemContext = useContext(radioGroupItemContextId);
   const itemLabelId = `${itemContext.itemId}-label`;
 
-  const handlePointerDown$ = $((e: PointerEvent) => {
+  const handlePointerDown$ = $(() => {
     const currItem = context.triggerRefsArray.value[itemContext.itemIndex].ref.value;
 
-    if (currItem.disabled) return;
+    if (!currItem || currItem.disabled) return;
 
     context.selectedValueSig.value = itemContext.itemValue;
 

@@ -1,3 +1,4 @@
+// oxlint-disable no-empty-file
 // import AxeBuilder from "@axe-core/playwright";
 // import { type Page, expect, test } from "@playwright/test";
 // import { createTestDriver } from "./pagination.driver";

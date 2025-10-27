@@ -1,11 +1,11 @@
 import { useBoundSignal } from "@qds.dev/utils";
 import {
+  component$,
   type JSXChildren,
   type PropsOf,
   type QRL,
   type Signal,
   Slot,
-  component$,
   useComputed$,
   useContextProvider,
   useSignal,
@@ -19,7 +19,7 @@ export type PublicPaginationRootProps = PropsOf<"div"> & {
   /** The initial page number to display when component loads */
   currentPage?: number;
   /** Reactive value that can be controlled via signal. Sets the current active page number */
-  "bind:page"?: Signal<number | 1>;
+  "bind:page"?: Signal<number>;
   /** Event handler for page change events */
   onPageChange$?: QRL<(page: number) => void>;
   /** Whether the pagination component is disabled */

@@ -1,3 +1,4 @@
+// oxlint-disable no-empty-file
 // TODO: Add improved tests once spec is laid out.
 
 // import { component$ } from "@qwik.dev/core";

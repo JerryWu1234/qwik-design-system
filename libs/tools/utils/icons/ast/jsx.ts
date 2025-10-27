@@ -1,5 +1,4 @@
 import type {
-  ConditionalExpression,
   Expression,
   JSXAttribute,
   JSXAttributeItem,
@@ -56,8 +55,7 @@ export function extractFromNode(node: Node, source: string): Extracted {
     return extractFromNode((node as { expression: Node }).expression, source);
   }
   if (node.type === "ConditionalExpression") {
-    const conditionalExpression = node as ConditionalExpression;
-    const { test, consequent, alternate } = conditionalExpression;
+    const { test, consequent, alternate } = node;
 
     const testCode = source.slice(test.start, test.end);
     const isTrue = extractFromNode(consequent, source);
@@ -126,7 +124,7 @@ export function extractProps(attributes: JSXAttributeItem[], source: string): st
   for (const attr of attributes) {
     if (attr.type !== "JSXAttribute") continue;
 
-    const a = attr as JSXAttribute;
+    const a = attr;
     if (a.name.type !== "JSXIdentifier") continue;
 
     const key = a.name.name;

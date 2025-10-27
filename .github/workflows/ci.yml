@@ -13,7 +13,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        node: [22.12]
+        node: [24.9.0]
         experimental: [false]
     name: 👷 QDS CI Node-${{ matrix.node }} under ${{ matrix.os }}
 
@@ -74,16 +74,19 @@ jobs:
             libs/tools/dist
             libs/utils/lib
             libs/utils/lib-types
+            libs/components/lib
+            libs/components/lib-types
             **/tsconfig.tsbuildinfo
-          key: ${{ runner.os }}-build-${{ hashFiles('libs/tools/**', 'libs/utils/**', '!**/node_modules/**') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('libs/tools/**', 'libs/utils/**', 'libs/components/**', '!**/node_modules/**') }}
           restore-keys: |
             ${{ runner.os }}-build-
 
-      - name: 🔨 Build underlying tools and utilities
+      - name: 🔨 Build underlying tools, utilities, and components
         if: steps.build-cache.outputs.cache-hit != 'true'
         run: |
           pnpm --filter ./libs/tools build
           pnpm --filter ./libs/utils build
+          pnpm --filter ./libs/components build
 
       - name: ✅ Check code style
         run: pnpm check

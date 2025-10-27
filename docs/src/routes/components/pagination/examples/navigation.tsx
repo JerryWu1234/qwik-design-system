@@ -3,8 +3,11 @@ import { component$, useSignal } from "@qwik.dev/core";
 
 export default component$(() => {
   const selectedPageSig = useSignal(1);
-  const totalPagesSig = useSignal(3);
-  const paginationItems = [...Array(totalPagesSig.value)].map((_, index) => index + 1);
+  const totalPagesSig = useSignal<number>(3);
+  const paginationItems = Array.from(
+    { length: totalPagesSig.value },
+    (_, index) => index + 1
+  );
 
   return (
     <Pagination.Root

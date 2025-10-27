@@ -5,8 +5,11 @@ export default component$(() => {
   // Examples for first page and last page
   const firstPageSig = useSignal(1);
   const lastPageSig = useSignal(5);
-  const totalPagesSig = useSignal(5);
-  const paginationItems = [...Array(totalPagesSig.value)].map((_, index) => index + 1);
+  const totalPagesSig = useSignal<number>(5);
+  const paginationItems = Array.from(
+    { length: totalPagesSig.value },
+    (_, index) => index + 1
+  );
 
   return (
     <div class="flex flex-col gap-4">

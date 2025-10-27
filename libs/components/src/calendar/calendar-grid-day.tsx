@@ -1,4 +1,4 @@
-import { $, type PropsOf, component$, useContext } from "@qwik.dev/core";
+import { $, component$, type PropsOf, useContext } from "@qwik.dev/core";
 import { calendarContextId } from "./calendar-context";
 import type { ISODate, Locale } from "./types";
 import { getWeekNumber } from "./utils";
@@ -9,18 +9,18 @@ type PublicCalendarGridDayProps = PropsOf<"button"> & {
   onDateChange$?: (date: ISODate) => void;
 };
 
-// no-composition-check
+const dateFormatter = (locale: Locale) =>
+  new Intl.DateTimeFormat(locale, {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+
 /** A component that renders a single day cell in the calendar grid */
 export const CalendarGridDay = component$<PublicCalendarGridDayProps>(
   ({ onDateChange$, showLeadingZeros = false, ...buttonProps }) => {
     const context = useContext(calendarContextId);
-    const dateFormatter = (locale: Locale) =>
-      new Intl.DateTimeFormat(locale, {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-      });
 
     return (
       <>

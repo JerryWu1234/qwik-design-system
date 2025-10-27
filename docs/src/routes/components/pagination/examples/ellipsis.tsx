@@ -3,8 +3,11 @@ import { component$, useSignal } from "@qwik.dev/core";
 
 export default component$(() => {
   const selectedPageSig = useSignal(5); // Middle page to show ellipsis on both sides
-  const totalPagesSig = useSignal(10);
-  const paginationItems = [...Array(totalPagesSig.value)].map((_, index) => index + 1);
+  const totalPagesSig = useSignal<number>(10);
+  const paginationItems = Array.from(
+    { length: totalPagesSig.value },
+    (_, index) => index + 1
+  );
 
   return (
     <div class="flex flex-col gap-4">

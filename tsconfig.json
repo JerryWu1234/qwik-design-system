@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "strict": true,
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true,
     "paths": {
       "@qds.dev/ui": ["libs/components/src"],
       "@qds.dev/utils": ["libs/utils/src"]

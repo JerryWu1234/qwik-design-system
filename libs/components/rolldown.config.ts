@@ -1,15 +1,10 @@
-import { readFileSync } from "node:fs";
 import { inlineCssPlugin, qdsTransformPlugin } from "@qds.dev/tools/rolldown";
+import { readPackageJson } from "@qds.dev/tools/utils";
 import { qwikRollup } from "@qwik.dev/core/optimizer";
 import { defineConfig } from "rolldown";
 import { qwikRolldown } from "./qwik-rolldown";
 
-type PackageJson = {
-  dependencies?: Record<string, string>;
-  peerDependencies?: Record<string, string>;
-};
-
-const pkg = JSON.parse(readFileSync("./package.json", "utf-8")) as PackageJson;
+const pkg = readPackageJson();
 const { dependencies = {}, peerDependencies = {} } = pkg;
 const makeRegex = (dep: string) => new RegExp(`^${dep}(/.*)?$`);
 const excludeAll = (obj: Record<string, string>) => Object.keys(obj).map(makeRegex);

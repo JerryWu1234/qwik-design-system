@@ -1,8 +1,8 @@
 import {
   $,
+  component$,
   type PropsOf,
   Slot,
-  component$,
   sync$,
   useComputed$,
   useConstant,
@@ -12,6 +12,7 @@ import {
 } from "@qwik.dev/core";
 import { Render } from "../render/render";
 import { paginationContextId } from "./pagination-context";
+
 type PublicPaginationPageProps = PropsOf<"button">;
 /** Individual page number button component */
 export const PaginationItem = component$((props: PublicPaginationPageProps) => {
@@ -95,7 +96,6 @@ export const PaginationItem = component$((props: PublicPaginationPageProps) => {
       data-current={isCurrentPage.value}
       aria-current={isCurrentPage.value ? "page" : undefined}
       aria-label={`Page ${index + 1}`}
-      role="button"
       tabIndex={0}
       onClick$={[handleClick$, props.onClick$]}
       onFocus$={[handleFocus$, props.onFocus$]}

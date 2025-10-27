@@ -1,4 +1,4 @@
-import type { ConditionalExpression, LogicalExpression, Node } from "@oxc-project/types";
+import type { LogicalExpression, Node } from "@oxc-project/types";
 import { parseSync } from "oxc-parser";
 import { describe, expect, it } from "vitest";
 
@@ -12,6 +12,19 @@ import {
   isSupportedExpressionType
 } from "./expressions";
 
+function isNode(value: unknown): value is Node {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "type" in value &&
+    typeof (value as { type: unknown }).type === "string"
+  );
+}
+
+function getNodeProperty(node: Node, key: string): unknown {
+  return (node as unknown as Record<string, unknown>)[key];
+}
+
 describe("expression-utils", () => {
   describe("handleExpression", () => {
     it("should dispatch to handleConditionalExpression for ternary operators", () => {
@@ -22,16 +35,16 @@ describe("expression-utils", () => {
         if (node.type === "ConditionalExpression") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findConditional(c as Node);
+              if (isNode(c)) {
+                const result = findConditional(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findConditional(child as Node);
+          } else if (isNode(child)) {
+            const result = findConditional(child);
             if (result) return result;
           }
         }
@@ -56,16 +69,16 @@ describe("expression-utils", () => {
         if (node.type === "LogicalExpression") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findLogical(c as Node);
+              if (isNode(c)) {
+                const result = findLogical(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findLogical(child as Node);
+          } else if (isNode(child)) {
+            const result = findLogical(child);
             if (result) return result;
           }
         }
@@ -90,16 +103,16 @@ describe("expression-utils", () => {
         if (node.type === "Identifier") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findIdentifier(c as Node);
+              if (isNode(c)) {
+                const result = findIdentifier(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findIdentifier(child as Node);
+          } else if (isNode(child)) {
+            const result = findIdentifier(child);
             if (result) return result;
           }
         }
@@ -125,16 +138,16 @@ describe("expression-utils", () => {
         if (node.type === "BinaryExpression") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findBinary(c as Node);
+              if (isNode(c)) {
+                const result = findBinary(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findBinary(child as Node);
+          } else if (isNode(child)) {
+            const result = findBinary(child);
             if (result) return result;
           }
         }
@@ -160,16 +173,16 @@ describe("expression-utils", () => {
         if (node.type === "ConditionalExpression") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findConditional(c as Node);
+              if (isNode(c)) {
+                const result = findConditional(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findConditional(child as Node);
+          } else if (isNode(child)) {
+            const result = findConditional(child);
             if (result) return result;
           }
         }
@@ -179,11 +192,8 @@ describe("expression-utils", () => {
       const conditional = findConditional(parsed.program);
       expect(conditional).toBeTruthy();
 
-      if (conditional) {
-        const result = handleConditionalExpression(
-          conditional as ConditionalExpression,
-          code
-        );
+      if (conditional && conditional.type === "ConditionalExpression") {
+        const result = handleConditionalExpression(conditional, code);
         expect(result.type).toContain("isActive ? Button : Button");
         expect(result.props).toContain("isActive ? {  } : {  }");
       }
@@ -197,16 +207,16 @@ describe("expression-utils", () => {
         if (node.type === "ConditionalExpression") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findConditional(c as Node);
+              if (isNode(c)) {
+                const result = findConditional(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findConditional(child as Node);
+          } else if (isNode(child)) {
+            const result = findConditional(child);
             if (result) return result;
           }
         }
@@ -216,11 +226,8 @@ describe("expression-utils", () => {
       const conditional = findConditional(parsed.program);
       expect(conditional).toBeTruthy();
 
-      if (conditional) {
-        const result = handleConditionalExpression(
-          conditional as ConditionalExpression,
-          code
-        );
+      if (conditional && conditional.type === "ConditionalExpression") {
+        const result = handleConditionalExpression(conditional, code);
         expect(result.type).toContain("a ? ");
         expect(result.type).toContain(" : ");
       }
@@ -236,16 +243,16 @@ describe("expression-utils", () => {
         if (node.type === "LogicalExpression") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findLogical(c as Node);
+              if (isNode(c)) {
+                const result = findLogical(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findLogical(child as Node);
+          } else if (isNode(child)) {
+            const result = findLogical(child);
             if (result) return result;
           }
         }
@@ -271,16 +278,16 @@ describe("expression-utils", () => {
         if (node.type === "LogicalExpression") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findLogical(c as Node);
+              if (isNode(c)) {
+                const result = findLogical(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findLogical(child as Node);
+          } else if (isNode(child)) {
+            const result = findLogical(child);
             if (result) return result;
           }
         }
@@ -304,9 +311,11 @@ describe("expression-utils", () => {
       const mockExpr = {
         type: "LogicalExpression",
         operator: "??", // Nullish coalescing not supported
-        left: { start: 0, end: 4 },
-        right: { start: 7, end: 11 }
-      } as LogicalExpression;
+        left: { start: 0, end: 4, type: "Identifier" },
+        right: { start: 7, end: 11, type: "Identifier" },
+        start: 0,
+        end: 15
+      } as unknown as LogicalExpression;
 
       const result = handleLogicalExpression(mockExpr, "test ?? default");
       expect(result).toBeNull();
@@ -322,16 +331,16 @@ describe("expression-utils", () => {
         if (node.type === "Identifier") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findIdentifier(c as Node);
+              if (isNode(c)) {
+                const result = findIdentifier(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findIdentifier(child as Node);
+          } else if (isNode(child)) {
+            const result = findIdentifier(child);
             if (result) return result;
           }
         }
@@ -356,16 +365,16 @@ describe("expression-utils", () => {
         if (node.type === "Identifier") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findIdentifier(c as Node);
+              if (isNode(c)) {
+                const result = findIdentifier(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findIdentifier(child as Node);
+          } else if (isNode(child)) {
+            const result = findIdentifier(child);
             if (result) return result;
           }
         }
@@ -392,16 +401,16 @@ describe("expression-utils", () => {
         if (node.type === "CallExpression") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findCall(c as Node);
+              if (isNode(c)) {
+                const result = findCall(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findCall(child as Node);
+          } else if (isNode(child)) {
+            const result = findCall(child);
             if (result) return result;
           }
         }
@@ -426,16 +435,16 @@ describe("expression-utils", () => {
         if (node.type === "CallExpression") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findCall(c as Node);
+              if (isNode(c)) {
+                const result = findCall(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findCall(child as Node);
+          } else if (isNode(child)) {
+            const result = findCall(child);
             if (result) return result;
           }
         }
@@ -462,16 +471,16 @@ describe("expression-utils", () => {
         if (node.type === "MemberExpression") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findMember(c as Node);
+              if (isNode(c)) {
+                const result = findMember(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findMember(child as Node);
+          } else if (isNode(child)) {
+            const result = findMember(child);
             if (result) return result;
           }
         }
@@ -496,16 +505,16 @@ describe("expression-utils", () => {
         if (node.type === "MemberExpression") return node;
 
         for (const key in node) {
-          const child = (node as unknown as Record<string, unknown>)[key];
+          const child = getNodeProperty(node, key);
           if (Array.isArray(child)) {
             for (const c of child) {
-              if (c && typeof c === "object") {
-                const result = findMember(c as Node);
+              if (isNode(c)) {
+                const result = findMember(c);
                 if (result) return result;
               }
             }
-          } else if (child && typeof child === "object") {
-            const result = findMember(child as Node);
+          } else if (isNode(child)) {
+            const result = findMember(child);
             if (result) return result;
           }
         }

@@ -1,8 +1,8 @@
-import { $, type PropsOf, component$, useSignal, useStore } from "@qwik.dev/core";
+import { $, component$, type PropsOf, useSignal, useStore } from "@qwik.dev/core";
 import axe from "axe-core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
 import { Tabs } from "..";
 
 // Top-level locator constants using data-testid
@@ -189,7 +189,7 @@ test("ArrowRight navigates to next enabled tab", async () => {
 
   // Check that tab 3 (index 2) is now selected
   await expect.element(Triggers.nth(2)).toHaveAttribute("aria-selected", "true");
-  expect(document.activeElement).toBe(await Triggers.nth(2).element());
+  expect(document.activeElement).toBe(Triggers.nth(2).element());
 });
 
 test("ArrowLeft navigates to previous enabled tab", async () => {
@@ -203,7 +203,7 @@ test("ArrowLeft navigates to previous enabled tab", async () => {
 
   // Check that tab 1 (index 0) is now selected
   await expect.element(Triggers.nth(0)).toHaveAttribute("aria-selected", "true");
-  expect(document.activeElement).toBe(await Triggers.nth(0).element());
+  expect(document.activeElement).toBe(Triggers.nth(0).element());
 });
 
 test("ArrowDown navigates to next enabled tab in vertical orientation", async () => {
@@ -217,7 +217,7 @@ test("ArrowDown navigates to next enabled tab in vertical orientation", async ()
 
   // Check that tab 3 (index 2) is now selected
   await expect.element(Triggers.nth(2)).toHaveAttribute("aria-selected", "true");
-  expect(document.activeElement).toBe(await Triggers.nth(2).element());
+  expect(document.activeElement).toBe(Triggers.nth(2).element());
 });
 
 test("ArrowUp navigates to previous enabled tab in vertical orientation", async () => {
@@ -231,7 +231,7 @@ test("ArrowUp navigates to previous enabled tab in vertical orientation", async 
 
   // Check that tab 1 (index 0) is now selected
   await expect.element(Triggers.nth(0)).toHaveAttribute("aria-selected", "true");
-  expect(document.activeElement).toBe(await Triggers.nth(0).element());
+  expect(document.activeElement).toBe(Triggers.nth(0).element());
 });
 
 test("Home key navigates to first enabled tab", async () => {
@@ -245,7 +245,7 @@ test("Home key navigates to first enabled tab", async () => {
 
   // Should be at first tab
   await expect.element(Triggers.nth(0)).toHaveAttribute("aria-selected", "true");
-  expect(document.activeElement).toBe(await Triggers.nth(0).element());
+  expect(document.activeElement).toBe(Triggers.nth(0).element());
 });
 
 test("End key navigates to last enabled tab", async () => {
@@ -259,7 +259,7 @@ test("End key navigates to last enabled tab", async () => {
 
   // Should be at last tab
   await expect.element(Triggers.nth(2)).toHaveAttribute("aria-selected", "true");
-  expect(document.activeElement).toBe(await Triggers.nth(2).element());
+  expect(document.activeElement).toBe(Triggers.nth(2).element());
 });
 
 test("ArrowRight loops from last to first tab when loop is enabled", async () => {
@@ -273,7 +273,7 @@ test("ArrowRight loops from last to first tab when loop is enabled", async () =>
 
   // Should be at first tab
   await expect.element(Triggers.nth(0)).toHaveAttribute("aria-selected", "true");
-  expect(document.activeElement).toBe(await Triggers.nth(0).element());
+  expect(document.activeElement).toBe(Triggers.nth(0).element());
 });
 
 test("ArrowLeft loops from first to last tab when loop is enabled", async () => {
@@ -287,7 +287,7 @@ test("ArrowLeft loops from first to last tab when loop is enabled", async () => 
 
   // Should be at last tab (skipping disabled middle tab)
   await expect.element(Triggers.nth(2)).toHaveAttribute("aria-selected", "true");
-  expect(document.activeElement).toBe(await Triggers.nth(2).element());
+  expect(document.activeElement).toBe(Triggers.nth(2).element());
 });
 
 test("ArrowDown loops from last to first tab in vertical orientation when loop is enabled", async () => {
@@ -301,7 +301,7 @@ test("ArrowDown loops from last to first tab in vertical orientation when loop i
 
   // Should be at first tab
   await expect.element(Triggers.nth(0)).toHaveAttribute("aria-selected", "true");
-  expect(document.activeElement).toBe(await Triggers.nth(0).element());
+  expect(document.activeElement).toBe(Triggers.nth(0).element());
 });
 
 test("ArrowUp loops from first to last tab in vertical orientation when loop is enabled", async () => {
@@ -315,7 +315,7 @@ test("ArrowUp loops from first to last tab in vertical orientation when loop is 
 
   // Should be at last tab (skipping disabled middle tab)
   await expect.element(Triggers.nth(2)).toHaveAttribute("aria-selected", "true");
-  expect(document.activeElement).toBe(await Triggers.nth(2).element());
+  expect(document.activeElement).toBe(Triggers.nth(2).element());
 });
 
 test("horizontal orientation has correct data attribute", async () => {
@@ -369,7 +369,7 @@ test("clicking tab updates external store", async () => {
 });
 
 test("onChange callback is called when tab changes", async () => {
-  const onChangeSpy = $((value: string) => {
+  const onChangeSpy = $(() => {
     // This will be tracked by the external state component
   });
 

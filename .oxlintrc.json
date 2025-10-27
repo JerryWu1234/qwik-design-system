@@ -1,0 +1,57 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "ignorePatterns": [
+    ".git",
+    "build",
+    "dist",
+    "node_modules",
+    "server",
+    "docs/public/pagefind",
+    "lib-types",
+    "libs/components/lib/*",
+    "libs/components/node_modules",
+    "libs/components/virtual-qds-icons.d.ts",
+    "libs/components/src/icons-runtime.ts",
+    "libs/components/styles/tailwind/qds-tailwind.css",
+    "libs/utils/lib/*",
+    ".vscode",
+    "test-results"
+  ],
+
+  "plugins": ["typescript", "unicorn", "jsx-a11y"],
+
+  "jsPlugins": ["./libs/tools/linter/qds-internal.ts"],
+
+  "settings": {
+    "jsx-a11y": {
+      "attributes": {
+        "for": ["htmlFor", "for"]
+      }
+    }
+  },
+
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "warn"
+  },
+
+  "rules": {
+    "no-unused-vars": "error",
+    "no-shadow-restricted-names": "off",
+    "no-plusplus": "off",
+    "no-await-in-loop": "off",
+    "typescript/no-floating-promises": "error",
+    "typescript/no-misused-promises": "error",
+    "typescript/await-thenable": "error",
+    "typescript/require-await": "error",
+    "typescript/no-unsafe-argument": "error",
+    "typescript/no-unsafe-assignment": "error",
+    "typescript/no-unsafe-call": "error",
+    "typescript/no-unsafe-member-access": "error",
+    "typescript/no-unsafe-return": "error",
+    "typescript/no-unsafe-type-assertion": "off",
+    "typescript/promise-function-async": "error",
+    "qds/no-default-name": "error"
+  }
+}

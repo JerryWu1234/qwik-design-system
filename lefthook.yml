@@ -1,0 +1,9 @@
+pre-commit:
+  commands:
+    # Lint all changed files (includes type-aware rules)
+    # Will auto-fix what it can, but blocks commit if errors remain
+    lint:
+      glob: "*.{js,jsx,ts,tsx,mjs,cjs}"
+      run: pnpm oxlint --type-aware --fix {staged_files}
+      stage_fixed: true
+      fail_text: "You changed files that did not pass the linting rules. Please fix the errors above before committing."

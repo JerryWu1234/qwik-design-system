@@ -1,3 +1,4 @@
+import type { Signal } from "@qwik.dev/core";
 import {
   $,
   component$,
@@ -9,14 +10,12 @@ import {
   useStyles$,
   useTask$
 } from "@qwik.dev/core";
-import type { Signal } from "@qwik.dev/core";
 import type { DayOfMonth, Month } from "../calendar/types";
 import { MAX_DAY } from "./constants";
 import { dateInputContextId } from "./date-input-context";
 import { dateInputFieldContextId } from "./date-input-field-context";
 import styles from "./date-input-segment.css?inline";
-import type { DateSegment, DateSegmentType } from "./types";
-import type { PublicDateInputSegmentProps } from "./types";
+import type { DateSegment, DateSegmentType, PublicDateInputSegmentProps } from "./types";
 import { getLastDayOfMonth, getTwoDigitPaddedValue } from "./utils";
 
 type DateInputSegmentProps = PublicDateInputSegmentProps & {
@@ -222,7 +221,7 @@ export const DateInputSegment = component$(
       }
     });
 
-    const focusNextSegment = $(async () => {
+    const focusNextSegment = $(() => {
       const nextSegment = rootContext.segmentRefs.value[index + 1]?.value;
       if (nextSegment) {
         nextSegment.focus();
@@ -230,7 +229,7 @@ export const DateInputSegment = component$(
       }
     });
 
-    const focusPreviousSegment = $(async () => {
+    const focusPreviousSegment = $(() => {
       const previousSegment = rootContext.segmentRefs.value[index - 1]?.value;
       if (previousSegment) {
         previousSegment.focus();
@@ -449,6 +448,7 @@ export const DateInputSegment = component$(
           ref={inputRef}
           id={inputId}
           type="text"
+          role="spinbutton"
           data-qds-date-input-segment
           data-qds-date-input-segment-placeholder={segmentSig.value.isPlaceholder}
           data-qds-date-input-segment-day={segmentSig.value.type === "day"}

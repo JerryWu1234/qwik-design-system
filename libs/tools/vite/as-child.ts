@@ -1,15 +1,9 @@
-import type {
-  JSXChild,
-  JSXElement,
-  JSXIdentifier,
-  JSXOpeningElement,
-  Program
-} from "@oxc-project/types";
+import type { JSXElement, JSXOpeningElement, Program } from "@oxc-project/types";
 import MagicString from "magic-string";
 import { parseSync } from "oxc-parser";
 import { walk } from "oxc-walker";
 import type { Plugin as VitePlugin } from "vite";
-
+import { handleExpression } from "../utils/icons/ast/expressions";
 import {
   extractFromElement,
   getLineNumber,
@@ -17,8 +11,6 @@ import {
   isJSXExpressionContainer,
   isJSXText
 } from "../utils/icons/ast/jsx";
-
-import { handleExpression } from "../utils/icons/ast/expressions";
 
 export type AsChildTypes = {
   asChild: true;
@@ -87,7 +79,9 @@ export const asChild = (options: AsChildPluginOptions = {}): VitePlugin => {
   function hasAsChild(opening: JSXOpeningElement): boolean {
     const isAsChildProp = opening.attributes.some(
       (attr) =>
-        attr.type === "JSXAttribute" && (attr.name as JSXIdentifier).name === "asChild"
+        attr.type === "JSXAttribute" &&
+        attr.name.type === "JSXIdentifier" &&
+        attr.name.name === "asChild"
     );
     if (isAsChildProp) debug("🔄 Found asChild element!");
     return isAsChildProp;
@@ -109,7 +103,7 @@ export const asChild = (options: AsChildPluginOptions = {}): VitePlugin => {
       throw new Error(`asChild elements must have exactly one child at ${elem.start}`);
     }
 
-    const child = children[0] as JSXChild;
+    const child = children[0];
 
     let jsxType: string;
     let movedProps: string;

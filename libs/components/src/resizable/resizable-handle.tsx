@@ -1,7 +1,7 @@
 import {
   $,
-  type PropsOf,
   component$,
+  type PropsOf,
   useContext,
   useSignal,
   useTask$
@@ -204,7 +204,7 @@ export const ResizableHandle = component$<PublicResizableHandleProps>((props) =>
     return false;
   });
 
-  useTask$(async () => {
+  useTask$(() => {
     if (!handleRef.value) return;
 
     const prevContent = handleRef.value.previousElementSibling as HTMLElement;

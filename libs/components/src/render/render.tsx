@@ -1,11 +1,11 @@
 import {
   $,
   type Component,
+  component$,
   type JSXOutput,
   type QwikIntrinsicElements,
   type Signal,
-  Slot,
-  component$
+  Slot
 } from "@qwik.dev/core";
 
 // keyof slows the type server a bunch, instead we use the most common fallbacks
@@ -17,8 +17,7 @@ export type AllowedFallbacks =
   | "label"
   | "nav"
   | "ul"
-  | "li"
-  | "nav";
+  | "li";
 
 type RenderInternalProps<T extends AllowedFallbacks> = {
   /** The default element and types if a render prop is not provided */
@@ -62,12 +61,13 @@ function getBindOverrides(props: Record<string, unknown>): Record<string, undefi
  */
 export const Render = component$(
   <T extends AllowedFallbacks>(props: RenderInternalProps<T>): JSXOutput => {
-    const { fallback, jsxType, movedProps, internalRef, ...rest } = props;
-
-    fallback;
-    jsxType;
-    internalRef;
-    movedProps;
+    const {
+      fallback: _fallback,
+      jsxType: _jsxType,
+      movedProps,
+      internalRef: _internalRef,
+      ...rest
+    } = props;
 
     const Comp = (props.jsxType ?? props.fallback) as Component;
 

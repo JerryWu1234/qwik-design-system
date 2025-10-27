@@ -15,7 +15,7 @@ export type ChangesetData = {
 
 export const changesetData: ChangesetData = JSON.parse(
   process.env.CHANGESET_DATA || "{}"
-);
+) as ChangesetData;
 
 export function convertChangesetToMarkdown(changesetData: ChangesetData): string {
   const { changesets, releases } = changesetData;

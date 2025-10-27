@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: [lts/*]
+        node-version: [24.9.0]
         pnpm-version: [latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -91,5 +91,5 @@ jobs:
           PR_TITLE: "Release QDS - v${{ env.NEW_VERSION }}"
           CHANGESET_DATA: ${{ steps.generate-changeset.outputs.changeset_data }}
           PR_NUMBER: ${{ steps.changesets.outputs.pullRequestNumber }}
-        run: pnpm tsx .github/scripts/update-linear.ts
+        run: node .github/scripts/update-linear.ts
 

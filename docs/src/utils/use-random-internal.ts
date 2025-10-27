@@ -4,7 +4,7 @@ export const random = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min)) + min;
 
 export const useRandomInterval = (
-  callback: () => void,
+  callback: () => void | Promise<void>,
   minDelay: number,
   maxDelay: number
 ) => {
@@ -17,7 +17,7 @@ export const useRandomInterval = (
       const handleTick = () => {
         const nextTickAt = random(minDelay, maxDelay);
         timeoutId.value = window.setTimeout(() => {
-          callback();
+          void callback();
           handleTick();
         }, nextTickAt);
       };

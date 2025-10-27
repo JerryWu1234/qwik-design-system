@@ -5,7 +5,10 @@ export default component$(() => {
   useStyles$(styles);
   const selectedPageSig = useSignal(1);
   const totalPagesSig = useSignal(10);
-  const paginationItems = [...Array(totalPagesSig.value)].map((_, index) => index + 1);
+  const paginationItems = Array.from(
+    { length: totalPagesSig.value },
+    (_, index) => index + 1
+  );
 
   return (
     <Pagination.Root

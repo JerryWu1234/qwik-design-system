@@ -2,11 +2,12 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "composite": true,
+    "baseUrl": ".",
     "rootDir": "./",
     "allowJs": true,
     "target": "ES2017",
     "module": "ES2022",
-    "lib": ["es2022", "DOM", "WebWorker", "DOM.Iterable"],
+    "lib": ["es2023", "DOM", "WebWorker", "DOM.Iterable"],
     "jsx": "react-jsx",
     "jsxImportSource": "@qwik.dev/core",
     "strict": true,

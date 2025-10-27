@@ -11,7 +11,7 @@ import { type Extracted, extractFromNode } from "./jsx";
 export function handleExpression(expression: Node, source: string): Extracted | null {
   switch (expression.type) {
     case "ConditionalExpression":
-      return handleConditionalExpression(expression as ConditionalExpression, source);
+      return handleConditionalExpression(expression, source);
     case "LogicalExpression":
       return handleLogicalExpression(expression, source);
     case "Identifier":
@@ -31,13 +31,11 @@ export function handleExpression(expression: Node, source: string): Extracted | 
  * @param source - Original source code
  * @returns Extracted type and props
  */
-export function handleConditionalExpression(
-  expr: ConditionalExpression,
-  source: string
-): Extracted {
-  const testCode = source.slice(expr.test.start, expr.test.end);
-  const isTrue = extractFromNode(expr.consequent, source);
-  const isFalse = extractFromNode(expr.alternate, source);
+export function handleConditionalExpression(expr: Node, source: string): Extracted {
+  const condExpr = expr as ConditionalExpression;
+  const testCode = source.slice(condExpr.test.start, condExpr.test.end);
+  const isTrue = extractFromNode(condExpr.consequent, source);
+  const isFalse = extractFromNode(condExpr.alternate, source);
   return {
     type: `${testCode} ? ${isTrue.type} : ${isFalse.type}`,
     props: `${testCode} ? ${isTrue.props} : ${isFalse.props}`

@@ -1,8 +1,8 @@
 import { type BindableProps, useBindings } from "@qds.dev/utils";
 import {
+  component$,
   type PropsOf,
   Slot,
-  component$,
   useContextProvider,
   useId,
   useSignal,
@@ -10,8 +10,8 @@ import {
   useTask$
 } from "@qwik.dev/core";
 import { Render } from "../render/render";
-import { type SwitchContext, switchContextId } from "./switch-context";
 import styles from "./switch.css?inline";
+import { type SwitchContext, switchContextId } from "./switch-context";
 
 type SwitchBinds = {
   /** Initial checked state of the switch */
@@ -26,7 +26,7 @@ type SwitchBinds = {
   value?: string;
 };
 
-type PublicRootProps = PropsOf<"div"> & {
+type PublicRootProps = Omit<PropsOf<"div">, "onChange$"> & {
   /** Callback when the switch state changes */
   onChange$?: (checked: boolean) => void;
   /** Whether the switch is in an error state */
@@ -49,7 +49,7 @@ export const SwitchRoot = component$<PublicRootProps>((props) => {
       value: ""
     });
 
-  useTask$(async function handleChange({ track, cleanup }) {
+  useTask$(function handleChange({ track, cleanup }) {
     const checked = track(() => checkedSig.value);
 
     if (!isInitialLoadSig.value && onChange$ && !disabledSig.value) {
@@ -98,7 +98,6 @@ export const SwitchRoot = component$<PublicRootProps>((props) => {
       data-disabled={disabledSig.value}
       // Indicates whether the switch is in an error state
       data-error={hasError ? "" : undefined}
-      onChange$={[onChange$, props.onChange$]}
     >
       <Slot />
     </Render>

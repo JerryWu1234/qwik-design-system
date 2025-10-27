@@ -93,7 +93,7 @@ export function getAvailableCollections(): string[] {
     return readdirSync(collectionsDir)
       .filter((file: string) => file.endsWith(".json"))
       .map((file: string) => file.replace(".json", ""));
-  } catch (error) {
+  } catch {
     return [];
   }
 }

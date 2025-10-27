@@ -1,4 +1,4 @@
-import { $, type PropsOf, Slot, component$, useContext, useSignal } from "@qwik.dev/core";
+import { $, component$, type PropsOf, Slot, useContext, useSignal } from "@qwik.dev/core";
 import { Render } from "../render/render";
 import { sliderContextId } from "./slider-context";
 
@@ -10,7 +10,8 @@ export const SliderTrack = component$((props: PropsOf<"div">) => {
   const onPointerDown$ = $(async (event: PointerEvent) => {
     if (context.disabled.value) return;
 
-    const clickedThumb = (event.target as HTMLElement).closest("[data-qds-slider-thumb]");
+    if (!(event.target instanceof HTMLElement)) return;
+    const clickedThumb = event.target.closest("[data-qds-slider-thumb]");
     if (clickedThumb) return;
 
     const rect = trackRef.value?.getBoundingClientRect();

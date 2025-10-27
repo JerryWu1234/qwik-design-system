@@ -6,7 +6,7 @@ import { getAvailableCollections } from "../naming";
 
 export type LazyCollections = Map<string, Promise<IconifyJSON>>;
 export type IconData = { body: string; viewBox: string };
-export type LazyIconCache = Map<string, Promise<IconData>>;
+export type LazyIconCache = Map<string, Promise<IconData | null>>;
 
 /**
  * Collection loader with lazy loading and caching
@@ -55,21 +55,21 @@ export class CollectionLoader {
    */
   async loadCollectionLazy(prefix: string): Promise<IconifyJSON> {
     if (this.lazyCollections.has(prefix)) {
-      return await this.lazyCollections.get(prefix);
+      return await this.lazyCollections.get(prefix)!;
     }
 
     const loadPromise = (async () => {
       try {
         const collectionPath = this.require.resolve(`@iconify/json/json/${prefix}.json`);
         const collectionData = readFileSync(collectionPath, "utf-8");
-        const collection = JSON.parse(collectionData);
+        const collection = JSON.parse(collectionData) as IconifyJSON;
         this.debug(
           `Lazy-loaded ${prefix} collection with ${Object.keys(collection.icons || {}).length} icons`
         );
-        return collection;
+        return Promise.resolve(collection);
       } catch (error) {
-        this.debug(`Failed to load ${prefix} collection: ${error}`);
-        throw error;
+        this.debug(`Failed to load ${prefix} collection: ${String(error)}`);
+        return Promise.reject(error);
       }
     })();
 
@@ -83,7 +83,7 @@ export class CollectionLoader {
   async loadIconDataLazy(prefix: string, name: string): Promise<IconData | null> {
     const cacheKey = `${prefix}:${name}`;
     if (this.lazyIconCache.has(cacheKey)) {
-      return await this.lazyIconCache.get(cacheKey);
+      return await this.lazyIconCache.get(cacheKey)!;
     }
 
     const loadPromise = (async () => {
@@ -104,7 +104,7 @@ export class CollectionLoader {
 
         return result;
       } catch (error) {
-        this.debug(`Error loading icon "${name}" from ${prefix}: ${error}`);
+        this.debug(`Error loading icon "${name}" from ${prefix}: ${String(error)}`);
         return null;
       }
     })();

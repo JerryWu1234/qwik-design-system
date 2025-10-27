@@ -1,8 +1,9 @@
-import { $, type PropsOf, component$, useSignal, useStore } from "@qwik.dev/core";
+import { $, component$, type PropsOf, useSignal, useStore } from "@qwik.dev/core";
 import axe from "axe-core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page, userEvent } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
+import { focusElement } from "../../vitest/element";
 import { RadioGroup } from "..";
 
 /**
@@ -11,13 +12,13 @@ import { RadioGroup } from "..";
 
 // Top-level locator constants using data-testid
 const Root = page.getByTestId("root");
-const Label = page.getByTestId("label");
-const Description = page.getByTestId("description");
-const Items = page.getByTestId("item");
-const ItemLabels = page.getByTestId("item-label");
+// const Label = page.getByTestId("label");
+// const Description = page.getByTestId("description");
+// const Items = page.getByTestId("item");
+// const ItemLabels = page.getByTestId("item-label");
 const Triggers = page.getByTestId("trigger");
 const Indicators = page.getByTestId("indicator");
-const HiddenInputs = page.getByTestId("hidden-input");
+// const HiddenInputs = page.getByTestId("hidden-input");
 const Errors = page.getByTestId("error");
 
 const Basic = component$((props: PropsOf<typeof RadioGroup.Root>) => {
@@ -127,7 +128,7 @@ test("Space key selects focused item", async () => {
   render(<Basic />);
 
   await expect.element(Triggers.nth(0)).toBeVisible();
-  ((await Triggers.nth(0).element()) as HTMLButtonElement).focus();
+  focusElement(Triggers.nth(0));
   await userEvent.keyboard("{Space}");
 
   await expect.element(Triggers.nth(0)).toHaveAttribute("data-checked");
@@ -153,7 +154,8 @@ test("radio group with initial value", async () => {
 const FormBasic = component$(() => {
   const isError = useSignal(false);
   const handleSubmit$ = $((e: SubmitEvent) => {
-    const form = e.target as HTMLFormElement;
+    if (!(e.target instanceof HTMLFormElement)) return;
+    const form = e.target;
     if (!form.checkValidity()) {
       isError.value = true;
     } else {
@@ -256,7 +258,7 @@ test("disabled items navigation - should skip disabled items", async () => {
   render(<OneDisabledItem />);
 
   await expect.element(Triggers.nth(0)).toBeVisible();
-  await ((await Triggers.nth(0).element()) as HTMLButtonElement)?.focus();
+  focusElement(Triggers.nth(0));
   await userEvent.keyboard("{ArrowDown}");
 
   await expect.element(Triggers.nth(2)).toHaveAttribute("data-checked");

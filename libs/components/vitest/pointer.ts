@@ -67,10 +67,10 @@ function createDebugDot(x: number, y: number, type: "down" | "up") {
 
 type Pt = { x: number; y: number };
 
-async function toEventTarget(target: Target): Promise<EventTarget> {
+function toEventTarget(target: Target): EventTarget {
   const targetAsLocator = target as Locator;
   if (targetAsLocator && typeof targetAsLocator.element === "function") {
-    const el = await targetAsLocator.element();
+    const el = targetAsLocator.element();
     if (!el) throw new Error("Locator resolved to null element");
     return el;
   }
@@ -82,7 +82,7 @@ function isElement(t: EventTarget): t is Element {
 }
 
 function rectOf(t: EventTarget) {
-  if (isElement(t)) return (t as Element).getBoundingClientRect();
+  if (isElement(t)) return t.getBoundingClientRect();
   return new DOMRect(0, 0, window.innerWidth, window.innerHeight);
 }
 
@@ -118,7 +118,7 @@ async function dispatchPointer(
   pos: Position,
   opts?: PointerOpts
 ) {
-  const et = await toEventTarget(target);
+  const et = toEventTarget(target);
   const { x, y } = resolvePoint(et, pos);
 
   await nextTick();

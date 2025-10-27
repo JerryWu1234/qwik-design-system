@@ -18,7 +18,7 @@ export function qdsTransformPlugin() {
       let ast: ReturnType<typeof parseSync>;
       try {
         ast = parseSync(id, code);
-      } catch (error) {
+      } catch {
         return null;
       }
 
@@ -30,7 +30,7 @@ export function qdsTransformPlugin() {
         enter(node: Node) {
           if (node.type !== "CallExpression") return;
 
-          const callExpr = node as CallExpression;
+          const callExpr = node;
           if (!isUseMountTaskCall(callExpr, code)) return;
 
           const callback = callExpr.arguments[0];
@@ -77,7 +77,7 @@ function processCleanupCalls(
     enter(node: Node) {
       if (node.type !== "CallExpression") return;
 
-      const callExpr = node as CallExpression;
+      const callExpr = node;
       if (!isCleanupCall(callExpr, code)) return;
 
       const cleanupArg = callExpr.arguments[0];
@@ -127,7 +127,7 @@ function isAlreadyWrappedWithQrl(cleanupCall: CallExpression, code: string): boo
   if (!arg) return false;
 
   if (arg.type === "CallExpression") {
-    const callExpr = arg as CallExpression;
+    const callExpr = arg;
     if (callExpr.callee.type === "Identifier") {
       const name = code.slice(callExpr.callee.start, callExpr.callee.end);
       return name === "$";

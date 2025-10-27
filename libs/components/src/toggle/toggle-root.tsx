@@ -1,11 +1,11 @@
 import { type BindableProps, useBindings } from "@qds.dev/utils";
 import {
   $,
+  component$,
+  createContextId,
   type PropsOf,
   type Signal,
   Slot,
-  component$,
-  createContextId,
   useContextProvider,
   useSignal,
   useTask$
@@ -45,13 +45,13 @@ export const ToggleRoot = component$((props: ToggleRootProps) => {
     isPressedSig.value = !isPressedSig.value;
   });
 
-  useTask$(async function handleChange({ track, cleanup }) {
+  useTask$(function handleChange({ track, cleanup }) {
     track(() => context.isPressedSig.value);
 
     if (!isInitialRenderSig.value) {
       if (!onChange$) return;
 
-      await onChange$(context.isPressedSig.value);
+      onChange$(context.isPressedSig.value);
     }
 
     cleanup(() => {

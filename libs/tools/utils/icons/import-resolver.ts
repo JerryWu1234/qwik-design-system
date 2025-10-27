@@ -1,8 +1,56 @@
-import type { Program } from "@oxc-project/types";
+import type { Node, Program } from "@oxc-project/types";
 import { walk } from "oxc-walker";
-import type { remark } from "remark";
 import type { PacksMap } from "../../vite/icons";
 import { toKebabCase } from "./naming";
+import type {
+  ESTreeImportDeclaration,
+  ESTreeImportSpecifier,
+  ESTreeProgram,
+  MDXjsEsmNode
+} from "./types/mdx-ast";
+
+/**
+ * Type guard for MDX ESM nodes
+ */
+function isMdxjsEsmNode(node: unknown): node is MDXjsEsmNode {
+  return (
+    typeof node === "object" &&
+    node !== null &&
+    "type" in node &&
+    node.type === "mdxjsEsm"
+  );
+}
+
+/**
+ * Type guard for ESTree ImportDeclaration nodes
+ */
+function isImportDeclaration(node: unknown): node is ESTreeImportDeclaration {
+  return (
+    typeof node === "object" &&
+    node !== null &&
+    "type" in node &&
+    node.type === "ImportDeclaration"
+  );
+}
+
+/**
+ * Extract the name from a ModuleExportName (IdentifierName | IdentifierReference | StringLiteral)
+ */
+function getModuleExportName(node: {
+  type: string;
+  name?: string;
+  value?: string;
+}): string {
+  // IdentifierName and IdentifierReference have .name
+  if ("name" in node && typeof node.name === "string") {
+    return node.name;
+  }
+  // StringLiteral has .value
+  if ("value" in node && typeof node.value === "string") {
+    return node.value;
+  }
+  throw new Error(`Unexpected module export name node: ${JSON.stringify(node)}`);
+}
 
 /**
  * Map an imported name to a pack and collection name
@@ -78,11 +126,9 @@ export function resolveImportAliases(
         if (specifier.type !== "ImportSpecifier") {
           continue;
         }
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        const spec = specifier as any;
-        const importedName =
-          spec.imported?.name || spec.imported?.value || spec.local.name;
-        const localAlias = spec.local.name;
+
+        const importedName = getModuleExportName(specifier.imported);
+        const localAlias = specifier.local.name;
 
         mapImportToPack(
           importedName,
@@ -112,7 +158,7 @@ export function resolveImportAliases(
  * @returns Map of local alias to pack name
  */
 export function extractMDXImportAliases(
-  mdast: ReturnType<ReturnType<typeof remark>["parse"]>,
+  mdast: unknown,
   importSources: string[],
   availableCollections: Set<string>,
   collectionNames: Map<string, string>,
@@ -122,22 +168,24 @@ export function extractMDXImportAliases(
   const aliasToPack = new Map<string, string>();
 
   // Use oxc-walker to traverse MDAST (it's ESTree-compatible at runtime!)
-  // biome-ignore lint/suspicious/noExplicitAny: MDAST is ESTree-compatible but types don't match
-  walk(mdast as any, {
+  // MDAST and ESTree are structurally compatible - both are tree structures with 'type' properties
+  // Cast to the union type that walk expects
+  walk(mdast as Program | Node, {
     enter(node) {
-      // @ts-expect-error - MDAST node types are not in oxc-walker's type definitions
-      if (node.type !== "mdxjsEsm") return;
-      // biome-ignore lint/suspicious/noExplicitAny: MDX AST node types
-      if (!(node as any).data?.estree) return;
+      // Check if this is an MDX ESM node with ESTree data
+      const nodeAny = node as unknown;
+      if (!isMdxjsEsmNode(nodeAny)) return;
 
-      // biome-ignore lint/suspicious/noExplicitAny: ESTree types from remark-mdx
-      const program = (node as any).data.estree;
+      const mdxNode: MDXjsEsmNode = nodeAny;
+      if (!mdxNode.data?.estree) return;
+
+      const program: ESTreeProgram = mdxNode.data.estree;
       if (!program.body) return;
 
       for (const stmt of program.body) {
-        if (stmt.type !== "ImportDeclaration") continue;
+        if (!isImportDeclaration(stmt)) continue;
 
-        const source = stmt.source?.value;
+        const source = stmt.source.value;
         if (typeof source !== "string" || !importSources.includes(source)) {
           continue;
         }
@@ -145,10 +193,12 @@ export function extractMDXImportAliases(
         debug(`[MDX] Found import from ${source}`);
 
         // Extract imported names and map to their local aliases
-        for (const spec of stmt.specifiers || []) {
-          if (spec.type === "ImportSpecifier" && spec.local?.name) {
-            const importedName = spec.imported?.name || spec.local.name;
-            const localAlias = spec.local.name;
+        for (const specifier of stmt.specifiers) {
+          if (specifier.type === "ImportSpecifier") {
+            const importSpec: ESTreeImportSpecifier = specifier;
+            const importedName =
+              importSpec.imported?.name || importSpec.imported?.value || "";
+            const localAlias = importSpec.local.name;
 
             mapImportToPack(
               importedName,
@@ -160,10 +210,10 @@ export function extractMDXImportAliases(
               debug,
               "[MDX] "
             );
-          } else if (spec.type === "ImportNamespaceSpecifier" && spec.local?.name) {
+          } else if (specifier.type === "ImportNamespaceSpecifier") {
             // Handle namespace imports (import * as Icons from "...")
-            aliasToPack.set(spec.local.name, "namespace");
-            debug(`[MDX] Mapped namespace import ${spec.local.name}`);
+            aliasToPack.set(specifier.local.name, "namespace");
+            debug(`[MDX] Mapped namespace import ${specifier.local.name}`);
           }
         }
       }

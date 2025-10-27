@@ -1,5 +1,5 @@
 import sdk from "@stackblitz/sdk";
-import { STACKBLITZ_CONFIG, getHeadlessAppContent } from "./stackblitz-config";
+import { getHeadlessAppContent, STACKBLITZ_CONFIG } from "./stackblitz-config";
 
 export const createStackblitzProject = async (
   appContent: string,
@@ -13,8 +13,14 @@ export const createStackblitzProject = async (
   if (parentElement?.querySelector("iframe")) {
     return;
   }
+
+  if (!stackblitzContainer) {
+    console.error(`Container with id ${containerId} not found`);
+    return;
+  }
+
   await sdk.embedProject(
-    stackblitzContainer as HTMLElement,
+    stackblitzContainer,
     {
       title: "Qwik Design System Example",
       description: "Qwik Design System Example",

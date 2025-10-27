@@ -1,8 +1,8 @@
 import { type BindableProps, useBindings } from "@qds.dev/utils";
 import {
+  component$,
   type PropsOf,
   Slot,
-  component$,
   useComputed$,
   useContextProvider,
   useId,
@@ -65,11 +65,11 @@ export const CheckboxRoot = component$((props: PublicCheckboxRootProps) => {
 
   useContextProvider(checkboxContextId, context);
 
-  useTask$(async function handleChange({ track, cleanup }) {
+  useTask$(function handleChange({ track }) {
     track(() => checked.value);
 
     if (!isInitialRender.value) {
-      await onChange$?.(checked.value as boolean);
+      onChange$?.(checked.value as boolean);
     }
 
     isInitialRender.value = false;

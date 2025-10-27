@@ -6,7 +6,6 @@ export default component$(() => {
 
   const isError = useSignal(true);
 
-  const isRendered = useSignal(true);
   const isChecked = useSignal<"mixed" | boolean>(false);
 
   return (

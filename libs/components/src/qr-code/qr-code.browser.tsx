@@ -1,7 +1,7 @@
-import { type PropsOf, component$ } from "@qwik.dev/core";
+import { component$, type PropsOf } from "@qwik.dev/core";
 import { expect, test } from "vitest";
-import { render } from "vitest-browser-qwik";
 import { page } from "vitest/browser";
+import { render } from "vitest-browser-qwik";
 import { QRCode } from "..";
 
 // Top-level locator constants using data-testid
@@ -9,7 +9,7 @@ const Root = page.getByTestId("root");
 const Frame = page.getByTestId("frame");
 const Svg = page.getByTestId("svg");
 const Path = page.getByTestId("path");
-const Overlay = page.getByTestId("overlay");
+// const Overlay = page.getByTestId("overlay");
 const OverlayImg = page.getByTestId("overlay-img");
 
 const Basic = component$((props: PropsOf<typeof QRCode.Root>) => {
@@ -132,8 +132,8 @@ test("multiple QR codes should be visible and unique", async () => {
   await expect.element(allSvgs.nth(1)).toBeVisible();
 
   // Get the path data to verify they're different
-  const firstPathElement = await allSvgs.nth(0).element();
-  const secondPathElement = await allSvgs.nth(1).element();
+  const firstPathElement = allSvgs.nth(0).element();
+  const secondPathElement = allSvgs.nth(1).element();
 
   const firstPath = firstPathElement.querySelector("[data-testid='path']");
   const secondPath = secondPathElement.querySelector("[data-testid='path']");

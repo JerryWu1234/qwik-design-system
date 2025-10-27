@@ -67,7 +67,7 @@ export const icons = (options: IconsPluginOptions = {}): VitePlugin => {
     name: "vite-plugin-qds-icons",
     enforce: "pre",
 
-    async configResolved() {
+    configResolved() {
       debug("Icons plugin initialized with lazy loading");
 
       // Discover all available Iconify collections

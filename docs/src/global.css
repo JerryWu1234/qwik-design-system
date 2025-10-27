@@ -47,7 +47,7 @@
   --color-gradient-blue-start: rgba(24, 180, 244, 0.4);
   --color-gradient-blue-end: rgba(198, 204, 242, 0);
 
-  --animate-shimmer: shimmer 8s infinite backwards reverse cubic-bezier(0.4, 0.0, 0.2, 1);
+  --animate-shimmer: shimmer 8s infinite backwards reverse cubic-bezier(0.4, 0, 0.2, 1);
   --animate-to-visible: to-visible 325ms ease-in-out forwards;
   --animate-to-invisible: to-invisible 325ms ease-in-out forwards;
   --animate-from-invisible: from-invisible 325ms ease-in-out forwards;
@@ -118,7 +118,7 @@ body {
   background: radial-gradient(
     57.64% 57.6% at 48.79% 42.42%,
     rgba(172, 127, 244, 0.4) 0%,
-    rgba(198, 204, 242, 0.0) 63.22%
+    rgba(198, 204, 242, 0) 63.22%
   );
 }
 

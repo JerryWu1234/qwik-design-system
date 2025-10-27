@@ -1,7 +1,7 @@
 import {
   $,
-  type PropsOf,
   component$,
+  type PropsOf,
   sync$,
   useComputed$,
   useContext,
@@ -9,6 +9,7 @@ import {
   useSignal
 } from "@qwik.dev/core";
 import { OTPContextId } from "./otp-context";
+
 type PublicOtpNativeInputProps = PropsOf<"input"> & {
   pattern?: string | null;
 };
@@ -47,10 +48,10 @@ export const OtpHiddenInput = component$((props: PublicOtpNativeInputProps) => {
     }
   );
 
-  const updateSelection = $(() => {
+  const updateSelection = $(async () => {
     const input = context.nativeInputRef.value;
     if (!input || document.activeElement !== input) {
-      syncSelection(null, null, false);
+      await syncSelection(null, null, false);
       return;
     }
 
@@ -61,43 +62,43 @@ export const OtpHiddenInput = component$((props: PublicOtpNativeInputProps) => {
 
     if (value.length === 0 || start === null || end === null) return;
 
-    const setRange = (
+    const setRange = async (
       s: number,
       e: number,
       dir?: "forward" | "backward" | "none",
       inserting = false
     ) => {
       input.setSelectionRange(s, e, dir);
-      syncSelection(s, e, inserting);
+      await syncSelection(s, e, inserting);
     };
 
     // insertion mode
     if (value.length < maxLength && start === value.length) {
-      setRange(start, end + 1, undefined, true);
+      await setRange(start, end + 1, undefined, true);
       return;
     }
 
     // range selection
     if (shiftKeyDown.value && start !== end) {
-      setRange(start, end, input.selectionDirection ?? "none");
+      await setRange(start, end, input.selectionDirection ?? "none");
       return;
     }
 
     // single navigation
     if (start === end) {
       if (start === 0) {
-        setRange(0, 1, "forward");
+        await setRange(0, 1, "forward");
       } else if (start === maxLength) {
-        setRange(maxLength - 1, maxLength, "backward");
+        await setRange(maxLength - 1, maxLength, "backward");
       } else if (
         previousSelection.value.end !== null &&
         start < previousSelection.value.end
       ) {
-        setRange(start - 1, start);
+        await setRange(start - 1, start);
       } else if (shiftKeyDown.value && previousSelection.value.start !== null) {
-        setRange(previousSelection.value.start, start + 1);
+        await setRange(previousSelection.value.start, start + 1);
       } else {
-        setRange(start, start + 1);
+        await setRange(start, start + 1);
       }
     }
   });
@@ -121,7 +122,7 @@ export const OtpHiddenInput = component$((props: PublicOtpNativeInputProps) => {
     }
   });
 
-  const handleKeyDown = $((e: KeyboardEvent) => {
+  const handleKeyDown = $(async (e: KeyboardEvent) => {
     if (e.key === "Shift") {
       shiftKeyDown.value = true;
       return;
@@ -139,7 +140,7 @@ export const OtpHiddenInput = component$((props: PublicOtpNativeInputProps) => {
           newPos--;
         }
         input.setSelectionRange(newPos, newPos + 1);
-        syncSelection(newPos, newPos + 1, false);
+        await syncSelection(newPos, newPos + 1, false);
       }
     }
   });
@@ -201,7 +202,7 @@ export const OtpHiddenInput = component$((props: PublicOtpNativeInputProps) => {
     }
   });
 
-  const handleFocus = $(() => {
+  const handleFocus = $(async () => {
     hasBeenFocused.value = true;
     // Reset first keystroke flag on focus
     isFirstKeystroke.value = true;
@@ -212,13 +213,13 @@ export const OtpHiddenInput = component$((props: PublicOtpNativeInputProps) => {
     const pos = context.code.value.length;
 
     input.setSelectionRange(pos, pos);
-    syncSelection(pos, pos, false);
+    await syncSelection(pos, pos, false);
   });
 
-  const handleBlur = $(() => {
+  const handleBlur = $(async () => {
     shiftKeyDown.value = false;
     context.isFocused.value = false;
-    syncSelection(null, null, false);
+    await syncSelection(null, null, false);
   });
 
   const maxLength = useComputed$(() => {
