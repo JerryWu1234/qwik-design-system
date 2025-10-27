@@ -18,7 +18,7 @@
     "lint": "oxlint . --type-aware --fix",
     "test": "vitest",
     "changeset": "changeset",
-    "publish": "pnpm --filter '@qds.dev/*' publish --access public",
+    "publish": "for pkg in libs/*; do (cd \"$pkg\" && pnpm publish --access public --no-git-checks); done",
     "release": "bumpp -r",
     "release.patch": "bumpp -r --patch && pnpm publish",
     "release.minor": "bumpp -r --minor && pnpm publish",
