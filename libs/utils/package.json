@@ -1,6 +1,6 @@
 {
   "name": "@qds.dev/utils",
-  "version": "0.4.14",
+  "version": "0.4.15",
   "description": "Create a Qwik library",
   "main": "./lib/index.qwik.mjs",
   "qwik": "./lib/index.qwik.mjs",
