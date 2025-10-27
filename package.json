@@ -20,9 +20,9 @@
     "changeset": "changeset",
     "changelog": "changelogen --output CHANGELOG.md --no-commit --no-tag",
     "publish": "pnpm --filter '@qds.dev/*' publish --access public --no-git-checks",
-    "release": "pnpm changelog && bumpp -r",
-    "release.patch": "pnpm changelog && bumpp -r --patch && pnpm run publish",
-    "release.minor": "pnpm changelog && bumpp -r --minor && pnpm run publish",
+    "release": "bumpp --execute \"pnpm changelog\" --all --commit \"chore: release v%s\" --tag \"v%s\"",
+    "release.patch": "bumpp --patch --execute \"pnpm changelog\" --all --commit \"chore: release v%s\" --tag \"v%s\" && pnpm run publish",
+    "release.minor": "bumpp --minor --execute \"pnpm changelog\" --all --commit \"chore: release v%s\" --tag \"v%s\" && pnpm run publish",
     "version:packages": "changeset version",
     "create-linear-issue": "node .github/scripts/update-linear.ts"
   },
