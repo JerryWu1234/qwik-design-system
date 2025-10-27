@@ -18,7 +18,7 @@
     "lint": "oxlint . --type-aware --fix",
     "test": "vitest",
     "changeset": "changeset",
-    "publish": "pnpm -r --filter '!qwik-design-system' --filter '!qwik-design-system-docs' publish --access public",
+    "publish": "pnpm --filter './libs/*' publish --access public --no-git-checks",
     "release": "bumpp -r",
     "release.patch": "bumpp -r --patch && pnpm publish",
     "release.minor": "bumpp -r --minor && pnpm publish",
