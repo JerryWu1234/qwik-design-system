@@ -1,6 +1,10 @@
 # Changelog
 
 
+## v0.4.20...v0.4.20
+
+[compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.4.20...v0.4.20)
+
 ## v0.4.19...v2-migration
 
 [compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.4.19...v2-migration)
