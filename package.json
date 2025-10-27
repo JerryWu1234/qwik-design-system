@@ -2,7 +2,7 @@
   "name": "qwik-design-system",
   "private": true,
   "type": "module",
-  "version": "0.4.11",
+  "version": "0.4.5",
   "packageManager": "pnpm@9.14.4",
   "scripts": {
     "dev": "pnpm --filter ./libs/tools dev:watch & sleep 0.7 && pnpm --filter ./docs dev & wait",
@@ -18,10 +18,10 @@
     "lint": "oxlint . --type-aware --fix",
     "test": "vitest",
     "changeset": "changeset",
-    "publish": "for pkg in libs/*; do (cd \"$pkg\" && pnpm publish --access public --no-git-checks); done",
+    "publish": "pnpm --filter '@qds.dev/*' publish --access public --no-git-checks",
     "release": "bumpp -r",
-    "release.patch": "bumpp -r --patch && pnpm publish",
-    "release.minor": "bumpp -r --minor && pnpm publish",
+    "release.patch": "bumpp -r --patch && pnpm run publish",
+    "release.minor": "bumpp -r --minor && pnpm run publish",
     "version:packages": "changeset version",
     "create-linear-issue": "node .github/scripts/update-linear.ts"
   },
