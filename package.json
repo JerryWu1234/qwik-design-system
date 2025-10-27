@@ -2,7 +2,7 @@
   "name": "qwik-design-system",
   "private": true,
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.4.4",
   "packageManager": "pnpm@9.14.4",
   "scripts": {
     "dev": "pnpm --filter ./libs/tools dev:watch & sleep 0.7 && pnpm --filter ./docs dev & wait",
@@ -18,6 +18,8 @@
     "lint": "oxlint . --type-aware --fix",
     "test": "vitest",
     "changeset": "changeset",
+    "release.patch": "bumpp -r --patch",
+    "release.minor": "bumpp -r --minor",
     "publish:packages": "changeset publish",
     "version:packages": "changeset version",
     "create-linear-issue": "node .github/scripts/update-linear.ts"
@@ -33,6 +35,7 @@
     "@vitest/browser-playwright": "^4.0.3",
     "@vitest/ui": "^4.0.3",
     "axe-core": "^4.10.3",
+    "bumpp": "^10.3.1",
     "lefthook": "^2.0.1",
     "oxc-parser": "^0.94.0",
     "oxlint": "^1.24.0",
