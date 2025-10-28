@@ -2,7 +2,7 @@ import { qdsTransformPlugin } from "@qds.dev/tools/rolldown";
 import { qwikVite } from "@qwik.dev/core/optimizer";
 import { playwright } from "@vitest/browser-playwright";
 import { resolve } from "pathe";
-import { type TestProjectConfiguration, defineConfig } from "vitest/config";
+import { defineConfig, type TestProjectConfiguration } from "vitest/config";
 
 const unitConfig: TestProjectConfiguration = {
   test: {

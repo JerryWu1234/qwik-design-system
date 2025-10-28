@@ -28,22 +28,23 @@
   "devDependencies": {
     "@kunai-consulting/code-notate": "0.0.2",
     "@kunai-consulting/code-notate-core": "0.0.2",
+    "@qds.dev/tools": "workspace:*",
     "@qds.dev/ui": "workspace:*",
     "@qds.dev/utils": "workspace:*",
-    "@qds.dev/tools": "workspace:*",
+    "@qwik.dev/core": "https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@d48c3d2",
+    "@qwik.dev/router": "https://pkg.pr.new/QwikDev/qwik/@qwik.dev/router@d48c3d2",
     "@qwikest/icons": "^0.0.13",
     "@tailwindcss/vite": "^4.1.3",
     "@types/estree-jsx": "1.0.5",
     "@types/node": "24.9.0",
+    "ignore": "^7.0.5",
     "pagefind": "1.2.0",
     "tailwindcss": "^4.1.3",
     "typescript": "5.4.5",
     "unified": "^11.0.4",
     "vite": "^7",
     "vite-plugin-image-optimizer": "^1.1.8",
-    "vite-tsconfig-paths": "^4.2.1",
-    "@qwik.dev/router": "https://pkg.pr.new/QwikDev/qwik/@qwik.dev/router@d48c3d2",
-    "@qwik.dev/core": "https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@d48c3d2"
+    "vite-tsconfig-paths": "^4.2.1"
   },
   "dependencies": {
     "@stackblitz/sdk": "^1.11.0",

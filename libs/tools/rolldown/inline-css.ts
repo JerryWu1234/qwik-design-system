@@ -48,7 +48,7 @@ export function inlineCssPlugin() {
             map: null
           };
         } catch (error) {
-          this.error(`Failed to read CSS file: ${filePath}\n${error}`);
+          this.error(`Failed to read CSS file: ${filePath}\n${String(error)}`);
           return null;
         }
       }

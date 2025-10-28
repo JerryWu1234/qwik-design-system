@@ -72,6 +72,8 @@ jobs:
         with:
           path: |
             libs/tools/dist
+            libs/tools/lib
+            libs/tools/lib-types
             libs/utils/lib
             libs/utils/lib-types
             libs/components/lib

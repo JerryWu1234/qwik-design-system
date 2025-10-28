@@ -7,7 +7,8 @@ import { icons } from "./icons";
 
 type TransformResult = { code: string; map: unknown } | null;
 
-interface TestPlugin extends VitePlugin {
+interface TestPlugin
+  extends Omit<VitePlugin, "transform" | "resolveId" | "handleHotUpdate"> {
   collections?: Map<string, IconifyJSON>;
   lazyCollections?: Map<string, Promise<IconifyJSON>>;
   availableCollections?: Set<string>;
@@ -97,13 +98,13 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
-    expect(result.code).toContain("<svg");
-    expect(result.code).toContain("width={24}");
-    expect(result.code).toContain("dangerouslySetInnerHTML={__qds_i_lucide_check}");
-    expect(result.code).toContain('viewBox="0 0 24 24"');
+    expect(result?.code).toContain("<svg");
+    expect(result?.code).toContain("width={24}");
+    expect(result?.code).toContain("dangerouslySetInnerHTML={__qds_i_lucide_check}");
+    expect(result?.code).toContain('viewBox="0 0 24 24"');
   });
 
   it("should transform icon with class attribute", () => {
@@ -116,7 +117,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('class="icon"');
+    expect(result?.code).toContain('class="icon"');
   });
 
   it("should transform icon with kebab-case attributes", () => {
@@ -129,7 +130,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("stroke-width={2}");
+    expect(result?.code).toContain("stroke-width={2}");
   });
 
   it("should transform icon with expression props", () => {
@@ -143,8 +144,8 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("width={size}");
-    expect(result.code).toContain('className={cn("icon")}');
+    expect(result?.code).toContain("width={size}");
+    expect(result?.code).toContain('className={cn("icon")}');
   });
 
   describe("default size attributes", () => {
@@ -158,9 +159,9 @@ describe("icons", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain('width="1em"');
-      expect(result.code).toContain('height="1em"');
-      expect(result.code).toContain('viewBox="0 0 24 24"');
+      expect(result?.code).toContain('width="1em"');
+      expect(result?.code).toContain('height="1em"');
+      expect(result?.code).toContain('viewBox="0 0 24 24"');
     });
 
     it("should not add default width when width is explicitly provided", () => {
@@ -173,10 +174,10 @@ describe("icons", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain("width={24}");
-      expect(result.code).not.toContain('width="1em"');
+      expect(result?.code).toContain("width={24}");
+      expect(result?.code).not.toContain('width="1em"');
       // Should still add default height
-      expect(result.code).toContain('height="1em"');
+      expect(result?.code).toContain('height="1em"');
     });
 
     it("should not add default height when height is explicitly provided", () => {
@@ -189,10 +190,10 @@ describe("icons", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain("height={24}");
-      expect(result.code).not.toContain('height="1em"');
+      expect(result?.code).toContain("height={24}");
+      expect(result?.code).not.toContain('height="1em"');
       // Should still add default width
-      expect(result.code).toContain('width="1em"');
+      expect(result?.code).toContain('width="1em"');
     });
 
     it("should not add defaults when both width and height are explicitly provided", () => {
@@ -205,10 +206,10 @@ describe("icons", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain("width={24}");
-      expect(result.code).toContain("height={24}");
-      expect(result.code).not.toContain('width="1em"');
-      expect(result.code).not.toContain('height="1em"');
+      expect(result?.code).toContain("width={24}");
+      expect(result?.code).toContain("height={24}");
+      expect(result?.code).not.toContain('width="1em"');
+      expect(result?.code).not.toContain('height="1em"');
     });
 
     it("should add default sizes with expression props", () => {
@@ -221,10 +222,10 @@ describe("icons", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain('width="1em"');
-      expect(result.code).toContain('height="1em"');
-      expect(result.code).toContain('className="icon"');
-      expect(result.code).toContain('aria-label="Check"');
+      expect(result?.code).toContain('width="1em"');
+      expect(result?.code).toContain('height="1em"');
+      expect(result?.code).toContain('className="icon"');
+      expect(result?.code).toContain('aria-label="Check"');
     });
 
     it("should respect string width values", () => {
@@ -237,9 +238,9 @@ describe("icons", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain('width="2rem"');
-      expect(result.code).not.toContain('width="1em"');
-      expect(result.code).toContain('height="1em"');
+      expect(result?.code).toContain('width="2rem"');
+      expect(result?.code).not.toContain('width="1em"');
+      expect(result?.code).toContain('height="1em"');
     });
 
     it("should respect expression width values", () => {
@@ -253,9 +254,9 @@ describe("icons", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain("width={iconSize}");
-      expect(result.code).not.toContain('width="1em"');
-      expect(result.code).toContain('height="1em"');
+      expect(result?.code).toContain("width={iconSize}");
+      expect(result?.code).not.toContain('width="1em"');
+      expect(result?.code).toContain('height="1em"');
     });
   });
 
@@ -269,7 +270,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Checked item</title></svg>'
     );
   });
@@ -285,7 +286,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>{label}</title></svg>'
     );
   });
@@ -304,7 +305,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Checked item</title><desc>Extra a11y</desc></svg>'
     );
   });
@@ -319,7 +320,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><desc>This icon indicates completion</desc></svg>'
     );
   });
@@ -335,7 +336,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><desc>{desc}</desc></svg>'
     );
   });
@@ -350,7 +351,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Check mark</title><desc>Indicates completion</desc></svg>'
     );
   });
@@ -367,7 +368,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>{iconTitle}</title><desc>{iconDesc}</desc></svg>'
     );
   });
@@ -386,9 +387,9 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("<title>Check</title>");
-    expect(result.code).toContain("<desc>Done</desc>");
-    expect(result.code).toContain('<circle cx="12" cy="12" r="10" />');
+    expect(result?.code).toContain("<title>Check</title>");
+    expect(result?.code).toContain("<desc>Done</desc>");
+    expect(result?.code).toContain('<circle cx="12" cy="12" r="10" />');
   });
 
   it("should handle description prop with other attributes", () => {
@@ -407,9 +408,9 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("width={24}");
-    expect(result.code).toContain('class="text-green-500"');
-    expect(result.code).toContain("<desc>Success indicator</desc>");
+    expect(result?.code).toContain("width={24}");
+    expect(result?.code).toContain('class="text-green-500"');
+    expect(result?.code).toContain("<desc>Success indicator</desc>");
   });
 
   it("should handle self-closing and non-self-closing tags", () => {
@@ -422,7 +423,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("width={24}");
+    expect(result?.code).toContain("width={24}");
   });
 
   it("should handle aliased imports", () => {
@@ -435,7 +436,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
   });
@@ -455,17 +456,17 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    const importMatches = result.code.match(/import __qds_i_lucide_check/g);
+    const importMatches = result?.code.match(/import __qds_i_lucide_check/g);
     expect(importMatches).toHaveLength(1);
 
     // Both instances should use the SAME variable name
-    const svgMatches = result.code.match(
+    const svgMatches = result?.code.match(
       /dangerouslySetInnerHTML=\{(__qds_i_lucide_check(?:_\d+)?)\}/g
     );
     expect(svgMatches).toHaveLength(2);
 
     // Extract the variable names used in both SVG elements
-    const allMatches = result.code.matchAll(
+    const allMatches = result!.code.matchAll(
       /dangerouslySetInnerHTML=\{(__qds_i_lucide_check(?:_\d+)?)\}/g
     );
     const varNames = Array.from(allMatches).map((m) => m[1]);
@@ -490,10 +491,10 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_circle from 'virtual:icons/lucide/circle'"
     );
   });
@@ -515,10 +516,10 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_circle from 'virtual:icons/lucide/circle'"
     );
   });
@@ -557,7 +558,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("disabled");
+    expect(result?.code).toContain("disabled");
   });
 
   it("should preserve aria and data attributes", () => {
@@ -570,8 +571,8 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('aria-label="Check"');
-    expect(result.code).toContain('data-testid="check-icon"');
+    expect(result?.code).toContain('aria-label="Check"');
+    expect(result?.code).toContain('data-testid="check-icon"');
   });
 
   it("should handle complex children", () => {
@@ -589,7 +590,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       '<svg width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check}><title>Check</title><desc>Description</desc></svg>'
     );
   });
@@ -604,7 +605,7 @@ describe("icons", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.map).toBeTruthy();
+    expect(result?.map).toBeTruthy();
   });
 
   describe("debug mode", () => {
@@ -703,10 +704,10 @@ describe("icons", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain(
+      expect(result?.code).toContain(
         "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
       );
-      expect(result.code).toContain(
+      expect(result?.code).toContain(
         '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check} />'
       );
     });
@@ -721,10 +722,10 @@ describe("icons", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain(
+      expect(result?.code).toContain(
         "import __qds_i_lucide_x from 'virtual:icons/lucide/x'"
       );
-      expect(result.code).toContain(
+      expect(result?.code).toContain(
         '<svg width={24} class="text-red-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_x} />'
       );
     });
@@ -739,10 +740,10 @@ describe("icons", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain(
+      expect(result?.code).toContain(
         "import __qds_i_lucide_heart from 'virtual:icons/lucide/heart'"
       );
-      expect(result.code).toContain(
+      expect(result?.code).toContain(
         '<svg width={24} class="text-red-500 fill-current" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_heart} />'
       );
     });
@@ -764,28 +765,28 @@ describe("icons", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         "import __qds_i_lucide_x from 'virtual:icons/lucide/x'"
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         "import __qds_i_lucide_heart from 'virtual:icons/lucide/heart'"
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         "import __qds_i_lucide_star from 'virtual:icons/lucide/star'"
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check} />'
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-red-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_x} />'
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-red-500 fill-current" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_heart} />'
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-yellow-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_star} />'
       );
     });
@@ -800,10 +801,10 @@ describe("icons", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         "import __qds_i_heroicons_check_circle from 'virtual:icons/heroicons/check-circle'"
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_heroicons_check_circle} />'
       );
     });
@@ -818,10 +819,10 @@ describe("icons", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         "import __qds_i_tabler_check from 'virtual:icons/tabler/check'"
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_tabler_check} />'
       );
     });
@@ -837,17 +838,17 @@ describe("icons", () => {
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
 
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         "import __qds_i_akaricons_airpods from 'virtual:icons/akar-icons/airpods'"
       );
 
-      expect(result.code).toContain("__qds_i_akaricons_airpods");
+      expect(result!.code).toContain("__qds_i_akaricons_airpods");
 
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg viewBox="0 0 24 24" width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_akaricons_airpods} />'
       );
 
-      expect(result.code).not.toContain("__qds_i_akar-icons_airpods");
+      expect(result!.code).not.toContain("__qds_i_akar-icons_airpods");
     });
 
     it("should transform icon sets with multiple words in name (MaterialSymbols example)", () => {
@@ -861,17 +862,17 @@ describe("icons", () => {
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
 
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         "import __qds_i_materialsymbols_ac_unit_rounded from 'virtual:icons/material-symbols/ac-unit-rounded'"
       );
 
-      expect(result.code).toContain("__qds_i_materialsymbols_ac_unit_rounded");
+      expect(result!.code).toContain("__qds_i_materialsymbols_ac_unit_rounded");
 
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg class="text-blue-500" width="1em" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_materialsymbols_ac_unit_rounded} />'
       );
 
-      expect(result.code).not.toContain("__qds_i_material-symbols_ac-unit-rounded");
+      expect(result!.code).not.toContain("__qds_i_material-symbols_ac-unit-rounded");
     });
 
     it("should allow consumer props to override icon defaults", () => {
@@ -886,7 +887,7 @@ describe("icons", () => {
       expect(result).toBeTruthy();
 
       // Should include consumer's viewBox and width
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg viewBox="0 0 32 32" width={32} height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check} />'
       );
     });
@@ -944,39 +945,39 @@ describe("icons", () => {
       // }
 
       // Should contain all the transformed icons
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_check} />'
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-red-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_x} />'
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-red-500 fill-current" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_heart} />'
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-yellow-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_star} />'
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-gray-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_lucide_search} />'
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_heroicons_check_circle} />'
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-red-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_heroicons_x_circle} />'
       );
-      expect(result.code).toContain(
+      expect(result!.code).toContain(
         '<svg width={24} class="text-green-500" height="1em" viewBox="0 0 24 24" dangerouslySetInnerHTML={__qds_i_tabler_check} />'
       );
 
       // Validate JSX syntax using oxc-parser
-      const validation = validateJSXSyntax(result.code);
+      const validation = validateJSXSyntax(result!.code);
       if (!validation.isValid) {
         console.error(
           "JSX validation errors for complete icon-example:",
           validation.errors
         );
-        console.error("Generated code:", result.code);
+        console.error("Generated code:", result!.code);
       }
       expect(validation.isValid).toBe(true);
     });
@@ -1003,24 +1004,24 @@ export default component$(() => {
     const result = transform(code, "test.tsx");
 
     expect(result).toBeTruthy();
-    expect(result.code).toContain("import");
-    expect(result.code).toContain("<svg");
-    expect(result.code).toContain("dangerouslySetInnerHTML");
+    expect(result!.code).toContain("import");
+    expect(result!.code).toContain("<svg");
+    expect(result!.code).toContain("dangerouslySetInnerHTML");
 
     // The plugin now generates self-closing tags, so check for /> instead of </svg>
-    expect(result.code).toContain("/>");
+    expect(result!.code).toContain("/>");
 
     // Ensure no trailing whitespace that could cause parsing issues
-    const lines = result.code.split("\n");
+    const lines = result!.code.split("\n");
     for (const line of lines) {
       expect(line).toBe(line.trimEnd());
     }
 
     // Validate JSX syntax using oxc-parser
-    const validation = validateJSXSyntax(result.code);
+    const validation = validateJSXSyntax(result!.code);
     if (!validation.isValid) {
       console.error("JSX validation errors for test:", validation.errors);
-      console.error("Generated code:", result.code);
+      console.error("Generated code:", result!.code);
     }
     expect(validation.isValid).toBe(true);
   });
@@ -1042,21 +1043,21 @@ export default component$(() => {
     const result = transform(code, "test.tsx");
 
     expect(result).toBeTruthy();
-    expect(result.code).toContain("import");
+    expect(result!.code).toContain("import");
 
     // Should have three SVG elements
-    const svgMatches = result.code.match(/<svg[^>]*>/g);
+    const svgMatches = result!.code.match(/<svg[^>]*>/g);
     expect(svgMatches).toHaveLength(3);
 
     // Each SVG should have the required attributes
-    expect(result.code).toContain("viewBox=");
-    expect(result.code).toContain("dangerouslySetInnerHTML=");
+    expect(result!.code).toContain("viewBox=");
+    expect(result!.code).toContain("dangerouslySetInnerHTML=");
 
     // Validate JSX syntax using oxc-parser
-    const validation = validateJSXSyntax(result.code);
+    const validation = validateJSXSyntax(result!.code);
     if (!validation.isValid) {
       console.error("JSX validation errors for test:", validation.errors);
-      console.error("Generated code:", result.code);
+      console.error("Generated code:", result!.code);
     }
     expect(validation.isValid).toBe(true);
   });
@@ -1083,23 +1084,23 @@ export default component$(() => {
     expect(result).toBeTruthy();
 
     // Should preserve all attributes correctly
-    expect(result.code).toContain("width={24}");
-    expect(result.code).toContain("height={24}");
-    expect(result.code).toContain('className="text-green-500 hover:text-green-600"');
+    expect(result!.code).toContain("width={24}");
+    expect(result!.code).toContain("height={24}");
+    expect(result!.code).toContain('className="text-green-500 hover:text-green-600"');
     // Note: The style attribute may be formatted differently by the plugin
-    expect(result.code).toContain("style=");
-    expect(result.code).toContain("onClick$=");
-    expect(result.code).toContain('data-testid="check-icon"');
+    expect(result!.code).toContain("style=");
+    expect(result!.code).toContain("onClick$=");
+    expect(result!.code).toContain('data-testid="check-icon"');
 
     // Should still have the SVG-specific attributes
-    expect(result.code).toContain("viewBox=");
-    expect(result.code).toContain("dangerouslySetInnerHTML=");
+    expect(result!.code).toContain("viewBox=");
+    expect(result!.code).toContain("dangerouslySetInnerHTML=");
 
     // Validate JSX syntax using oxc-parser
-    const validation = validateJSXSyntax(result.code);
+    const validation = validateJSXSyntax(result!.code);
     if (!validation.isValid) {
       console.error("JSX validation errors for test:", validation.errors);
-      console.error("Generated code:", result.code);
+      console.error("Generated code:", result!.code);
     }
     expect(validation.isValid).toBe(true);
   });
@@ -1117,7 +1118,7 @@ export default component$(() => {
     expect(result).toBeTruthy();
 
     // Check each line for trailing whitespace
-    const lines = result.code.split("\n");
+    const lines = result!.code.split("\n");
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       if (line.length !== line.trimEnd().length) {
@@ -1126,10 +1127,10 @@ export default component$(() => {
     }
 
     // Validate JSX syntax using oxc-parser
-    const validation = validateJSXSyntax(result.code);
+    const validation = validateJSXSyntax(result!.code);
     if (!validation.isValid) {
       console.error("JSX validation errors for test:", validation.errors);
-      console.error("Generated code:", result.code);
+      console.error("Generated code:", result!.code);
     }
     expect(validation.isValid).toBe(true);
   });
@@ -1154,22 +1155,22 @@ export default component$(() => {
     expect(result).toBeTruthy();
 
     // Boolean true should be converted to {true}
-    expect(result.code).toContain("disabled={true}");
+    expect(result?.code).toContain("disabled={true}");
 
     // Boolean false should be converted to {false}
-    expect(result.code).toContain("hidden={false}");
+    expect(result?.code).toContain("hidden={false}");
 
     // Boolean shorthand should be preserved as just the attribute name
-    expect(result.code).toContain("required");
+    expect(result?.code).toContain("required");
 
     // The plugin may or may not filter out undefined props - check what it actually does
     // expect(result.code).not.toContain("optional=");
 
     // Validate JSX syntax using oxc-parser
-    const validation = validateJSXSyntax(result.code);
-    if (!validation.isValid) {
+    const validation = validateJSXSyntax(result?.code ?? "");
+    if (!validation?.isValid) {
       console.error("JSX validation errors for test:", validation.errors);
-      console.error("Generated code:", result.code);
+      console.error("Generated code:", result?.code);
     }
     expect(validation.isValid).toBe(true);
   });
@@ -1206,10 +1207,10 @@ export default component$(() => {
     // }
 
     // Validate JSX syntax using oxc-parser
-    const validation = validateJSXSyntax(result.code);
+    const validation = validateJSXSyntax(result?.code ?? "");
     if (!validation.isValid) {
       console.error("JSX validation errors for reproduction test:", validation.errors);
-      console.error("Generated code:", result.code);
+      console.error("Generated code:", result?.code);
     }
     expect(validation.isValid).toBe(true);
   });
@@ -1273,10 +1274,10 @@ export default component$(() => {
     expect(result).toBeTruthy();
 
     // Validate JSX syntax using oxc-parser
-    const validation = validateJSXSyntax(result.code);
+    const validation = validateJSXSyntax(result?.code ?? "");
     if (!validation.isValid) {
       console.error("JSX validation errors for complex nested JSX:", validation.errors);
-      console.error("Generated code:", result.code);
+      console.error("Generated code:", result?.code);
     }
     expect(validation.isValid).toBe(true);
   });
@@ -1311,10 +1312,10 @@ export default component$(() => {
     expect(result).toBeTruthy();
 
     // Validate JSX syntax using oxc-parser
-    const validation = validateJSXSyntax(result.code);
+    const validation = validateJSXSyntax(result?.code ?? "");
     if (!validation.isValid) {
       console.error("JSX validation errors for edge cases:", validation.errors);
-      console.error("Generated code:", result.code);
+      console.error("Generated code:", result?.code);
     }
     expect(validation.isValid).toBe(true);
   });
@@ -1342,10 +1343,10 @@ export default component$(() => {
     expect(result).toBeTruthy();
 
     // Validate JSX syntax using oxc-parser
-    const validation = validateJSXSyntax(result.code);
+    const validation = validateJSXSyntax(result?.code ?? "");
     if (!validation.isValid) {
       console.error("JSX validation errors for JSX fragments:", validation.errors);
-      console.error("Generated code:", result.code);
+      console.error("Generated code:", result?.code);
     }
     expect(validation.isValid).toBe(true);
   });
@@ -1382,13 +1383,13 @@ export default component$(() => {
     expect(result).toBeTruthy();
 
     // Validate JSX syntax using oxc-parser
-    const validation = validateJSXSyntax(result.code);
+    const validation = validateJSXSyntax(result?.code ?? "");
     if (!validation.isValid) {
       console.error(
         "JSX validation errors for conditional rendering:",
         validation.errors
       );
-      console.error("Generated code:", result.code);
+      console.error("Generated code:", result?.code);
     }
     expect(validation.isValid).toBe(true);
   });
@@ -1410,7 +1411,7 @@ describe("HMR (Hot Module Replacement)", () => {
       const lucideCollection = await lookupCollection("lucide");
       if (plugin?.lazyCollections) {
         plugin.lazyCollections.set("lucide", Promise.resolve(lucideCollection));
-        plugin.availableCollections.add("lucide");
+        plugin?.availableCollections?.add("lucide");
       }
     } catch (error) {
       console.warn("Failed to preload Lucide collection for HMR tests:", error);
@@ -1687,13 +1688,13 @@ Some more text.
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
-    expect(result.code).toContain("<svg");
-    expect(result.code).toContain("width={24}");
-    expect(result.code).toContain('class="text-green-500"');
-    expect(result.code).toContain("dangerouslySetInnerHTML={__qds_i_lucide_check}");
+    expect(result?.code).toContain("<svg");
+    expect(result?.code).toContain("width={24}");
+    expect(result?.code).toContain('class="text-green-500"');
+    expect(result?.code).toContain("dangerouslySetInnerHTML={__qds_i_lucide_check}");
   });
 
   it("should transform multiple icons in MDX", () => {
@@ -1707,13 +1708,13 @@ Some more text.
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_star from 'virtual:icons/lucide/star'"
     );
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_heart from 'virtual:icons/lucide/heart'"
     );
   });
@@ -1730,12 +1731,12 @@ import { Lucide } from "@qds.dev/ui";
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
     // Frontmatter should be preserved
-    expect(result.code).toContain("---");
-    expect(result.code).toContain('title: "Component Demo"');
+    expect(result?.code).toContain("---");
+    expect(result?.code).toContain('title: "Component Demo"');
   });
 
   it("should handle icons with expression attributes in MDX", () => {
@@ -1745,8 +1746,8 @@ import { Lucide } from "@qds.dev/ui";
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("width={size}");
-    expect(result.code).toContain('class={cn("icon", className)}');
+    expect(result?.code).toContain("width={size}");
+    expect(result?.code).toContain('class={cn("icon", className)}');
   });
 
   it("should handle MDX with mixed markdown and JSX", () => {
@@ -1768,13 +1769,13 @@ This is a paragraph with **bold** text.
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_x from 'virtual:icons/lucide/x'"
     );
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_star from 'virtual:icons/lucide/star'"
     );
   });
@@ -1793,11 +1794,11 @@ And here's a real icon: <Lucide.Check width={24} />
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
     // Should only transform the actual JSX, not the code block
-    const svgMatches = result.code.match(/<svg[^>]*>/g);
+    const svgMatches = result?.code.match(/<svg[^>]*>/g);
     expect(svgMatches).toHaveLength(1);
   });
 
@@ -1830,10 +1831,10 @@ Just text, no icons used.
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
-    expect(result.code).toContain('class="inline"');
+    expect(result?.code).toContain('class="inline"');
   });
 
   it("should handle aliased imports in MDX", () => {
@@ -1843,7 +1844,7 @@ Just text, no icons used.
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
   });
@@ -1864,10 +1865,10 @@ import { Lucide } from "@qds.dev/ui";
     expect(result).toBeTruthy();
 
     // The transformed code should be parseable
-    const validation = validateJSXSyntax(result.code);
+    const validation = validateJSXSyntax(result?.code ?? "");
     if (!validation.isValid) {
       console.error("JSX validation errors for MDX:", validation.errors);
-      console.error("Generated code:", result.code);
+      console.error("Generated code:", result?.code);
     }
     expect(validation.isValid).toBe(true);
   });
@@ -1899,18 +1900,18 @@ import { Lucide } from "@qds.dev/ui";
 `;
     const result = transform(code, "checkbox.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_x from 'virtual:icons/lucide/x'"
     );
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_minus from 'virtual:icons/lucide/minus'"
     );
 
     // Validate the transformed code
-    const validation = validateJSXSyntax(result.code);
+    const validation = validateJSXSyntax(result?.code ?? "");
     expect(validation.isValid).toBe(true);
   });
 
@@ -1921,8 +1922,8 @@ import { Lucide } from "@qds.dev/ui";
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("disabled");
-    expect(result.code).toContain("aria-hidden");
+    expect(result?.code).toContain("disabled");
+    expect(result?.code).toContain("aria-hidden");
   });
 
   it("should handle MDX with multiple import sources", () => {
@@ -1933,10 +1934,10 @@ import { Lucide } from "@qds.dev/ui";
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_heroicons_star from 'virtual:icons/heroicons/star'"
     );
   });
@@ -1952,11 +1953,11 @@ import { Lucide } from "@qds.dev/ui";
     expect(result).toBeTruthy();
 
     // Should only have one import for the same icon
-    const importMatches = result.code.match(/import __qds_i_lucide_check/g);
+    const importMatches = result?.code.match(/import __qds_i_lucide_check/g);
     expect(importMatches).toHaveLength(1);
 
     // All three uses should reference the same variable
-    const svgMatches = result.code.match(
+    const svgMatches = result?.code.match(
       /dangerouslySetInnerHTML=\{__qds_i_lucide_check\}/g
     );
     expect(svgMatches).toHaveLength(3);
@@ -1977,10 +1978,10 @@ import { Lucide } from "@qds.dev/ui";
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_menu from 'virtual:icons/lucide/menu'"
     );
-    expect(result.code).toContain(
+    expect(result?.code).toContain(
       "import __qds_i_lucide_check from 'virtual:icons/lucide/check'"
     );
   });
@@ -1994,9 +1995,9 @@ import { Lucide } from "@qds.dev/ui";
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("<title>Success</title>");
-    expect(result.code).toContain("width={24}");
-    expect(result.code).toContain('class="text-green-500"');
+    expect(result?.code).toContain("<title>Success</title>");
+    expect(result?.code).toContain("width={24}");
+    expect(result?.code).toContain('class="text-green-500"');
   });
 
   it("should handle description prop in MDX", () => {
@@ -2006,8 +2007,8 @@ import { Lucide } from "@qds.dev/ui";
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("<desc>Important information icon</desc>");
-    expect(result.code).toContain("width={20}");
+    expect(result?.code).toContain("<desc>Important information icon</desc>");
+    expect(result?.code).toContain("width={20}");
   });
 
   it("should handle both title and description props in MDX", () => {
@@ -2024,10 +2025,10 @@ import { Lucide } from "@qds.dev/ui";
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("<title>Favorite</title>");
-    expect(result.code).toContain("<desc>Mark as favorite</desc>");
-    expect(result.code).toContain("width={24}");
-    expect(result.code).toContain('class="text-red-500"');
+    expect(result?.code).toContain("<title>Favorite</title>");
+    expect(result?.code).toContain("<desc>Mark as favorite</desc>");
+    expect(result?.code).toContain("width={24}");
+    expect(result?.code).toContain('class="text-red-500"');
   });
 
   it("should handle title and description with expressions in MDX", () => {
@@ -2037,8 +2038,8 @@ import { Lucide } from "@qds.dev/ui";
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("<title>{dynamicTitle}</title>");
-    expect(result.code).toContain("<desc>{dynamicDesc}</desc>");
+    expect(result?.code).toContain("<title>{dynamicTitle}</title>");
+    expect(result?.code).toContain("<desc>{dynamicDesc}</desc>");
   });
 
   it("should handle mixed title/description syntax in MDX", () => {
@@ -2052,10 +2053,10 @@ import { Lucide } from "@qds.dev/ui";
 `;
     const result = transform(code, "test.mdx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("<title>Completed</title>");
-    expect(result.code).toContain("<desc>Featured item</desc>");
+    expect(result?.code).toContain("<title>Completed</title>");
+    expect(result?.code).toContain("<desc>Featured item</desc>");
     // The third icon should have both
-    const heartMatches = result.code.match(
+    const heartMatches = result?.code.match(
       /<title>Favorite<\/title>.*?<desc>Add to favorites<\/desc>/s
     );
     expect(heartMatches).toBeTruthy();

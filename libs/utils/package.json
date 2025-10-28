@@ -8,7 +8,6 @@
   "exports": {
     ".": {
       "import": "./lib/index.qwik.mjs",
-      "require": "./lib/index.qwik.cjs",
       "types": "./lib-types/src/index.d.ts"
     }
   },
@@ -23,9 +22,9 @@
   "private": false,
   "type": "module",
   "scripts": {
-    "build": "qwik build",
-    "build.lib": "vite build --mode lib",
-    "build.types": "tsc --emitDeclarationOnly",
+    "build": "pnpm run build.lib & pnpm run build.types",
+    "build.lib": "rolldown -c rolldown.config.ts",
+    "build.types": "tsc --emitDeclarationOnly --incremental --outDir ./lib-types",
     "dev": "vite --mode ssr",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
     "start": "vite --open --mode ssr",
@@ -35,9 +34,10 @@
   "devDependencies": {
     "@types/node": "24.9.0",
     "typescript": "5.4.5",
-    "undici": "*",
-    "vite": "^7",
-    "vite-tsconfig-paths": "^4.2.1",
+    "rolldown": "1.0.0-beta.45",
     "@qwik.dev/core": "https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@d48c3d2"
+  },
+  "peerDependencies": {
+    "@qwik.dev/core": ">=https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@d48c3d2"
   }
 }

@@ -16,6 +16,7 @@
       "!**/libs/components/src/icons-runtime.ts",
       "!**/libs/components/styles/tailwind/qds-tailwind.css",
       "!**/libs/utils/lib/**/*",
+      "!**/libs/tools/lib/**/*",
       "!**/.vscode",
       "!**/test-results"
     ]

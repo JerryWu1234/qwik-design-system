@@ -35,9 +35,9 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('jsxType="a"');
-    expect(result.code).toContain('movedProps={{ "href": "/test" }}');
-    expect(result.code).not.toContain('<a href="/test">');
+    expect(result?.code).toContain('jsxType="a"');
+    expect(result?.code).toContain('movedProps={{ "href": "/test" }}');
+    expect(result?.code).not.toContain('<a href="/test">');
   });
 
   it("should transform component with asChild", () => {
@@ -52,9 +52,9 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("jsxType={CustomLink}");
-    expect(result.code).toContain('movedProps={{ "to": "/test" }}');
-    expect(result.code).not.toContain('<CustomLink to="/test">');
+    expect(result?.code).toContain("jsxType={CustomLink}");
+    expect(result?.code).toContain('movedProps={{ "to": "/test" }}');
+    expect(result?.code).not.toContain('<CustomLink to="/test">');
   });
 
   it("should handle element without props", () => {
@@ -69,8 +69,8 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('jsxType="div"');
-    expect(result.code).toContain("movedProps={{  }}");
+    expect(result?.code).toContain('jsxType="div"');
+    expect(result?.code).toContain("movedProps={{  }}");
   });
 
   it("should handle boolean props", () => {
@@ -85,8 +85,8 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('"disabled": true');
-    expect(result.code).toContain('"required": true');
+    expect(result?.code).toContain('"disabled": true');
+    expect(result?.code).toContain('"required": true');
   });
 
   it("should handle expression props", () => {
@@ -102,8 +102,8 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('"href": href');
-    expect(result.code).toContain('"onClick": handleClick');
+    expect(result?.code).toContain('"href": href');
+    expect(result?.code).toContain('"onClick": handleClick');
   });
 
   it("should handle conditional expressions", () => {
@@ -118,8 +118,8 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('jsxType={isLink ? "a" : "button"}');
-    expect(result.code).toContain(
+    expect(result?.code).toContain('jsxType={isLink ? "a" : "button"}');
+    expect(result?.code).toContain(
       'movedProps={isLink ? { "href": "/test" } : { "type": "button" }}'
     );
   });
@@ -136,8 +136,8 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("jsxType={external ? Link : InternalLink}");
-    expect(result.code).toContain(
+    expect(result?.code).toContain("jsxType={external ? Link : InternalLink}");
+    expect(result?.code).toContain(
       'movedProps={external ? { "to": "/external" } : { "route": "/internal" }}'
     );
   });
@@ -172,7 +172,7 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('jsxType="a"');
+    expect(result?.code).toContain('jsxType="a"');
   });
 
   it("should handle self-closing elements", () => {
@@ -187,9 +187,9 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('jsxType="input"');
-    expect(result.code).toContain('"type": "text"');
-    expect(result.code).toContain('"name": "username"');
+    expect(result?.code).toContain('jsxType="input"');
+    expect(result?.code).toContain('"type": "text"');
+    expect(result?.code).toContain('"name": "username"');
   });
 
   it("should handle complex prop values", () => {
@@ -204,9 +204,9 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('"href": getUrl()');
-    expect(result.code).toContain('"className": `btn ${variant}`');
-    expect(result.code).toContain("\"style\": { color: 'red' }");
+    expect(result?.code).toContain('"href": getUrl()');
+    expect(result?.code).toContain('"className": `btn ${variant}`');
+    expect(result?.code).toContain("\"style\": { color: 'red' }");
   });
 
   it("should preserve existing props on asChild element", () => {
@@ -221,9 +221,9 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('className="existing"');
-    expect(result.code).toContain('data-testid="button"');
-    expect(result.code).toContain('jsxType="a"');
+    expect(result?.code).toContain('className="existing"');
+    expect(result?.code).toContain('data-testid="button"');
+    expect(result?.code).toContain('jsxType="a"');
   });
 
   it("should handle empty children gracefully", () => {
@@ -266,7 +266,7 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.map).toBeTruthy();
+    expect(result?.map).toBeTruthy();
   });
 
   it("should handle multiple asChild elements in same file", () => {
@@ -286,10 +286,10 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('jsxType="a"');
-    expect(result.code).toContain('jsxType="span"');
-    expect(result.code).toContain('"href": "/link1"');
-    expect(result.code).toContain('"className": "label"');
+    expect(result?.code).toContain('jsxType="a"');
+    expect(result?.code).toContain('jsxType="span"');
+    expect(result?.code).toContain('"href": "/link1"');
+    expect(result?.code).toContain('"className": "label"');
   });
 
   it("should handle literal string props correctly", () => {
@@ -304,9 +304,9 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('"href": "/test"');
-    expect(result.code).toContain('"title": "Test Link"');
-    expect(result.code).toContain('"target": "_blank"');
+    expect(result?.code).toContain('"href": "/test"');
+    expect(result?.code).toContain('"title": "Test Link"');
+    expect(result?.code).toContain('"target": "_blank"');
   });
 
   it("should remove child element wrapper and keep grandchildren", () => {
@@ -323,12 +323,12 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('jsxType="span"');
-    expect(result.code).toContain('movedProps={{ "data-yo": true }}');
-    expect(result.code).toContain("data-from-div");
-    expect(result.code).toContain("<p>I am a p tag</p>");
-    expect(result.code).not.toContain("<span data-yo>");
-    expect(result.code).not.toContain("</span>");
+    expect(result?.code).toContain('jsxType="span"');
+    expect(result?.code).toContain('movedProps={{ "data-yo": true }}');
+    expect(result?.code).toContain("data-from-div");
+    expect(result?.code).toContain("<p>I am a p tag</p>");
+    expect(result?.code).not.toContain("<span data-yo>");
+    expect(result?.code).not.toContain("</span>");
   });
 
   it("should remove child element completely if it has no children", () => {
@@ -343,10 +343,10 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('jsxType="input"');
-    expect(result.code).toContain('movedProps={{ "type": "submit" }}');
-    expect(result.code).not.toContain("<input");
-    expect(result.code).not.toContain('type="submit"');
+    expect(result?.code).toContain('jsxType="input"');
+    expect(result?.code).toContain('movedProps={{ "type": "submit" }}');
+    expect(result?.code).not.toContain("<input");
+    expect(result?.code).not.toContain('type="submit"');
   });
 
   it("should handle nested children properly", () => {
@@ -365,14 +365,14 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain('jsxType="article"');
-    expect(result.code).toContain('movedProps={{ "data-article": true }}');
-    expect(result.code).toContain('className="card"');
-    expect(result.code).toContain("<h1>Title</h1>");
-    expect(result.code).toContain("<p>Content here</p>");
-    expect(result.code).toContain("<footer>Footer</footer>");
-    expect(result.code).not.toContain("<article data-article>");
-    expect(result.code).not.toContain("</article>");
+    expect(result?.code).toContain('jsxType="article"');
+    expect(result?.code).toContain('movedProps={{ "data-article": true }}');
+    expect(result?.code).toContain('className="card"');
+    expect(result?.code).toContain("<h1>Title</h1>");
+    expect(result?.code).toContain("<p>Content here</p>");
+    expect(result?.code).toContain("<footer>Footer</footer>");
+    expect(result?.code).not.toContain("<article data-article>");
+    expect(result?.code).not.toContain("</article>");
   });
 
   it("should handle JSX member expressions like Menu.Item", () => {
@@ -389,13 +389,13 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("jsxType={Menu.Item}");
-    expect(result.code).toContain(
+    expect(result?.code).toContain("jsxType={Menu.Item}");
+    expect(result?.code).toContain(
       'movedProps={{ "value": "option1", "className": "menu-item" }}'
     );
-    expect(result.code).toContain("Option 1");
-    expect(result.code).not.toContain("<Menu.Item");
-    expect(result.code).not.toContain("</Menu.Item>");
+    expect(result?.code).toContain("Option 1");
+    expect(result?.code).not.toContain("<Menu.Item");
+    expect(result?.code).not.toContain("</Menu.Item>");
   });
 
   it("should handle deeply nested JSX member expressions", () => {
@@ -412,9 +412,9 @@ describe("asChild", () => {
     `;
     const result = transform(code, "test.tsx");
     expect(result).toBeTruthy();
-    expect(result.code).toContain("jsxType={Dropdown.Content.Item}");
-    expect(result.code).toContain('movedProps={{ "id": "nested", "disabled": true }}');
-    expect(result.code).toContain("Nested Item");
+    expect(result?.code).toContain("jsxType={Dropdown.Content.Item}");
+    expect(result?.code).toContain('movedProps={{ "id": "nested", "disabled": true }}');
+    expect(result?.code).toContain("Nested Item");
   });
 });
 
@@ -486,8 +486,8 @@ describe("asChild robustness improvements", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain('jsxType={condition && "a"}');
-      expect(result.code).toContain('movedProps={condition ? { "href": "/test" } : {}}');
+      expect(result?.code).toContain('jsxType={condition && "a"}');
+      expect(result?.code).toContain('movedProps={condition ? { "href": "/test" } : {}}');
     });
 
     it("should handle identifier expressions (variables)", () => {
@@ -502,8 +502,8 @@ describe("asChild robustness improvements", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain("jsxType={myElement}");
-      expect(result.code).toContain("movedProps={{}}");
+      expect(result?.code).toContain("jsxType={myElement}");
+      expect(result?.code).toContain("movedProps={{}}");
     });
 
     it("should handle call expressions (function calls)", () => {
@@ -518,8 +518,8 @@ describe("asChild robustness improvements", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain("jsxType={renderElement()}");
-      expect(result.code).toContain("movedProps={{}}");
+      expect(result?.code).toContain("jsxType={renderElement()}");
+      expect(result?.code).toContain("movedProps={{}}");
     });
 
     it("should handle member expressions (object.method)", () => {
@@ -534,7 +534,7 @@ describe("asChild robustness improvements", () => {
        `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain(
+      expect(result?.code).toContain(
         "jsxType={items.map(item => <div key={item.id}>{item.name}</div>)}"
       );
     });
@@ -565,8 +565,8 @@ describe("asChild robustness improvements", () => {
        `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain("jsxType={isDropdown ? Menu.Item : Menu.Trigger}");
-      expect(result.code).toContain(
+      expect(result?.code).toContain("jsxType={isDropdown ? Menu.Item : Menu.Trigger}");
+      expect(result?.code).toContain(
         'movedProps={isDropdown ? { "value": "test" } : {  }}'
       );
     });
@@ -585,8 +585,8 @@ describe("asChild robustness improvements", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain('jsxType="a"');
-      expect(result.code).not.toContain('href="/test"');
+      expect(result?.code).toContain('jsxType="a"');
+      expect(result?.code).not.toContain('href="/test"');
     });
 
     it("should handle multiple spaces around attributes", () => {
@@ -601,9 +601,9 @@ describe("asChild robustness improvements", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain('jsxType="a"');
-      expect(result.code).toContain('"href": "/test"');
-      expect(result.code).toContain('"className": "link"');
+      expect(result?.code).toContain('jsxType="a"');
+      expect(result?.code).toContain('"href": "/test"');
+      expect(result?.code).toContain('"className": "link"');
     });
 
     it("should handle newlines in attributes", () => {
@@ -623,8 +623,8 @@ describe("asChild robustness improvements", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain('jsxType="a"');
-      expect(result.code).toContain('"href": "/test"');
+      expect(result?.code).toContain('jsxType="a"');
+      expect(result?.code).toContain('"href": "/test"');
     });
   });
 
@@ -681,7 +681,7 @@ describe("asChild robustness improvements", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain('jsxType="a"');
+      expect(result?.code).toContain('jsxType="a"');
     });
 
     it("should handle multiple asChild elements at different nesting levels", () => {
@@ -703,8 +703,8 @@ describe("asChild robustness improvements", () => {
       `;
       const result = transform(code, "test.tsx");
       expect(result).toBeTruthy();
-      expect(result.code).toContain('jsxType="a"');
-      expect(result.code).toContain('jsxType="span"');
+      expect(result?.code).toContain('jsxType="a"');
+      expect(result?.code).toContain('jsxType="span"');
     });
   });
 

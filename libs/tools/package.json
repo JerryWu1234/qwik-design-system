@@ -2,33 +2,48 @@
   "name": "@qds.dev/tools",
   "version": "0.4.25",
   "private": false,
-  "description": "A simple example library built by tsdown",
+  "description": "Tools and utilities for Qwik Design System",
   "type": "module",
   "files": [
-    "dist"
+    "lib",
+    "lib-types"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./lib/src/index.qwik.mjs",
+  "qwik": "./lib/src/index.qwik.mjs",
+  "types": "./lib-types/tools/src/index.d.ts",
   "exports": {
-    ".": "./dist/src/index.js",
+    ".": {
+      "import": "./lib/src/index.qwik.mjs",
+      "types": "./lib-types/tools/src/index.d.ts"
+    },
     "./package.json": "./package.json",
-    "./vite": "./dist/vite/index.js",
-    "./utils": "./dist/utils/index.js",
-    "./rolldown": "./dist/rolldown/index.js"
+    "./vite": {
+      "import": "./lib/vite/index.qwik.mjs",
+      "types": "./lib-types/tools/vite/index.d.ts"
+    },
+    "./utils": {
+      "import": "./lib/utils/index.qwik.mjs",
+      "types": "./lib-types/tools/utils/index.d.ts"
+    },
+    "./rolldown": {
+      "import": "./lib/rolldown/index.qwik.mjs",
+      "types": "./lib-types/tools/rolldown/index.d.ts"
+    }
   },
   "scripts": {
-    "build": "tsdown && pnpm generate-icon-types",
-    "dev": "tsdown",
-    "dev:watch": "tsdown --watch",
+    "build": "pnpm run build.lib & pnpm run build.types && pnpm generate-icon-types",
+    "build.lib": "rolldown -c rolldown.config.ts",
+    "build.types": "tsc --emitDeclarationOnly --incremental --outDir ./lib-types",
+    "dev": "vite --mode ssr",
     "test": "vitest",
-    "generate-icon-types": "node src/generate-icon-types.ts"
+    "generate-icon-types": "node src/generate-icon-types.ts",
+    "qwik": "qwik"
   },
   "devDependencies": {
     "@iconify/types": "^2",
     "@iconify/utils": "^3.0.1",
     "magic-string": "^0.30.17",
-    "tsdown": "latest",
+    "rolldown": "1.0.0-beta.45",
     "vite": "^7.0.6"
   },
   "dependencies": {

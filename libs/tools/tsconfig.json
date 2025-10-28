@@ -11,7 +11,10 @@
     "strictNullChecks": true,
     "noImplicitAny": true,
     "allowImportingTsExtensions": true,
-    "noEmit": true
+    "declaration": true,
+    "declarationDir": "lib-types",
+    "emitDeclarationOnly": true,
+    "types": ["node"]
   },
-  "include": ["vite/**/*", "src/**/*", "utils/**/*"]
+  "include": ["vite/**/*", "src/**/*", "utils/**/*", "rolldown/**/*"]
 }
