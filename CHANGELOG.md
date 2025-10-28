@@ -1,6 +1,32 @@
 # Changelog
 
 
+## v0.4.25...v2-migration
+
+[compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.4.25...v2-migration)
+
+### 🚀 Enhancements
+
+- Migrate all packages to rolldown + typescript compiler optimizations ([#337](https://github.com/kunai-consulting/qwik-design-system/pull/337))
+
+### 🩹 Fixes
+
+- **tools:** Mark AsChildTypes type as optional ([#324](https://github.com/kunai-consulting/qwik-design-system/pull/324))
+- Modal w/ click on tap on mac trackpad ([#334](https://github.com/kunai-consulting/qwik-design-system/pull/334))
+
+### 💅 Refactors
+
+- Update release script ([d20704af](https://github.com/kunai-consulting/qwik-design-system/commit/d20704af))
+
+### 🏡 Chore
+
+- Remove Changesets and related workflows, update README for changelog and linting tools ([#330](https://github.com/kunai-consulting/qwik-design-system/pull/330))
+
+### ❤️ Contributors
+
+- Thejackshelton-kunaico ([@thejackshelton-kunaico](https://github.com/thejackshelton-kunaico))
+- Maïeul ([@maiieul](https://github.com/maiieul))
+
 ## v0.4.24...v2-migration
 
 [compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.4.24...v2-migration)
