@@ -28,11 +28,17 @@ jobs:
           # Extract the section for this version from CHANGELOG.md
           VERSION="${{ steps.version.outputs.VERSION }}"
           
-          # Find the changelog content between version headers
-          awk -v version="$VERSION" '
+          # Find the first changelog section (skip the title)
+          # This grabs content from the first ## heading until the next ## heading
+          awk '
+            BEGIN { found=0; skip_first=1 }
             /^## / {
               if (found) exit
-              if ($0 ~ version) found=1
+              if (!skip_first) {
+                found=1
+                next
+              }
+              skip_first=0
               next
             }
             found {print}
