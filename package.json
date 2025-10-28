@@ -17,19 +17,16 @@
     "format": "biome format --write .",
     "lint": "oxlint . --type-aware --fix",
     "test": "vitest",
-    "changeset": "changeset",
     "changelog": "changelogen --output CHANGELOG.md --no-commit --no-tag",
     "publish": "pnpm --filter '@qds.dev/*' publish --access public --no-git-checks",
     "release": "bumpp package.json libs/*/package.json --execute \"pnpm changelog\" --all --commit \"chore: release v%s\" --tag \"v%s\" --push",
     "release.patch": "bumpp package.json libs/*/package.json --patch --execute \"pnpm changelog\" --all --commit \"chore: release v%s\" --tag \"v%s\" --push && pnpm run publish",
     "release.minor": "bumpp package.json libs/*/package.json --minor --execute \"pnpm changelog\" --all --commit \"chore: release v%s\" --tag \"v%s\" --push && pnpm run publish",
-    "version:packages": "changeset version",
     "create-linear-issue": "node .github/scripts/update-linear.ts"
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.33.1",
     "@biomejs/biome": "2.3.0",
-    "@changesets/cli": "^2.27.7",
     "@linear/sdk": "^27.0.0",
     "@qds.dev/tools": "workspace:*",
     "@qwik.dev/core": "https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@d48c3d2",
@@ -45,7 +42,6 @@
     "oxlint-tsgolint": "^0.3.0",
     "pagefind": "1.2.0",
     "pathe": "^2.0.3",
-    "pkg-pr-new": "^0.0.56",
     "playwright": "^1.56.0",
     "vitest": "^4.0.3"
   },

@@ -71,11 +71,11 @@ QDS is built with:
 - **[Vite](https://vite.dev/)** 🚀: For fast development and optimized builds
 - **[MDX](https://mdxjs.com/)** 📝: For documentation with embedded components
 - **[Vitest](https://vitest.dev/)** 🧪: For unit and component testing
-- **[Playwright](https://playwright.dev/)** 🎭: For end-to-end testing
 - **[Tailwind CSS](https://tailwindcss.com/)** 🎨: For styling the documentation site itself
-- **[Changesets](https://changesets-docs.vercel.app/en)** 📦: For versioning and changelog management
+- **[Changelogen](https://www.npmjs.com/package/changelogen)** 📦: For changelog generation
+- **[Bumpp](https://www.npmjs.com/package/bumpp)** 📦: For versioning bumping
 
-> We also use [Biome](https://biomejs.dev/) for linting and formatting. Please enable the [Biome extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome) in VSCode to get the recommended rules and formatting.
+> We also use [Oxlint](https://www.npmjs.com/package/oxlint) for linting, and [Biome](https://biomejs.dev/) for formatting. Please enable both of the recommended extensions in VSCode to get the recommended rules and formatting.
 
 ## Roadmap
 
