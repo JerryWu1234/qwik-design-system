@@ -1,6 +1,6 @@
 {
   "name": "@qds.dev/tools",
-  "version": "0.4.24",
+  "version": "0.4.25",
   "private": false,
   "description": "A simple example library built by tsdown",
   "type": "module",

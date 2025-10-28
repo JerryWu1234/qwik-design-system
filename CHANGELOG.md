@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.4.24...v2-migration
+
+[compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.4.24...v2-migration)
+
+### 🩹 Fixes
+
+- Improve changelog extraction in release workflow ([d5900ae0](https://github.com/kunai-consulting/qwik-design-system/commit/d5900ae0))
+
+### ❤️ Contributors
+
+- Thejackshelton-kunaico <jack.shelton@kunaico.com>
+
 ## v0.4.23...v2-migration
 
 [compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.4.23...v2-migration)
