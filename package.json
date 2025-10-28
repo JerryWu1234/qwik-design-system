@@ -19,9 +19,7 @@
     "test": "vitest",
     "changelog": "changelogen --output CHANGELOG.md --no-commit --no-tag",
     "publish": "pnpm --filter '@qds.dev/*' publish --access public --no-git-checks",
-    "release": "bumpp package.json libs/*/package.json --execute \"pnpm changelog\" --all --commit \"chore: release v%s\" --tag \"v%s\" --push",
-    "release.patch": "bumpp package.json libs/*/package.json --patch --execute \"pnpm changelog\" --all --commit \"chore: release v%s\" --tag \"v%s\" --push && pnpm run publish",
-    "release.minor": "bumpp package.json libs/*/package.json --minor --execute \"pnpm changelog\" --all --commit \"chore: release v%s\" --tag \"v%s\" --push && pnpm run publish",
+    "release": "bumpp package.json libs/*/package.json --minor --execute \"pnpm changelog\" --all --commit \"chore: release v%s\" --tag \"v%s\" --push && pnpm run publish",
     "create-linear-issue": "node .github/scripts/update-linear.ts"
   },
   "devDependencies": {
