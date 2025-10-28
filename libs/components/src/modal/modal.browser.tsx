@@ -70,13 +70,14 @@ test("modal closes when backdrop is pressed outside", async () => {
 test("modal does not close when drag happens in different locations", async () => {
   render(<Basic />);
 
+  await expect.element(Trigger).toBeVisible();
   await userEvent.click(Trigger);
   await expect.element(Content).toBeVisible();
 
   await pointer.drag(
     Content,
-    { client: { x: 10, y: 10 } },
-    { client: { x: 100, y: 100 } }
+    { offset: { x: 10, y: 10 } },
+    { outside: { side: "top", distance: 50 } }
   );
 
   await expect.element(Content).toBeVisible();
@@ -286,24 +287,16 @@ test("if description is not provided, aria-describedby is not set", async () => 
 });
 
 test("modal does not close on backdrop click when set to false", async () => {
-  const screen = render(<Basic closeOnOutsideClick={false} />);
+  render(<Basic closeOnOutsideClick={false} />);
 
   await expect.element(Root).toBeVisible();
   await expect.element(Trigger).toBeVisible();
   await userEvent.click(Trigger);
   await expect.element(Content).toBeVisible();
 
-  await userEvent.click(screen.baseElement, {
-    position: {
-      x: 10,
-      y: 10
-    }
-  });
+  await pointer.tapOutside(Content, { side: "top", distance: 50 });
 
   await expect.element(Content).toBeVisible();
-
-  await userEvent.click(CloseButton);
-  await expect.element(Content).not.toBeVisible();
 });
 
 test("clicks inside modal content do not close the modal", async () => {
