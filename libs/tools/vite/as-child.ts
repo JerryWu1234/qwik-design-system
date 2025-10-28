@@ -13,7 +13,7 @@ import {
 } from "../utils/icons/ast/jsx";
 
 export type AsChildTypes = {
-  asChild: true;
+  asChild?: true;
 };
 
 export type AsChildPluginOptions = {
