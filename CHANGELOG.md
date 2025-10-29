@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.5.0...v2-migration
+
+[compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.5.0...v2-migration)
+
+### 🚀 Enhancements
+
+- As child type imports ([#342](https://github.com/kunai-consulting/qwik-design-system/pull/342))
+
+### 🩹 Fixes
+
+- Create release script ([92714a48](https://github.com/kunai-consulting/qwik-design-system/commit/92714a48))
+
+### ❤️ Contributors
+
+- Thejackshelton-kunaico ([@thejackshelton-kunaico](https://github.com/thejackshelton-kunaico))
+
 ## v0.4.25...v2-migration
 
 [compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.4.25...v2-migration)
