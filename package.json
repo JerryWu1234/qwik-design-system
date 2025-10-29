@@ -5,10 +5,8 @@
   "version": "0.5.0",
   "packageManager": "pnpm@9.14.4",
   "scripts": {
-    "dev": "pnpm --filter ./libs/tools dev:watch & sleep 0.7 && pnpm --filter ./docs dev & wait",
-    "dev.watch": "pnpm --filter ./libs/tools dev:watch & pnpm --filter ./docs dev & wait",
-    "dev.ct": "pnpm --filter ./apps/component-tests dev -- --port 6174",
-    "build": "pnpm --filter ./libs/tools build && pnpm --filter ./libs/utils build && pnpm --filter ./libs/components build && pnpm --filter ./docs build && cp -r ./docs/dist/pagefind ./docs/public",
+    "dev": "pnpm --filter ./docs dev",
+    "build": "pnpm -r --filter './libs/*' build && pnpm --filter ./docs build && cp -r ./docs/dist/pagefind ./docs/public",
     "preview": "pnpm --filter ./docs preview",
     "check": "oxlint . --type-aware && biome format .",
     "check.format": "biome format .",

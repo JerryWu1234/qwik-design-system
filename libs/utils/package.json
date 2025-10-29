@@ -24,12 +24,7 @@
   "scripts": {
     "build": "pnpm run build.lib & pnpm run build.types",
     "build.lib": "rolldown -c rolldown.config.ts",
-    "build.types": "tsc --emitDeclarationOnly --outDir ./lib-types",
-    "dev": "vite --mode ssr",
-    "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
-    "start": "vite --open --mode ssr",
-    "test": "echo \"No test specified\" && exit 0",
-    "qwik": "qwik"
+    "build.types": "tsc --emitDeclarationOnly --outDir ./lib-types"
   },
   "devDependencies": {
     "@types/node": "24.9.0",
