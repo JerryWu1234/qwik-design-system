@@ -31,14 +31,10 @@ jobs:
           # Find the first changelog section (skip the title)
           # This grabs content from the first ## heading until the next ## heading
           awk '
-            BEGIN { found=0; skip_first=1 }
+            BEGIN { found=0 }
             /^## / {
               if (found) exit
-              if (!skip_first) {
-                found=1
-                next
-              }
-              skip_first=0
+              found=1
               next
             }
             found {print}
