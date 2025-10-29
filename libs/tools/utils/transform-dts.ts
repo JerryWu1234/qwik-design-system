@@ -1,84 +1,17 @@
 #!/usr/bin/env node
-import { readdir, readFile, stat, writeFile } from "node:fs/promises";
+import { readFile, stat, writeFile } from "node:fs/promises";
 import { join, relative } from "node:path";
 import type { ImportDeclaration, Node } from "@oxc-project/types";
 import MagicString from "magic-string";
 import { parseSync } from "oxc-parser";
 import { walk } from "oxc-walker";
-import { isCallExpressionWithName } from "./ast/core.ts";
-import { findImportBySource } from "./ast/imports.ts";
-import { isJSXElementWithName } from "./ast/jsx-helpers.ts";
-
-async function* walkFiles(dir: string, extension: string): AsyncGenerator<string> {
-  const entries = await readdir(dir, { withFileTypes: true });
-
-  for (const entry of entries) {
-    const path = join(dir, entry.name);
-    if (entry.isDirectory()) {
-      yield* walkFiles(path, extension);
-      continue;
-    }
-    if (entry.isFile() && entry.name.endsWith(extension)) {
-      yield path;
-    }
-  }
-}
-
-function isRenderElement(node: Node, code: string): boolean {
-  return isJSXElementWithName(node, code, "Render");
-}
-
-function returnsRenderComponent(callback: Node, code: string): boolean {
-  let hasRenderReturn = false;
-
-  walk(callback, {
-    enter(node: Node) {
-      if (node.type === "ReturnStatement" && "argument" in node && node.argument) {
-        if (isRenderElement(node.argument, code)) {
-          hasRenderReturn = true;
-          return;
-        }
-      }
-
-      if (isRenderElement(node, code)) {
-        hasRenderReturn = true;
-      }
-    }
-  });
-
-  return hasRenderReturn;
-}
-
-function detectsRenderComponentUsage(sourceCode: string): boolean {
-  try {
-    const ast = parseSync("temp.tsx", sourceCode);
-    let hasRenderComponent = false;
-
-    walk(ast.program, {
-      enter(node: Node) {
-        if (!isCallExpressionWithName(node, sourceCode, "component$")) return;
-        if (!("arguments" in node)) return;
-
-        const callback = node.arguments[0];
-        if (!callback) return;
-        if (
-          callback.type !== "ArrowFunctionExpression" &&
-          callback.type !== "FunctionExpression"
-        ) {
-          return;
-        }
-
-        if (returnsRenderComponent(callback, sourceCode)) {
-          hasRenderComponent = true;
-        }
-      }
-    });
-
-    return hasRenderComponent;
-  } catch {
-    return false;
-  }
-}
+import {
+  findImportBySource,
+  hasImportSpecifier,
+  injectTypeImport
+} from "./ast/imports.ts";
+import { detectsRenderComponentUsage } from "./ast/qwik.ts";
+import { walkFiles } from "./fs.ts";
 
 function injectAsChildTypesIntoComponent(
   node: Node,
@@ -127,42 +60,42 @@ function injectAsChildTypesIntoComponent(
   return hasChanges;
 }
 
-function findToolsImport(
-  ast: ReturnType<typeof parseSync>,
-  content: string
-): Node | null {
-  return findImportBySource(ast, content, "@qds.dev/tools");
-}
-
-function injectAsChildTypesImport(
-  ast: ReturnType<typeof parseSync>,
-  content: string,
-  s: MagicString,
-  toolsImportNode: Node | null
-): void {
-  if (toolsImportNode) {
-    const importDecl = toolsImportNode as ImportDeclaration;
-    if (importDecl.specifiers && importDecl.specifiers.length > 0) {
-      const lastSpecifier = importDecl.specifiers[importDecl.specifiers.length - 1];
-      s.appendLeft(lastSpecifier.end, ", type AsChildTypes");
-    }
-    return;
-  }
-
-  const firstImport = ast.program.body.find(
-    (node: Node) => node.type === "ImportDeclaration"
-  );
-  if (firstImport) {
-    s.appendLeft(
-      firstImport.start,
-      'import type { AsChildTypes } from "@qds.dev/tools";\n'
-    );
-  }
+/**
+ * Injects AsChildTypes import into the declaration file
+ */
+function injectAsChildTypesImport(options: {
+  ast: ReturnType<typeof parseSync>;
+  magicString: MagicString;
+  toolsImportNode: Node | null;
+}): void {
+  injectTypeImport({
+    ast: options.ast,
+    magicString: options.magicString,
+    importSource: "@qds.dev/tools",
+    specifierName: "AsChildTypes",
+    existingImportNode: options.toolsImportNode
+  });
 }
 
 async function transformTypeFile(dtsPath: string, sourcePath: string): Promise<boolean> {
   const content = await readFile(dtsPath, "utf-8");
-  if (content.includes("AsChildTypes")) return false;
+  const hasAsChildTypesUsage = content.includes("AsChildTypes");
+
+  // Quick check if AsChildTypes is already used in the file
+  if (hasAsChildTypesUsage) {
+    try {
+      const ast = parseSync(dtsPath, content);
+      const toolsImportNode = findImportBySource(ast, content, "@qds.dev/tools");
+
+      if (toolsImportNode) {
+        const importDecl = toolsImportNode as ImportDeclaration;
+        // If both import and usage exist, nothing to do
+        if (hasImportSpecifier(importDecl, "AsChildTypes")) return false;
+      }
+    } catch {
+      return false;
+    }
+  }
 
   try {
     const sourceCode = await readFile(sourcePath, "utf-8");
@@ -184,10 +117,14 @@ async function transformTypeFile(dtsPath: string, sourcePath: string): Promise<b
       }
     });
 
-    if (!hasChanges) return false;
+    if (!hasChanges && !hasAsChildTypesUsage) return false;
 
-    const toolsImportNode = findToolsImport(ast, content);
-    injectAsChildTypesImport(ast, content, s, toolsImportNode);
+    const toolsImportNode = findImportBySource(ast, content, "@qds.dev/tools");
+    injectAsChildTypesImport({
+      ast,
+      magicString: s,
+      toolsImportNode
+    });
 
     await writeFile(dtsPath, s.toString(), "utf-8");
     return true;
@@ -236,13 +173,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   });
 }
 
-export {
-  detectsRenderComponentUsage,
-  findToolsImport,
-  injectAsChildTypesImport,
-  injectAsChildTypesIntoComponent,
-  isRenderElement,
-  returnsRenderComponent,
-  transformTypeFile,
-  walkFiles
-};
+export { injectAsChildTypesImport, injectAsChildTypesIntoComponent, transformTypeFile };

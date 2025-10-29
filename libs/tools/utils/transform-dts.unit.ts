@@ -1,7 +1,9 @@
 import type { Node } from "@oxc-project/types";
+import MagicString from "magic-string";
 import { parseSync } from "oxc-parser";
 import { describe, expect, it } from "vitest";
-import { detectsRenderComponentUsage, returnsRenderComponent } from "./transform-dts";
+import { findImportBySource, injectTypeImport } from "./ast/imports";
+import { detectsRenderComponentUsage, returnsRenderComponent } from "./ast/qwik";
 
 describe("transform-dts", () => {
   describe("detectsRenderComponentUsage", () => {
@@ -391,6 +393,102 @@ export const Link = component$((props: PropsOf<"a">) => {
 });`;
 
       expect(detectsRenderComponentUsage(code)).toBe(true);
+    });
+  });
+
+  describe("injectAsChildTypesImport", () => {
+    it("should add import when no @qds.dev/tools import exists", () => {
+      const content = `/** A component that renders the description text for a checkbox */
+export declare const CheckboxDescription: import("@qwik.dev/core").Component<{
+    align?: string | undefined;
+} & import("@qwik.dev/core").HTMLElementAttrs & import("@qwik.dev/core/internal").QwikAttributes<HTMLDivElement> & AsChildTypes>;`;
+
+      const ast = parseSync("test.d.ts", content);
+      const s = new MagicString(content);
+      const toolsImportNode = findImportBySource(ast, content, "@qds.dev/tools");
+
+      injectTypeImport({
+        ast,
+        magicString: s,
+        importSource: "@qds.dev/tools",
+        specifierName: "AsChildTypes",
+        existingImportNode: toolsImportNode
+      });
+
+      const result = s.toString();
+      expect(result).toContain('import type { AsChildTypes } from "@qds.dev/tools";');
+      expect(result.indexOf("import type { AsChildTypes }")).toBe(0);
+    });
+
+    it("should append AsChildTypes to existing @qds.dev/tools import", () => {
+      const content = `import { someUtil } from "@qds.dev/tools";
+/** A component */
+export declare const CheckboxDescription: import("@qwik.dev/core").Component<{} & AsChildTypes>;`;
+
+      const ast = parseSync("test.d.ts", content);
+      const s = new MagicString(content);
+      const toolsImportNode = findImportBySource(ast, content, "@qds.dev/tools");
+
+      injectTypeImport({
+        ast,
+        magicString: s,
+        importSource: "@qds.dev/tools",
+        specifierName: "AsChildTypes",
+        existingImportNode: toolsImportNode
+      });
+
+      const result = s.toString();
+      expect(result).toContain(
+        'import { someUtil, type AsChildTypes } from "@qds.dev/tools";'
+      );
+      expect(result).not.toMatch(
+        /import type \{ AsChildTypes \} from "@qds\.dev\/tools";\nimport \{ someUtil \}/
+      );
+    });
+
+    it("should not duplicate import if AsChildTypes already exists", () => {
+      const content = `import type { AsChildTypes } from "@qds.dev/tools";
+/** A component */
+export declare const CheckboxDescription: import("@qwik.dev/core").Component<{} & AsChildTypes>;`;
+
+      const ast = parseSync("test.d.ts", content);
+      const s = new MagicString(content);
+      const toolsImportNode = findImportBySource(ast, content, "@qds.dev/tools");
+
+      injectTypeImport({
+        ast,
+        magicString: s,
+        importSource: "@qds.dev/tools",
+        specifierName: "AsChildTypes",
+        existingImportNode: toolsImportNode
+      });
+
+      const result = s.toString();
+      const importCount = (result.match(/AsChildTypes/g) || []).length;
+      expect(importCount).toBe(2); // Once in import, once in usage
+    });
+
+    it("should handle multiple existing imports and add new one at top", () => {
+      const content = `import { component$ } from "@qwik.dev/core";
+import { someUtil } from "@qds.dev/utils";
+/** A component */
+export declare const CheckboxDescription: import("@qwik.dev/core").Component<{} & AsChildTypes>;`;
+
+      const ast = parseSync("test.d.ts", content);
+      const s = new MagicString(content);
+      const toolsImportNode = findImportBySource(ast, content, "@qds.dev/tools");
+
+      injectTypeImport({
+        ast,
+        magicString: s,
+        importSource: "@qds.dev/tools",
+        specifierName: "AsChildTypes",
+        existingImportNode: toolsImportNode
+      });
+
+      const result = s.toString();
+      expect(result).toContain('import type { AsChildTypes } from "@qds.dev/tools";');
+      expect(result.indexOf("import type { AsChildTypes }")).toBe(0);
     });
   });
 });
