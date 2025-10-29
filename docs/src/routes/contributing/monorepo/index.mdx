@@ -94,7 +94,7 @@ The Vite configuration for the consuming application (`apps/docs`) is critical f
 *   **`resolve.alias`:** This section **must** explicitly map the package names of your local `libs/*` dependencies directly to their `src` directories. While `vite-tsconfig-paths` might handle initial resolution using the root `tsconfig.json`, experience shows **this explicit aliasing in the Vite config is necessary for HMR to reliably detect and apply changes** made within the source files of linked local packages.
     *   **Action:** When adding a new package (e.g., `@qds.dev/new-package`), add a corresponding alias:
         ```typescript:apps/docs/vite.config.ts
-        import { resolve } from "pathe";
+        import { resolve } from "node:path";
         
         resolve: {
           alias: {
@@ -123,7 +123,7 @@ For testing with Vitest, we need to ensure proper path resolution for local pack
 
 *   **Action:** When adding a new package, update the `resolve.alias` in the Vitest configuration:
     ```typescript:vitest.config.ts
-    import { resolve } from "pathe";
+    import { resolve } from "node:path";
     
     export default defineConfig({
       resolve: {

@@ -23,7 +23,7 @@
   "scripts": {
     "build": "pnpm run build.lib & pnpm run build.types",
     "build.lib": "rolldown -c rolldown.config.ts",
-    "build.types": "tsc --emitDeclarationOnly --incremental --outDir ./lib-types",
+    "build.types": "tsc --emitDeclarationOnly --outDir ./lib-types",
     "dev": "vite --mode ssr",
     "generate.styles": "node styles/tailwind/generate.ts",
     "qwik": "qwik"

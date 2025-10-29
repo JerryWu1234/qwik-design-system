@@ -1,9 +1,9 @@
+import { resolve } from "node:path";
 import { qdsTransformPlugin } from "@qds.dev/tools/rolldown";
 import { asChild, icons } from "@qds.dev/tools/vite";
 import { qwikVite } from "@qwik.dev/core/optimizer";
 import { qwikRouter } from "@qwik.dev/router/vite";
 import tailwindcss from "@tailwindcss/vite";
-import { resolve } from "pathe";
 /**
  * This is the base config for vite.
  * When building, the adapter config is used which loads this file and extends it.

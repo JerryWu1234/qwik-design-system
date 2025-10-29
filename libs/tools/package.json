@@ -33,7 +33,7 @@
   "scripts": {
     "build": "pnpm run build.lib & pnpm run build.types && pnpm generate-icon-types",
     "build.lib": "rolldown -c rolldown.config.ts",
-    "build.types": "tsc --emitDeclarationOnly --incremental --outDir ./lib-types",
+    "build.types": "tsc --emitDeclarationOnly --outDir ./lib-types",
     "dev": "vite --mode ssr",
     "test": "vitest",
     "generate-icon-types": "node src/generate-icon-types.ts",
