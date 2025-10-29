@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "strict": true,
     "allowImportingTsExtensions": true,
+    "composite": true,
     "emitDeclarationOnly": true,
     "paths": {
       "@qds.dev/ui": ["libs/components/src"],

@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "module": "esnext",
-    "target": "esnext",
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM"],
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -16,5 +17,5 @@
     "emitDeclarationOnly": true,
     "types": ["node"]
   },
-  "include": ["vite/**/*", "src/**/*", "utils/**/*", "rolldown/**/*"]
+  "include": ["vite/**/*", "src/**/*", "utils/**/*", "rolldown/**/*", "linter/**/*"]
 }

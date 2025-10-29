@@ -201,6 +201,13 @@ export class RuleTester {
         if (typeof visitor === "function") {
           (visitor as (node: Node) => void)(node as unknown as Node);
         }
+      },
+      leave: (node: WalkerNode) => {
+        const exitKey = `${node.type}:exit` as keyof VisitorWithHooks;
+        const exitVisitor = ruleInstance[exitKey];
+        if (typeof exitVisitor === "function") {
+          (exitVisitor as (node: Node) => void)(node as unknown as Node);
+        }
       }
     });
 
