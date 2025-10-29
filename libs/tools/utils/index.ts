@@ -1,3 +1,8 @@
+// AST utilities
+export * from "./ast/core";
+export * from "./ast/imports";
+export * from "./ast/jsx-helpers";
+
 // Icon utilities
 export * from "./icons/ast/expressions";
 export * from "./icons/ast/jsx";
@@ -10,3 +15,4 @@ export * from "./icons/transform/tsx";
 
 // Build utilities
 export * from "./package-json";
+export * from "./transform-dts";

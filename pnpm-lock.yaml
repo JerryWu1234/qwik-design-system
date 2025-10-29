@@ -156,9 +156,6 @@ importers:
         specifier: ^0.6
         version: 0.6.1
     devDependencies:
-      '@axe-core/playwright':
-        specifier: ^4.9.1
-        version: 4.10.2(playwright-core@1.56.0)
       '@fluejs/noscroll':
         specifier: ^1.0.0
         version: 1.0.0
@@ -255,11 +252,6 @@ packages:
 
   '@anthropic-ai/sdk@0.37.0':
     resolution: {integrity: sha512-tHjX2YbkUBwEgg0JZU3EFSSAQPoK4qQR/NFYa8Vtzd5UAyXzZksCw2In69Rml4R/TyHPBfRYaLK35XiOe33pjw==}
-
-  '@axe-core/playwright@4.10.2':
-    resolution: {integrity: sha512-6/b5BJjG6hDaRNtgzLIfKr5DfwyiLHO4+ByTLB0cJgWSM8Ll7KqtdblIS6bEkwSF642/Ex91vNqIl3GLXGlceg==}
-    peerDependencies:
-      playwright-core: '>= 1.0.0'
 
   '@azure/functions@3.5.1':
     resolution: {integrity: sha512-6UltvJiuVpvHSwLcK/Zc6NfUwlkDLOFFx97BHCJzlWNsfiWwzwmTsxJXg4kE/LemKTHxPpfoPE+kOJ8hAdiKFQ==}
@@ -4014,11 +4006,6 @@ snapshots:
       node-fetch: 2.7.0
     transitivePeerDependencies:
       - encoding
-
-  '@axe-core/playwright@4.10.2(playwright-core@1.56.0)':
-    dependencies:
-      axe-core: 4.10.3
-      playwright-core: 1.56.0
 
   '@azure/functions@3.5.1':
     dependencies:

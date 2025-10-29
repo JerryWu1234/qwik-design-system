@@ -23,11 +23,11 @@
   "scripts": {
     "build": "pnpm run build.lib & pnpm run build.types",
     "build.lib": "rolldown -c rolldown.config.ts",
-    "build.types": "tsc --emitDeclarationOnly --outDir ./lib-types",
+    "build.types": "tsc --emitDeclarationOnly --outDir ./lib-types && pnpm run transform.types",
+    "transform.types": "node ../tools/utils/transform-dts.ts ./src ./lib-types/src",
     "generate.styles": "node styles/tailwind/generate.ts"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.9.1",
     "@fluejs/noscroll": "^1.0.0",
     "@qds.dev/utils": "workspace:*",
     "@qwik.dev/core": "https://pkg.pr.new/QwikDev/qwik/@qwik.dev/core@d48c3d2",
