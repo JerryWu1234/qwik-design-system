@@ -192,6 +192,9 @@ importers:
       '@iconify/json':
         specifier: ^2.2.382
         version: 2.2.384
+      '@iconify/utils':
+        specifier: ^3.0.1
+        version: 3.0.2
       '@oxc-project/types':
         specifier: ^0.87.0
         version: 0.87.0
@@ -211,9 +214,6 @@ importers:
       '@iconify/types':
         specifier: ^2
         version: 2.0.0
-      '@iconify/utils':
-        specifier: ^3.0.1
-        version: 3.0.2
       magic-string:
         specifier: ^0.30.17
         version: 0.30.19
