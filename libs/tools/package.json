@@ -34,7 +34,7 @@
     "build": "pnpm run build.lib & pnpm run build.types && pnpm generate.icon.types",
     "build.lib": "rolldown -c rolldown.config.ts",
     "build.types": "tsc --emitDeclarationOnly --outDir ./lib-types",
-    "generate.icon.types": "node src/generate-icon-types.ts"
+    "generate.icon.types": "node src/generate/icon-types.ts"
   },
   "devDependencies": {
     "@iconify/types": "^2",

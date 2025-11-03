@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 export { sanitizeIconName, generateIconTypes, generateRuntimeProxies };
 
 // Import shared utilities
-import { discoverAllIconifyCollections, toPascalCase } from "../utils/icons/naming.ts";
+import { discoverAllIconifyCollections, toPascalCase } from "../../utils/icons/naming.ts";
 
 // Export shared utilities for convenience
 export { discoverAllIconifyCollections, toPascalCase };
@@ -112,9 +112,12 @@ async function generateIconTypes(packs?: Record<string, { iconifyPrefix: string 
 
   const libTypesPath = join(
     scriptDir,
-    "../../components/lib-types/virtual-qds-icons.d.ts"
+    "../../../components/lib-types/virtual-qds-icons.d.ts"
   );
-  const componentsRootPath = join(scriptDir, "../../components/virtual-qds-icons.d.ts");
+  const componentsRootPath = join(
+    scriptDir,
+    "../../../components/virtual-qds-icons.d.ts"
+  );
 
   const libTypesDir = dirname(libTypesPath);
   if (!existsSync(libTypesDir)) {
@@ -151,7 +154,7 @@ async function generateRuntimeProxies(
 
   const packsToUse = packs || discoverAllIconifyCollections();
   const scriptDir = dirname(fileURLToPath(import.meta.url));
-  const defaultOutputPath = join(scriptDir, "../../components/src/icons-runtime.ts");
+  const defaultOutputPath = join(scriptDir, "../../../components/src/icons-runtime.ts");
   const finalOutputPath = outputPath || defaultOutputPath;
   const declarations: string[] = [];
 
