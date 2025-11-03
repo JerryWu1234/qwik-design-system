@@ -139,18 +139,23 @@ test("data entry moves focus to next segment", async () => {
 test("arrow keys move focus between segments", async () => {
   render(<Basic />);
 
+  await expect.element(YearSegment).toBeVisible();
   await userEvent.keyboard("{Tab}");
   await expect.element(YearSegment).toHaveFocus();
 
+  await expect.element(MonthSegment).toBeVisible();
   await userEvent.keyboard("{ArrowRight}");
   await expect.element(MonthSegment).toHaveFocus();
 
+  await expect.element(DaySegment).toBeVisible();
   await userEvent.keyboard("{ArrowRight}");
   await expect.element(DaySegment).toHaveFocus();
 
+  await expect.element(MonthSegment).toBeVisible();
   await userEvent.keyboard("{ArrowLeft}");
   await expect.element(MonthSegment).toHaveFocus();
 
+  await expect.element(YearSegment).toBeVisible();
   await userEvent.keyboard("{ArrowLeft}");
   await expect.element(YearSegment).toHaveFocus();
 });
