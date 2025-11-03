@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.5.1...v2-migration
+
+[compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.5.1...v2-migration)
+
+### 🚀 Enhancements
+
+- Mark utils as a dependencty ([#347](https://github.com/kunai-consulting/qwik-design-system/pull/347))
+
+### ❤️ Contributors
+
+- Thejackshelton-kunaico ([@thejackshelton-kunaico](https://github.com/thejackshelton-kunaico))
+
 ## v0.5.0...v2-migration
 
 [compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.5.0...v2-migration)

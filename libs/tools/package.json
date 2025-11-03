@@ -1,6 +1,6 @@
 {
   "name": "@qds.dev/tools",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "private": false,
   "description": "Tools and utilities for Qwik Design System",
   "type": "module",
