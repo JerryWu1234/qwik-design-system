@@ -89,11 +89,11 @@ export const PaginationItem = component$((props: PublicPaginationPageProps) => {
       fallback="button"
       internalRef={itemRef}
       // Identifies a pagination page element
-      data-qds-pagination-item
+      ui-qds-pagination-item
       // Specifies the index of the pagination page
-      data-index={index}
+      ui-index={index}
       // Indicates if this is the currently selected page
-      data-current={isCurrentPage.value}
+      ui-current={isCurrentPage.value}
       aria-current={isCurrentPage.value ? "page" : undefined}
       aria-label={`Page ${index + 1}`}
       tabIndex={0}

@@ -1,5 +1,5 @@
 @layer qds {
-  [data-qds-calendar-root] {
+  [ui-qds-calendar-root] {
     width: fit-content;
   }
 }

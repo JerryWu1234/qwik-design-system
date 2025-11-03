@@ -13,8 +13,8 @@ export const RadioGroupError = component$((props: PublicErrorProps) => {
       {...props}
       fallback="div"
       id={errorId}
-      data-qds-radio-group-error
-      data-visible={context.isErrorSig.value}
+      ui-qds-radio-group-error
+      ui-visible={context.isErrorSig.value}
       aria-hidden={!context.isErrorSig.value}
     >
       <Slot />

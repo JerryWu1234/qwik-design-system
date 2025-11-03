@@ -12,13 +12,13 @@ export const CalendarContent = component$(() => {
 
   if (mode === "popover") {
     return (
-      <PopoverContent data-qds-calendar-content data-qds-calendar-popover-content>
+      <PopoverContent ui-qds-calendar-content ui-qds-calendar-popover-content>
         <Slot />
       </PopoverContent>
     );
   }
   return (
-    <Render fallback="div" data-qds-calendar-content data-qds-calendar-inline-content>
+    <Render fallback="div" ui-qds-calendar-content ui-qds-calendar-inline-content>
       <Slot />
     </Render>
   );

@@ -11,7 +11,7 @@ export const SliderTrack = component$((props: PropsOf<"div">) => {
     if (context.disabled.value) return;
 
     if (!(event.target instanceof HTMLElement)) return;
-    const clickedThumb = event.target.closest("[data-qds-slider-thumb]");
+    const clickedThumb = event.target.closest("[ui-qds-slider-thumb]");
     if (clickedThumb) return;
 
     const rect = trackRef.value?.getBoundingClientRect();
@@ -35,7 +35,7 @@ export const SliderTrack = component$((props: PropsOf<"div">) => {
       fallback="div"
       ref={trackRef}
       // Track element representing the full range of possible values
-      data-qds-slider-track
+      ui-qds-slider-track
       preventdefault:pointerdown
       onPointerDown$={onPointerDown$}
     >

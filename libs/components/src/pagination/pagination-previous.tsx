@@ -38,7 +38,7 @@ export const PaginationPrevious = component$(
     return (
       <button
         // Identifies the pagination previous button element
-        data-qds-pagination-previous
+        ui-qds-pagination-previous
         type={type ?? "button"}
         {...props}
         disabled={isDisabled.value}

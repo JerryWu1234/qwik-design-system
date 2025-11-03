@@ -22,7 +22,7 @@ export const CheckboxHiddenInput = component$(
           checked={context.checked.value === true}
           indeterminate={context.checked.value === "mixed"}
           // Identifier for the hidden native checkbox input element
-          data-qds-checkbox-hidden-input
+          ui-qds-checkbox-hidden-input
           name={context.name ?? props.name ?? undefined}
           required={context.required ?? props.required ?? undefined}
           value={context.value ?? props.value ?? undefined}

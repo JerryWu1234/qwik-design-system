@@ -173,8 +173,8 @@ export const DateInputField = component$((props: PublicDateInputFieldProps) => {
     <Render
       fallback={"div"}
       {...rest}
-      data-qds-date-input-field
-      data-qds-date-input-field-index={index}
+      ui-qds-date-input-field
+      ui-qds-date-input-field-index={index}
       role="group"
       id={elementId}
       aria-labelledby={`${rootContext.localId}-label`}

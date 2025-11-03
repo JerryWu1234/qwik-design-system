@@ -10,7 +10,7 @@ export const QRCodePatternSvg = component$((props: PropsOf<"svg">) => {
 
   return (
     // SVG container element for the QR code pattern
-    <svg {...props} viewBox={viewBox} data-qds-qr-pattern-svg aria-hidden="true">
+    <svg {...props} viewBox={viewBox} ui-qds-qr-pattern-svg aria-hidden="true">
       <Slot />
     </svg>
   );

@@ -148,17 +148,17 @@ export const TabsTrigger = component$((props: TabsTriggerProps) => {
   return (
     <Render
       internalRef={triggerRef}
-      data-qds-tabs-trigger
+      ui-qds-tabs-trigger
       role="tab"
       fallback="button"
-      data-orientation={
+      ui-orientation={
         context.orientationSig.value === "vertical" ? "vertical" : "horizontal"
       }
       onClick$={[handleSelect$, props.onClick$]}
       onFocus$={[context.selectOnFocus ? handleSelect$ : undefined, props.onFocus$]}
       onKeyDown$={[handleKeyDownSync$, handleNavigation$, props.onKeyDown$]}
       tabIndex={isSelectedSig.value ? 0 : -1}
-      data-selected={isSelectedSig.value}
+      ui-selected={isSelectedSig.value}
       aria-selected={isSelectedSig.value ? "true" : "false"}
       {...props}
     >

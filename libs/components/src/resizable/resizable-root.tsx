@@ -42,7 +42,7 @@ export const ResizableRoot = component$<PublicResizableRootProps>((props) => {
     sync$((event: KeyboardEvent) => {
       const activeElement = document.activeElement;
       // The identifier for the root resizable container
-      const isWithinResizable = activeElement?.closest("[data-qds-resizable-root]");
+      const isWithinResizable = activeElement?.closest("[ui-qds-resizable-root]");
       if (!isWithinResizable) return;
       const preventKeys = [
         "Home",
@@ -77,11 +77,11 @@ export const ResizableRoot = component$<PublicResizableRootProps>((props) => {
       fallback="div"
       {...props}
       ref={rootRef}
-      data-qds-resizable-root
+      ui-qds-resizable-root
       // Indicates the orientation of the resizable container (vertical or horizontal)
-      data-orientation={orientation}
+      ui-orientation={orientation}
       // Indicates whether the resizable container is disabled
-      data-disabled={disabledSig.value}
+      ui-disabled={disabledSig.value}
     >
       <Slot />
     </Render>

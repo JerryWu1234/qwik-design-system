@@ -237,9 +237,9 @@ export const OtpHiddenInput = component$((props: PublicOtpNativeInputProps) => {
       disabled={context.isDisabled.value ?? false}
       maxLength={maxLength.value}
       // The identifier for the hidden input element that handles OTP input
-      data-qds-otp-hidden-input
+      ui-qds-otp-hidden-input
       // Indicates whether password manager suggestions should be shifted
-      data-shift={context.shiftPWManagers ? "" : undefined}
+      ui-shift={context.shiftPWManagers ? "" : undefined}
       inputMode="numeric"
       autoComplete="one-time-code"
       onInput$={[handleInput, props.onInput$]}

@@ -4,7 +4,7 @@ import { type PropsOf, Slot, component$ } from "@qwik.dev/core";
 export const PaginationEllipsis = component$((props: PropsOf<"div">) => {
   return (
     // Identifies the pagination ellipsis element
-    <div data-qds-pagination-ellipsis {...props}>
+    <div ui-qds-pagination-ellipsis {...props}>
       <Slot />
     </div>
   );

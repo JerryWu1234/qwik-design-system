@@ -56,8 +56,8 @@ export const RadioGroupItem = component$((props: PublicItemProps) => {
       {...props}
       fallback="div"
       id={itemId}
-      data-qds-radio-group-item
-      data-orientation={context.orientation}
+      ui-qds-radio-group-item
+      ui-orientation={context.orientation}
     >
       <Slot />
     </Render>

@@ -23,7 +23,7 @@ export const MenuContextTrigger = component$<PropsOf<"div">>((props) => {
       ref={context.triggerRef}
       preventdefault:contextmenu
       onContextMenu$={[handleContextMenu, props.onContextMenu$]}
-      data-qds-menu-context-trigger
+      ui-qds-menu-context-trigger
       aria-haspopup="menu"
       aria-controls={context.isOpenSig.value ? context.contentId : undefined}
       aria-expanded={context.isOpenSig.value}

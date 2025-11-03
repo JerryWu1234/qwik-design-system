@@ -8,7 +8,7 @@ export const CheckboxLabel = component$((props: PublicCheckboxLabelProps) => {
   const triggerId = `${context.localId}-trigger`;
   return (
     // Identifier for the checkbox label element
-    <Label {...props} data-qds-checkbox-label for={triggerId}>
+    <Label {...props} ui-qds-checkbox-label for={triggerId}>
       <Slot />
     </Label>
   );

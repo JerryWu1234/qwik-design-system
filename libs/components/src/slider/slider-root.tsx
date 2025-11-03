@@ -157,7 +157,7 @@ export const SliderRoot = component$<PublicRootProps>((props) => {
     <Render
       {...rest}
       fallback="div"
-      data-qds-slider-root
+      ui-qds-slider-root
       role={isRange ? "group" : "slider"}
       aria-disabled={disabled.value}
       aria-valuemin={min.value}

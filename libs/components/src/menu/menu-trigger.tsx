@@ -37,7 +37,7 @@ export const MenuTrigger = component$<PublicMenuTriggerProps>((props) => {
       aria-controls={context.isOpenSig.value ? context.contentId : undefined}
       onKeyDown$={[handleKeyDown, props.onKeyDown$]}
       ref={context.triggerRef}
-      data-qds-menu-trigger
+      ui-qds-menu-trigger
       type="button"
       {...props}
     >

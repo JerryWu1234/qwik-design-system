@@ -1,7 +1,7 @@
 /**
  * Generator for QDS UI State Variants
  *
- * This script generates Tailwind @custom-variant declarations for all data attribute states.
+ * This script generates Tailwind @custom-variant declarations for all ui attribute states.
  * Run this to generate the CSS, then copy it into your global.css file.
  *
  * Usage:
@@ -22,7 +22,8 @@ type DataAttributeState =
   | "current"
   | "mixed"
   | "empty"
-  | "orientation";
+  | "horizontal"
+  | "vertical";
 
 /**
  * Generate positive and negative variant CSS for a given state
@@ -33,30 +34,30 @@ type DataAttributeState =
 function generateVariant(state: DataAttributeState): string {
   const variantName = `ui-${state}`;
   const negatedVariantName = `not-ui-${state}`;
-  const dataAttr = `data-${state}`;
+  const uiAttr = `ui-${state}`;
 
   return `/**
- * ${variantName}: Apply styles when nearest component scope has ${dataAttr}
+ * ${variantName}: Apply styles when nearest component scope has ${uiAttr}
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ${variantName} (
-  /* Descendant of scope with ${dataAttr}, stops at nearest scope boundary */
-  [data-qds-scope][${dataAttr}] > &,
-  [data-qds-scope][${dataAttr}] > :not([data-qds-scope]) &,
+  /* Descendant of scope with ${uiAttr}, stops at nearest scope boundary */
+  [ui-qds-scope][${uiAttr}] > &,
+  [ui-qds-scope][${uiAttr}] > :not([ui-qds-scope]) &,
   /* Direct match on element itself */
-  [${dataAttr}]&
+  [${uiAttr}]&
 );
 
 /**
- * ${negatedVariantName}: Apply styles when nearest component scope does NOT have ${dataAttr}
+ * ${negatedVariantName}: Apply styles when nearest component scope does NOT have ${uiAttr}
  * Automatically scopes to prevent nested components from inheriting state
  */
 @custom-variant ${negatedVariantName} (
-  /* Descendant of scope without ${dataAttr}, stops at nearest scope boundary */
-  [data-qds-scope]:not([${dataAttr}]) > &,
-  [data-qds-scope]:not([${dataAttr}]) > :not([data-qds-scope]) &,
+  /* Descendant of scope without ${uiAttr}, stops at nearest scope boundary */
+  [ui-qds-scope]:not([${uiAttr}]) > &,
+  [ui-qds-scope]:not([${uiAttr}]) > :not([ui-qds-scope]) &,
   /* Direct match on element itself ONLY if it's also a scope */
-  [data-qds-scope]:not([${dataAttr}])&
+  [ui-qds-scope]:not([${uiAttr}])&
 );`;
 }
 
@@ -77,7 +78,8 @@ export function generateAllVariants(): string {
     "current",
     "mixed",
     "empty",
-    "orientation"
+    "horizontal",
+    "vertical"
   ];
 
   const header = `/**

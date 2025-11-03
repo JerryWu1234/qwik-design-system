@@ -11,11 +11,11 @@ export const SwitchThumb = component$<PropsOf<"span">>((props) => {
     <Render
       {...restProps}
       fallback="span"
-      data-qds-switch-thumb
+      ui-qds-switch-thumb
       // Indicates whether the switch is currently checked
-      data-checked={context.checked.value}
+      ui-checked={context.checked.value}
       // Indicates whether the switch is currently disabled
-      data-disabled={context.disabled.value}
+      ui-disabled={context.disabled.value}
     />
   );
 });

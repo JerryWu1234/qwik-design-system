@@ -234,9 +234,9 @@ export const PopoverRoot = component$((props: PopoverRootProps) => {
       onPointerMove$={handlePointerMove$}
       onPointerOut$={handlePointerOut$}
       onPointerOver$={handlePointerOver$}
-      data-open={isOpen.value}
-      data-closed={!isOpen.value}
-      data-qds-popover-root
+      ui-open={isOpen.value}
+      ui-closed={!isOpen.value}
+      ui-qds-popover-root
       internalRef={rootRef}
       fallback={fallback}
     >

@@ -107,9 +107,9 @@ export const ModalRoot = component$((props: ModalRootProps) => {
     <Render
       {...rest}
       fallback="div"
-      data-qds-scope
-      data-open={isOpen.value}
-      data-closed={!isOpen.value}
+      ui-qds-scope
+      ui-open={isOpen.value}
+      ui-closed={!isOpen.value}
     >
       <Slot />
     </Render>

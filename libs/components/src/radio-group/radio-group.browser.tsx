@@ -61,7 +61,7 @@ test("first radio button can be clicked and checked", async () => {
   render(<Basic />);
 
   await userEvent.click(Triggers.nth(0));
-  await expect.element(Triggers.nth(0)).toHaveAttribute("data-checked");
+  await expect.element(Triggers.nth(0)).toHaveAttribute("ui-checked");
   await expect.element(Triggers.nth(0)).toHaveAttribute("aria-checked", "true");
 });
 
@@ -69,11 +69,11 @@ test("clicking different radio button unchecks previous", async () => {
   render(<Basic />);
 
   await userEvent.click(Triggers.nth(0));
-  await expect.element(Triggers.nth(0)).toHaveAttribute("data-checked");
+  await expect.element(Triggers.nth(0)).toHaveAttribute("ui-checked");
 
   await userEvent.click(Triggers.nth(1));
-  await expect.element(Triggers.nth(0)).not.toHaveAttribute("data-checked");
-  await expect.element(Triggers.nth(1)).toHaveAttribute("data-checked");
+  await expect.element(Triggers.nth(0)).not.toHaveAttribute("ui-checked");
+  await expect.element(Triggers.nth(1)).toHaveAttribute("ui-checked");
 });
 
 test("indicator should be visible when radio button is clicked", async () => {
@@ -81,7 +81,7 @@ test("indicator should be visible when radio button is clicked", async () => {
 
   await userEvent.click(Triggers.nth(0));
   await expect.element(Indicators.nth(0)).toBeVisible();
-  await expect.element(Indicators.nth(0)).not.toHaveAttribute("data-hidden");
+  await expect.element(Indicators.nth(0)).not.toHaveAttribute("ui-hidden");
 });
 
 test("horizontal orientation keyboard navigation", async () => {
@@ -90,7 +90,7 @@ test("horizontal orientation keyboard navigation", async () => {
   await userEvent.click(Triggers.nth(0));
   await userEvent.keyboard("{ArrowRight}");
 
-  await expect.element(Triggers.nth(1)).toHaveAttribute("data-checked");
+  await expect.element(Triggers.nth(1)).toHaveAttribute("ui-checked");
   await expect.element(Triggers.nth(1)).toHaveAttribute("aria-checked", "true");
 });
 
@@ -100,7 +100,7 @@ test("vertical orientation keyboard navigation", async () => {
   await userEvent.click(Triggers.nth(0));
   await userEvent.keyboard("{ArrowDown}");
 
-  await expect.element(Triggers.nth(1)).toHaveAttribute("data-checked");
+  await expect.element(Triggers.nth(1)).toHaveAttribute("ui-checked");
   await expect.element(Triggers.nth(1)).toHaveAttribute("aria-checked", "true");
 });
 
@@ -110,7 +110,7 @@ test("Home key selects first item", async () => {
   await userEvent.click(Triggers.nth(3));
   await userEvent.keyboard("{Home}");
 
-  await expect.element(Triggers.nth(0)).toHaveAttribute("data-checked");
+  await expect.element(Triggers.nth(0)).toHaveAttribute("ui-checked");
   await expect.element(Triggers.nth(0)).toHaveAttribute("aria-checked", "true");
 });
 
@@ -120,7 +120,7 @@ test("End key selects last item", async () => {
   await userEvent.click(Triggers.nth(0));
   await userEvent.keyboard("{End}");
 
-  await expect.element(Triggers.nth(3)).toHaveAttribute("data-checked");
+  await expect.element(Triggers.nth(3)).toHaveAttribute("ui-checked");
   await expect.element(Triggers.nth(3)).toHaveAttribute("aria-checked", "true");
 });
 
@@ -131,13 +131,13 @@ test("Space key selects focused item", async () => {
   focusElement(Triggers.nth(0));
   await userEvent.keyboard("{Space}");
 
-  await expect.element(Triggers.nth(0)).toHaveAttribute("data-checked");
+  await expect.element(Triggers.nth(0)).toHaveAttribute("ui-checked");
   await expect.element(Triggers.nth(0)).toHaveAttribute("aria-checked", "true");
 });
 
 test("horizontal orientation attribute", async () => {
   render(<Basic orientation="horizontal" />);
-  await expect.element(Root).toHaveAttribute("data-orientation", "horizontal");
+  await expect.element(Root).toHaveAttribute("ui-orientation", "horizontal");
 });
 
 test("disabled radio group prevents interaction", async () => {
@@ -148,7 +148,7 @@ test("disabled radio group prevents interaction", async () => {
 
 test("radio group with initial value", async () => {
   render(<Basic value="Option 1" />);
-  await expect.element(Triggers.nth(0)).toHaveAttribute("data-checked");
+  await expect.element(Triggers.nth(0)).toHaveAttribute("ui-checked");
 });
 
 const FormBasic = component$(() => {
@@ -261,8 +261,8 @@ test("disabled items navigation - should skip disabled items", async () => {
   focusElement(Triggers.nth(0));
   await userEvent.keyboard("{ArrowDown}");
 
-  await expect.element(Triggers.nth(2)).toHaveAttribute("data-checked");
-  await expect.element(Triggers.nth(1)).toHaveAttribute("data-disabled");
+  await expect.element(Triggers.nth(2)).toHaveAttribute("ui-checked");
+  await expect.element(Triggers.nth(1)).toHaveAttribute("ui-disabled");
 });
 
 const ExternalState = component$(() => {
@@ -315,21 +315,21 @@ const ExternalState = component$(() => {
 test("external value changes update selection", async () => {
   render(<ExternalState />);
 
-  await expect.element(Triggers.nth(0)).toHaveAttribute("data-checked");
+  await expect.element(Triggers.nth(0)).toHaveAttribute("ui-checked");
 
   await userEvent.click(page.getByTestId("change-value"));
 
-  await expect.element(Triggers.nth(1)).toHaveAttribute("data-checked");
-  await expect.element(Triggers.nth(0)).not.toHaveAttribute("data-checked");
+  await expect.element(Triggers.nth(1)).toHaveAttribute("ui-checked");
+  await expect.element(Triggers.nth(0)).not.toHaveAttribute("ui-checked");
 });
 
 test("external signal changes update selection", async () => {
   render(<ExternalState />);
 
-  await expect.element(Triggers.nth(0)).toHaveAttribute("data-checked");
+  await expect.element(Triggers.nth(0)).toHaveAttribute("ui-checked");
 
   await userEvent.click(page.getByTestId("change-signal"));
 
-  await expect.element(Triggers.nth(2)).toHaveAttribute("data-checked");
-  await expect.element(Triggers.nth(0)).not.toHaveAttribute("data-checked");
+  await expect.element(Triggers.nth(2)).toHaveAttribute("ui-checked");
+  await expect.element(Triggers.nth(0)).not.toHaveAttribute("ui-checked");
 });

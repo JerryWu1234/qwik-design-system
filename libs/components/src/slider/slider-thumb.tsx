@@ -194,9 +194,9 @@ export const SliderThumb = component$((props: PublicThumbProps) => {
       fallback="div"
       ref={thumbRef}
       // Draggable thumb element used to select values on the slider
-      data-qds-slider-thumb
+      ui-qds-slider-thumb
       // Identifies whether the thumb is for the start or end value in range mode
-      data-thumb-type={Array.isArray(context.sliderValue.value) ? type : undefined}
+      ui-thumb-type={Array.isArray(context.sliderValue.value) ? type : undefined}
       style={{
         ...((rest.style ?? {}) as CSSProperties),
         "--thumb-position": `${percentage.value}%`

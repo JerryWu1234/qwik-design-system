@@ -34,7 +34,7 @@ export const SliderRange = component$((props: PropsOf<"div">) => {
       {...props}
       fallback="div"
       // Visual indicator showing the selected range between minimum and maximum values
-      data-qds-slider-range
+      ui-qds-slider-range
       style={styles.value}
     />
   );

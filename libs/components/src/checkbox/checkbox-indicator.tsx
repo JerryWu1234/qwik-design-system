@@ -23,8 +23,8 @@ export const CheckboxIndicator = component$<PublicCheckboxIndicatorProps>((props
       {...props}
       fallback="span"
       // Indicates whether the indicator should be hidden based on checkbox state
-      data-hidden={isHidden.value}
-      data-qds-checkbox-indicator
+      ui-hidden={isHidden.value}
+      ui-qds-checkbox-indicator
       aria-hidden="true"
     >
       <Slot />

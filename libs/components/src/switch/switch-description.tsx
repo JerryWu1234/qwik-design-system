@@ -14,11 +14,11 @@ export const SwitchDescription = component$<PropsOf<"div">>((props) => {
       fallback="div"
       id={descriptionId}
       // The identifier for the switch description element
-      data-qds-switch-description
+      ui-qds-switch-description
       // Indicates whether the switch is currently checked
-      data-checked={context.checked.value}
+      ui-checked={context.checked.value}
       // Indicates whether the switch is currently disabled
-      data-disabled={context.disabled.value}
+      ui-disabled={context.disabled.value}
     >
       <Slot />
     </Render>

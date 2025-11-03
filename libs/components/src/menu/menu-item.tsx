@@ -151,10 +151,10 @@ export const MenuItem = component$<PublicMenuItemProps>(
         onFocus$={[handleFocus$, rest.onFocus$]}
         onBlur$={[$(() => (isFocusedSig.value = false)), rest.onBlur$]}
         aria-disabled={context.disabled.value || isDisabledSig.value}
-        data-disabled={context.disabled.value || isDisabledSig.value}
-        data-qds-menu-item
-        data-hovered={isHoveredSig.value}
-        data-focused={isFocusedSig.value}
+        ui-disabled={context.disabled.value || isDisabledSig.value}
+        ui-qds-menu-item
+        ui-hovered={isHoveredSig.value}
+        ui-focused={isFocusedSig.value}
         {...rest}
       >
         <Slot />

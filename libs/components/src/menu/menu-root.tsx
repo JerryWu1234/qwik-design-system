@@ -114,7 +114,7 @@ export const MenuRoot = component$<PublicMenuRootProps>((props) => {
     sync$((event: KeyboardEvent) => {
       // we have to do this on a window event due to v1 serialization issues
       const activeElement = document.activeElement;
-      const isWithinMenu = activeElement?.closest("[data-qds-popover-root]");
+      const isWithinMenu = activeElement?.closest("[ui-qds-popover-root]");
 
       if (!isWithinMenu) return;
 
@@ -151,7 +151,7 @@ export const MenuRoot = component$<PublicMenuRootProps>((props) => {
   const { open: _o, "bind:open": _bo, onChange$: _oc, ...rest } = props;
 
   return (
-    <PopoverRoot bind:open={isOpenSig} data-qds-menu-root ref={rootRef} {...rest}>
+    <PopoverRoot bind:open={isOpenSig} ui-qds-menu-root ref={rootRef} {...rest}>
       <Slot />
     </PopoverRoot>
   );

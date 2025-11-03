@@ -22,7 +22,7 @@ export const SliderHiddenInput = component$(
           {...props}
           type="hidden"
           tabIndex={-1}
-          data-qds-slider-hidden-input
+          ui-qds-slider-hidden-input
           name={context.name ?? props.name ?? undefined}
           required={context.required ?? props.required ?? undefined}
           value={stringValue.value}

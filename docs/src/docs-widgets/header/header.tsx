@@ -62,7 +62,7 @@ export const Header = component$(() => {
       </header>
       <div
         class="fixed inset-0 opacity-0 transition-all duration-[500ms] ease pointer-events-none z-[99998] bg-light-950/85"
-        data-navbar-backdrop
+        ui-navbar-backdrop
       />
     </>
   );
@@ -152,22 +152,22 @@ const DesktopNav = component$(() => {
         <li>
           <ul class="flex items-center">
             {restOfItems.map((item) => (
-              <Navbar.Item key={item.label} class="relative" data-navbar-item>
+              <Navbar.Item key={item.label} class="relative" ui-navbar-item>
                 {/* "bridge" to make hover possible between the gap */}
                 <div
                   aria-hidden="true"
                   class="absolute top-15 h-10 w-full z-99999 cursor-pointer"
                 />
                 <Navbar.ItemTrigger
-                  class="w-fit flex items-center gap-2 group data-open:text-blue-600 transition-colors duration-200 px-5 h-[76px]"
-                  data-mega-collapsible
+                  class="w-fit flex items-center gap-2 group [&[ui-open]]:text-blue-600 transition-colors duration-200 px-5 h-[76px]"
+                  ui-mega-collapsible
                 >
                   <span>{item.label}</span>
                 </Navbar.ItemTrigger>
                 <Navbar.ItemContent
                   class="open:grid gap-4 max-w-[600px] w-full shadow-[6px_6px_0_0px_var(--color-blue-200)] rounded-2xl p-4 border-[1.6px] border-blue-300 transition-discrete duration-[325ms] ease-in-out open:animate-to-visible not-open:animate-from-visible opacity-0"
                   style={getContentGridTemplate(item.label)}
-                  data-mega-popover
+                  ui-mega-popover
                 >
                   {item.links?.map((link) => {
                     const navLink = link as NavLink;

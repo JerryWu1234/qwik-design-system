@@ -11,14 +11,12 @@ function createTreeWalker(root: HTMLElement) {
   return document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
     acceptNode: (node: Element) => {
       // Only accept tree items that are visible
-      if (!node.hasAttribute("data-qds-tree-item")) {
+      if (!node.hasAttribute("ui-qds-tree-item")) {
         return NodeFilter.FILTER_SKIP;
       }
 
       // Skip items that are inside closed collapsible content
-      const isInClosedContent = node.closest(
-        "[data-qds-collapsible-content][data-closed]"
-      );
+      const isInClosedContent = node.closest("[ui-qds-collapsible-content][ui-closed]");
       if (isInClosedContent) {
         return NodeFilter.FILTER_SKIP;
       }

@@ -129,14 +129,14 @@ export const CalendarRoot = component$<PublicCalendarRootProps>((props) => {
     const datesArr = track(() => datesArray.value);
 
     if (datesArr.flat().includes(dateToFocus.value)) {
-      const btn = document.querySelector(`button[data-value="${dateToFocus.value}"]`);
+      const btn = document.querySelector(`button[ui-value="${dateToFocus.value}"]`);
       if (btn instanceof HTMLButtonElement) {
         btn.focus();
       }
     }
 
     cleanup(() => {
-      const btn = document.querySelector(`button[data-value="${dateToFocus.value}"]`);
+      const btn = document.querySelector(`button[ui-value="${dateToFocus.value}"]`);
       if (btn instanceof HTMLButtonElement) {
         btn.blur();
       }
@@ -155,7 +155,7 @@ export const CalendarRoot = component$<PublicCalendarRootProps>((props) => {
 
   return (
     <PopoverRoot
-      data-qds-calendar-root
+      ui-qds-calendar-root
       aria-label={labelSignal.value}
       bind:open={openSig}
       {...otherProps}

@@ -22,12 +22,12 @@ const HiddenInput = page.getByTestId("hidden-input");
 // Helper functions for complex locators - these return elements directly
 function getStartThumb() {
   const thumbs = page.getByTestId("thumb").elements();
-  return thumbs.find((el) => el.getAttribute("data-thumb-type") === "start");
+  return thumbs.find((el) => el.getAttribute("ui-thumb-type") === "start");
 }
 
 function getEndThumb() {
   const thumbs = page.getByTestId("thumb").elements();
-  return thumbs.find((el) => el.getAttribute("data-thumb-type") === "end");
+  return thumbs.find((el) => el.getAttribute("ui-thumb-type") === "end");
 }
 
 function getAllThumbs() {
@@ -35,7 +35,7 @@ function getAllThumbs() {
 }
 
 function getMarkers() {
-  return document.querySelectorAll("[data-qds-slider-marker]");
+  return document.querySelectorAll("[ui-qds-slider-marker]");
 }
 
 // Test components
@@ -302,7 +302,7 @@ describe("marks functionality", () => {
     const marks = getMarkers();
     expect(marks.length).toBe(6);
     expect(marks[0]).toBeTruthy();
-    expect(marks[0].getAttribute("data-qds-slider-marker")).toBe("true");
+    expect(marks[0].getAttribute("ui-qds-slider-marker")).toBe("true");
   });
 });
 

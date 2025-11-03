@@ -27,7 +27,7 @@ export const NavbarItemLink = component$((props: NavbarItemLinkProps) => {
   });
 
   return (
-    <Render ref={linkRef} fallback="a" data-index={index} {...props}>
+    <Render ref={linkRef} fallback="a" ui-index={index} {...props}>
       <Slot />
     </Render>
   );

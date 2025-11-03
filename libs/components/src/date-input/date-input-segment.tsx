@@ -337,10 +337,10 @@ export const DateInputSegment = component$(
       const currentValue = inputElement.value.replace(/^0/, "");
       const newDigit = event.key;
       const segmentType: DateSegmentType = inputElement.attributes.getNamedItem(
-        "data-qds-date-input-segment-year"
+        "ui-qds-date-input-segment-year"
       )
         ? "year"
-        : inputElement.attributes.getNamedItem("data-qds-date-input-segment-month")
+        : inputElement.attributes.getNamedItem("ui-qds-date-input-segment-month")
           ? "month"
           : "day";
 
@@ -449,12 +449,12 @@ export const DateInputSegment = component$(
           id={inputId}
           type="text"
           role="spinbutton"
-          data-qds-date-input-segment
-          data-qds-date-input-segment-placeholder={segmentSig.value.isPlaceholder}
-          data-qds-date-input-segment-day={segmentSig.value.type === "day"}
-          data-qds-date-input-segment-month={segmentSig.value.type === "month"}
-          data-qds-date-input-segment-year={segmentSig.value.type === "year"}
-          data-qds-date-input-segment-index={index}
+          ui-qds-date-input-segment
+          ui-qds-date-input-segment-placeholder={segmentSig.value.isPlaceholder}
+          ui-qds-date-input-segment-day={segmentSig.value.type === "day"}
+          ui-qds-date-input-segment-month={segmentSig.value.type === "month"}
+          ui-qds-date-input-segment-year={segmentSig.value.type === "year"}
+          ui-qds-date-input-segment-index={index}
           value={displayValueSig.value}
           onKeyDown$={[onKeyDownSync$, onKeyDown$, otherProps.onKeyDown$]}
           onInput$={[onInput$, otherProps.onInput$]}

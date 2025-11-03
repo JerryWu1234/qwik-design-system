@@ -25,11 +25,11 @@ export const SwitchTrigger = component$<PropsOf<"button">>((props) => {
       id={triggerId}
       type="button"
       disabled={context.disabled.value}
-      data-qds-switch-trigger
+      ui-qds-switch-trigger
       // Indicates whether the switch is currently checked
-      data-checked={context.checked.value}
+      ui-checked={context.checked.value}
       // Indicates whether the switch is currently disabled
-      data-disabled={context.disabled.value ? "" : undefined}
+      ui-disabled={context.disabled.value ? "" : undefined}
       onClick$={[handleToggle$, props.onClick$]}
       aria-labelledby={labelId}
       aria-describedby={descriptionId}

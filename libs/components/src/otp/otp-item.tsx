@@ -72,11 +72,11 @@ export const OtpItem = component$((props: PublicOTPProps) => {
       {...props}
       internalRef={itemRef}
       // The identifier for individual OTP input items with their index
-      data-qds-otp-item={index}
+      ui-qds-otp-item={index}
       // Indicates if the OTP item is currently highlighted
-      data-highlighted={isHighlighted.value ? "" : undefined}
+      ui-highlighted={isHighlighted.value ? "" : undefined}
       // Indicates if the OTP item is disabled
-      data-disabled={context.isDisabled.value ? "" : undefined}
+      ui-disabled={context.isDisabled.value ? "" : undefined}
     >
       {itemValue.value}
       <Slot />

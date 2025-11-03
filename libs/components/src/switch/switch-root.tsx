@@ -91,13 +91,13 @@ export const SwitchRoot = component$<PublicRootProps>((props) => {
       aria-labelledby={labelId}
       aria-describedby={descriptionId}
       aria-errormessage={hasErrorMessageSig.value ? errorId : undefined}
-      data-qds-switch-root
+      ui-qds-switch-root
       // Indicates whether the switch is currently checked
-      data-checked={checkedSig.value}
+      ui-checked={checkedSig.value}
       // Indicates whether the switch is currently disabled
-      data-disabled={disabledSig.value}
+      ui-disabled={disabledSig.value}
       // Indicates whether the switch is in an error state
-      data-error={hasError ? "" : undefined}
+      ui-error={hasError ? "" : undefined}
     >
       <Slot />
     </Render>

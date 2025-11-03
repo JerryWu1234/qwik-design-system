@@ -6,7 +6,7 @@ export type PublicMenuItemLabelProps = PropsOf<"span">;
 export const MenuItemLabel = component$<PublicMenuItemLabelProps>((props) => {
   return (
     // The identifier for the menu item label element
-    <Render data-qds-menu-item-label {...props} fallback="span">
+    <Render ui-qds-menu-item-label {...props} fallback="span">
       <Slot />
     </Render>
   );

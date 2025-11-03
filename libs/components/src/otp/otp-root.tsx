@@ -65,9 +65,9 @@ export const OtpRoot = component$((props: PublicOtpRootProps) => {
     <Render
       fallback="div"
       // The identifier for the root OTP input container
-      data-qds-otp-root
+      ui-qds-otp-root
       // Indicates if the entire OTP input is disabled
-      data-disabled={isDisabled.value ? "" : undefined}
+      ui-disabled={isDisabled.value ? "" : undefined}
       {...rest}
     >
       <Slot />

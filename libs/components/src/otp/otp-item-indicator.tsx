@@ -22,7 +22,7 @@ export const OtpItemIndicator = component$(({ ...props }: PropsOf<"span">) => {
 
   return (
     // The identifier for the OTP caret element with its specific index
-    <Render {...props} fallback="span" data-qds-otp-caret={itemContext.index}>
+    <Render {...props} fallback="span" ui-qds-otp-caret={itemContext.index}>
       {isVisible.value && <Slot />}
     </Render>
   );

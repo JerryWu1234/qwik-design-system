@@ -84,11 +84,11 @@ export const FieldRoot = component$((props: FieldRootProps) => {
     <Render
       {...props}
       fallback="div"
-      data-qds-scope
-      data-disabled={isDisabled.value}
-      data-required={isRequired.value}
-      data-readonly={isReadOnly.value}
-      data-empty={!rootValue.value || rootValue.value === "" ? "true" : undefined}
+      ui-qds-scope
+      ui-disabled={isDisabled.value}
+      ui-required={isRequired.value}
+      ui-readonly={isReadOnly.value}
+      ui-empty={!rootValue.value || rootValue.value === "" ? "true" : undefined}
     >
       <Slot />
     </Render>

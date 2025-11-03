@@ -4,7 +4,7 @@ import { type PropsOf, Slot, component$ } from "@qwik.dev/core";
 export const CalendarHeader = component$((props: PropsOf<"header">) => {
   return (
     // The header component of the calendar
-    <header data-qds-calendar-header {...props}>
+    <header ui-qds-calendar-header {...props}>
       <Slot />
     </header>
   );

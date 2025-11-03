@@ -54,7 +54,7 @@ test("arrow left and typing should replace selected character", async () => {
   await userEvent.click(Input);
   await userEvent.keyboard("123");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(Items.nth(2)).toHaveAttribute("data-highlighted");
+  await expect.element(Items.nth(2)).toHaveAttribute("ui-highlighted");
 
   await userEvent.keyboard("1");
   await expect.element(Input).toHaveValue("121");
@@ -71,11 +71,11 @@ test("range selection should replace selected characters", async () => {
 
   await expect.element(Items.nth(2)).toBeVisible();
 
-  await expect.element(Items.nth(2)).toHaveAttribute("data-highlighted");
+  await expect.element(Items.nth(2)).toHaveAttribute("ui-highlighted");
 
   await expect.element(Items.nth(3)).toBeVisible();
 
-  await expect.element(Items.nth(3)).toHaveAttribute("data-highlighted");
+  await expect.element(Items.nth(3)).toHaveAttribute("ui-highlighted");
 
   await userEvent.keyboard("1");
   await expect.element(Input).toHaveValue("11");
@@ -113,7 +113,7 @@ test("arrow left navigation should select correct item", async () => {
   await userEvent.keyboard("{ArrowLeft}");
   await userEvent.keyboard("{ArrowLeft}");
 
-  await expect.element(Items.nth(1)).toHaveAttribute("data-highlighted");
+  await expect.element(Items.nth(1)).toHaveAttribute("ui-highlighted");
 });
 
 test("backspace should delete selected character", async () => {
@@ -157,7 +157,7 @@ test("delete in middle should remove character at cursor", async () => {
   await userEvent.keyboard("{Home}");
   await userEvent.keyboard("{ArrowRight}");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(Items.nth(2)).toHaveAttribute("data-highlighted");
+  await expect.element(Items.nth(2)).toHaveAttribute("ui-highlighted");
   await userEvent.keyboard("{Delete}");
   await expect.element(Input).toHaveValue("124");
 });
@@ -169,7 +169,7 @@ test("invalid character should not change value", async () => {
   await userEvent.click(Input);
   await expect.element(Items.nth(0)).toBeVisible();
   await userEvent.keyboard("-");
-  await expect.element(Items.nth(0)).toHaveAttribute("data-highlighted");
+  await expect.element(Items.nth(0)).toHaveAttribute("ui-highlighted");
   await expect.element(Input).toHaveValue("");
 });
 
@@ -185,7 +185,7 @@ test("inserting character between existing should update highlight", async () =>
   await userEvent.keyboard("3");
 
   await expect.element(Input).toHaveValue("134");
-  await expect.element(Items.nth(2)).toHaveAttribute("data-highlighted");
+  await expect.element(Items.nth(2)).toHaveAttribute("ui-highlighted");
 });
 
 test("backspace and arrow right should maintain highlight position", async () => {
@@ -195,11 +195,11 @@ test("backspace and arrow right should maintain highlight position", async () =>
   await userEvent.keyboard("1234");
   await expect.element(Input).toHaveValue("1234");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(Items.nth(2)).toHaveAttribute("data-highlighted");
+  await expect.element(Items.nth(2)).toHaveAttribute("ui-highlighted");
 
   await userEvent.keyboard("{Backspace}");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(Items.nth(2)).toHaveAttribute("data-highlighted");
+  await expect.element(Items.nth(2)).toHaveAttribute("ui-highlighted");
 });
 
 const CompleteHandler = component$(() => {
@@ -376,5 +376,5 @@ test("OTP should be disabled when disabled prop is true", async () => {
   await userEvent.click(programmaticDisable);
 
   await expect.element(Input).toBeDisabled();
-  await expect.element(Root).toHaveAttribute("data-disabled");
+  await expect.element(Root).toHaveAttribute("ui-disabled");
 });

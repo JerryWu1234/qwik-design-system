@@ -1,15 +1,15 @@
 @layer qds {
-  [data-qds-popover-root] {
+  [ui-qds-popover-root] {
     /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
     anchor-scope: --qds-popover;
   }
 
-  [data-qds-popover-trigger] {
+  [ui-qds-popover-trigger] {
     anchor-name: --qds-popover;
     width: 10em;
   }
 
-  [data-qds-popover-content] {
+  [ui-qds-popover-content] {
     /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
     position-anchor: --qds-popover;
     width: anchor-size(width);

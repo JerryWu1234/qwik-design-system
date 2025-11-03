@@ -1,16 +1,16 @@
 @layer qds {
-  [data-qds-menu-submenu] {
+  [ui-qds-menu-submenu] {
     /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
     anchor-scope: --qds-menu-submenu;
     position: relative;
   }
 
-  [data-qds-menu-submenu-trigger] {
+  [ui-qds-menu-submenu-trigger] {
     anchor-name: --qds-menu-submenu;
     width: 100%;
   }
 
-  [data-qds-menu-submenu-content] {
+  [ui-qds-menu-submenu-content] {
     /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
     position-anchor: --qds-menu-submenu;
     width: anchor-size(width);
@@ -24,12 +24,12 @@
     bottom: auto;
   }
 
-  [data-qds-menu-item-label] {
+  [ui-qds-menu-item-label] {
     user-select: none;
   }
 
   /* Nested submenu support */
-  [data-qds-menu-submenu-content] [data-qds-menu-submenu] {
+  [ui-qds-menu-submenu-content] [ui-qds-menu-submenu] {
     position: relative;
   }
 }

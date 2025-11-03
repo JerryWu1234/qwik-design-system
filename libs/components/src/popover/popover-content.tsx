@@ -26,7 +26,7 @@ export const PopoverContent = component$((props: PropsOf<"div">) => {
       id={panelId}
       internalRef={context.contentRef}
       fallback="div"
-      data-qds-popover-content
+      ui-qds-popover-content
       {...props}
     >
       <Slot />

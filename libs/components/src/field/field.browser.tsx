@@ -566,56 +566,56 @@ test("field root has data-qds-scope attribute", async () => {
   render(<BasicInput />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-qds-scope");
+  await expect.element(Root).toHaveAttribute("ui-qds-scope");
 });
 
 test("field root has data-disabled when disabled", async () => {
   render(<BasicInput disabled />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-disabled");
+  await expect.element(Root).toHaveAttribute("ui-disabled");
 });
 
 test("field root does not have data-disabled when not disabled", async () => {
   render(<BasicInput />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-disabled");
+  await expect.element(Root).not.toHaveAttribute("ui-disabled");
 });
 
 test("field root has data-required when required", async () => {
   render(<BasicInput required />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-required");
+  await expect.element(Root).toHaveAttribute("ui-required");
 });
 
 test("field root does not have data-required when not required", async () => {
   render(<BasicInput />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-required");
+  await expect.element(Root).not.toHaveAttribute("ui-required");
 });
 
 test("field root has data-readonly when readonly", async () => {
   render(<BasicInput readOnly />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-readonly");
+  await expect.element(Root).toHaveAttribute("ui-readonly");
 });
 
 test("field root does not have data-readonly when not readonly", async () => {
   render(<BasicInput />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-readonly");
+  await expect.element(Root).not.toHaveAttribute("ui-readonly");
 });
 
 test("field root has data-empty when value is empty", async () => {
   render(<BasicInput />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-empty");
+  await expect.element(Root).toHaveAttribute("ui-empty");
 });
 
 const FilledValueInput = component$(() => {
@@ -632,29 +632,29 @@ test("field root does not have data-empty when value exists", async () => {
   render(<FilledValueInput />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-empty");
+  await expect.element(Root).not.toHaveAttribute("ui-empty");
 });
 
 test("field root data-empty updates when input changes from empty to filled", async () => {
   render(<BasicInput />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-empty");
+  await expect.element(Root).toHaveAttribute("ui-empty");
 
   await userEvent.fill(Input, "test value");
 
-  await expect.element(Root).not.toHaveAttribute("data-empty");
+  await expect.element(Root).not.toHaveAttribute("ui-empty");
 });
 
 test("field root data-empty updates when input changes from filled to empty", async () => {
   render(<FilledValueInput />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-empty");
+  await expect.element(Root).not.toHaveAttribute("ui-empty");
 
   await userEvent.clear(Input);
 
-  await expect.element(Root).toHaveAttribute("data-empty");
+  await expect.element(Root).toHaveAttribute("ui-empty");
 });
 
 const DynamicStateInput = component$(() => {
@@ -702,39 +702,39 @@ test("field root data-disabled updates dynamically", async () => {
   render(<DynamicStateInput />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-disabled");
+  await expect.element(Root).not.toHaveAttribute("ui-disabled");
 
   await userEvent.click(page.getByTestId("toggle-disabled"));
-  await expect.element(Root).toHaveAttribute("data-disabled");
+  await expect.element(Root).toHaveAttribute("ui-disabled");
 
   await userEvent.click(page.getByTestId("toggle-disabled"));
-  await expect.element(Root).not.toHaveAttribute("data-disabled");
+  await expect.element(Root).not.toHaveAttribute("ui-disabled");
 });
 
 test("field root data-required updates dynamically", async () => {
   render(<DynamicStateInput />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-required");
+  await expect.element(Root).not.toHaveAttribute("ui-required");
 
   await userEvent.click(page.getByTestId("toggle-required"));
-  await expect.element(Root).toHaveAttribute("data-required");
+  await expect.element(Root).toHaveAttribute("ui-required");
 
   await userEvent.click(page.getByTestId("toggle-required"));
-  await expect.element(Root).not.toHaveAttribute("data-required");
+  await expect.element(Root).not.toHaveAttribute("ui-required");
 });
 
 test("field root data-readonly updates dynamically", async () => {
   render(<DynamicStateInput />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-readonly");
+  await expect.element(Root).not.toHaveAttribute("ui-readonly");
 
   await userEvent.click(page.getByTestId("toggle-readonly"));
-  await expect.element(Root).toHaveAttribute("data-readonly");
+  await expect.element(Root).toHaveAttribute("ui-readonly");
 
   await userEvent.click(page.getByTestId("toggle-readonly"));
-  await expect.element(Root).not.toHaveAttribute("data-readonly");
+  await expect.element(Root).not.toHaveAttribute("ui-readonly");
 });
 
 const AllAttributesInput = component$(() => {
@@ -751,9 +751,9 @@ test("field root has all data attributes simultaneously", async () => {
   render(<AllAttributesInput />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-qds-scope");
-  await expect.element(Root).toHaveAttribute("data-disabled");
-  await expect.element(Root).toHaveAttribute("data-required");
-  await expect.element(Root).toHaveAttribute("data-readonly");
-  await expect.element(Root).toHaveAttribute("data-empty");
+  await expect.element(Root).toHaveAttribute("ui-qds-scope");
+  await expect.element(Root).toHaveAttribute("ui-disabled");
+  await expect.element(Root).toHaveAttribute("ui-required");
+  await expect.element(Root).toHaveAttribute("ui-readonly");
+  await expect.element(Root).toHaveAttribute("ui-empty");
 });

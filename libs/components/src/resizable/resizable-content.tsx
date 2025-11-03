@@ -112,17 +112,17 @@ export const ResizableContent = component$<PublicResizableContentProps>((props) 
       id={contentId}
       ref={contentRef}
       // The identifier for the resizable content component
-      data-qds-resizable-content
+      ui-qds-resizable-content
       // Indicates the orientation of the resizable content (vertical or horizontal)
-      data-orientation={context.orientation.value}
+      ui-orientation={context.orientation.value}
       // Specifies the minimum size constraint for the content
-      data-min-size={isVertical ? minHeight : minWidth}
+      ui-min-size={isVertical ? minHeight : minWidth}
       // Specifies the maximum size constraint for the content
-      data-max-size={isVertical ? maxHeight : maxWidth}
-      data-collapsible={collapsible}
-      data-collapsed-size={collapsedSize}
-      data-collapse-threshold={collapseThreshold}
-      data-is-collapsed={isCollapsed.value}
+      ui-max-size={isVertical ? maxHeight : maxWidth}
+      ui-collapsible={collapsible}
+      ui-collapsed-size={collapsedSize}
+      ui-collapse-threshold={collapseThreshold}
+      ui-is-collapsed={isCollapsed.value}
       style={getContentStyles()}
     >
       <Slot />

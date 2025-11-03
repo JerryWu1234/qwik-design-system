@@ -24,7 +24,7 @@ export const RadioGroupItemLabel = component$((props: PublicLabelProps) => {
     <Render
       {...props}
       id={itemLabelId}
-      data-qds-radio-group-label
+      ui-qds-radio-group-label
       fallback="span"
       onPointerDown$={[handlePointerDown$, props.onPointerDown$]}
     >

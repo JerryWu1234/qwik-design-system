@@ -105,11 +105,11 @@ export const FileUploadDropzone = component$((props: PropsOf<"div">) => {
       onDragLeave$={[onDragLeave$, props.onDragLeave$]}
       onDrop$={[handleInitialDropSync$, onDrop$, props.onDrop$]}
       onQdsDrop$={handleInitialDrop$}
-      data-file-upload-dropzone
+      ui-file-upload-dropzone
       // Indicates whether files are currently being dragged over the dropzone
-      data-dragging={isDragging.value ? "" : undefined}
+      ui-dragging={isDragging.value ? "" : undefined}
       // Indicates whether the dropzone is currently disabled
-      data-disabled={context.isDisabled.value ? "" : undefined}
+      ui-disabled={context.isDisabled.value ? "" : undefined}
     >
       <Slot />
     </Render>

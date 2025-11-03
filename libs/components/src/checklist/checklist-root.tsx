@@ -29,7 +29,7 @@ export const ChecklistRoot = component$((props: PublicChecklistRootProps) => {
       role="group"
       bind:checked={isAllCheckedSig}
       // Identifies the root container element of the checklist component
-      data-qds-checklist-root
+      ui-qds-checklist-root
       {...props}
     >
       <Slot />

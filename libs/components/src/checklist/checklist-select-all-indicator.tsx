@@ -6,9 +6,9 @@ export const ChecklistSelectAllIndicator = component$(
     return (
       // Identifies the indicator element for the select all checkbox
       <CheckboxIndicator
-        data-qds-checklist-select-all-indicator
+        ui-qds-checklist-select-all-indicator
         {...props}
-        data-qds-checkbox-indicator={undefined}
+        ui-qds-checkbox-indicator={undefined}
       >
         <Slot />
       </CheckboxIndicator>

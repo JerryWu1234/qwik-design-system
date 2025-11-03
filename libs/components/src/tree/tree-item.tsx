@@ -90,14 +90,14 @@ export const TreeItem = component$((props: TreeItemProps) => {
         nextItem = getPreviousVisibleItem(currentItem);
         break;
       case "ArrowRight": {
-        const isCollapsed = currentItem.hasAttribute("data-closed");
+        const isCollapsed = currentItem.hasAttribute("ui-closed");
         if (isCollapsed) {
           isOpenSig.value = true;
         }
         return;
       }
       case "ArrowLeft": {
-        const isExpanded = !currentItem.hasAttribute("data-closed");
+        const isExpanded = !currentItem.hasAttribute("ui-closed");
         if (isExpanded) {
           isOpenSig.value = false;
         }
@@ -145,10 +145,10 @@ export const TreeItem = component$((props: TreeItemProps) => {
       }
       onFocus$={[handleFocus$, props.onFocus$]}
       onKeyDown$={[handleKeyDownSync$, handleKeyNavigation$, props.onKeyDown$]}
-      data-qds-tree-item
-      data-level={level}
+      ui-qds-tree-item
+      ui-level={level}
       aria-level={level}
-      data-highlighted={isHighlightedSig.value}
+      ui-highlighted={isHighlightedSig.value}
       data-group
       disableUntilFound
     >

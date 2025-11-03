@@ -55,7 +55,7 @@ export const CheckboxTrigger = component$((props: PublicCheckboxControlProps) =>
       disabled={context.isDisabled.value}
       onClick$={[handleClick$, props.onClick$]}
       onKeyDown$={[handleKeyDownSync$, props.onKeyDown$]}
-      data-qds-checkbox-trigger
+      ui-qds-checkbox-trigger
       {...props}
     >
       <Slot />

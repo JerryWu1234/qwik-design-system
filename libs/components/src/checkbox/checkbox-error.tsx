@@ -25,7 +25,7 @@ export const CheckboxError = component$((props: PublicCheckboxErrorProps) => {
       internalRef={errorRef}
       fallback="div"
       id={errorId}
-      data-qds-checkbox-error
+      ui-qds-checkbox-error
       {...props}
     >
       <Slot />

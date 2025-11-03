@@ -9,7 +9,7 @@ export const DateInputLabel = component$((props: PublicDateInputLabelProps) => {
   const id = `${context.localId}-label`;
   return (
     // Identifier for the Date Input label element
-    <Render fallback="div" {...props} data-qds-date-input-label id={id}>
+    <Render fallback="div" {...props} ui-qds-date-input-label id={id}>
       <Slot />
     </Render>
   );

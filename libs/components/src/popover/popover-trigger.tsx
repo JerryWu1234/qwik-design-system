@@ -1,4 +1,4 @@
-import { type PropsOf, Slot, component$, sync$, useContext } from "@qwik.dev/core";
+import { component$, type PropsOf, Slot, sync$, useContext } from "@qwik.dev/core";
 import { Render } from "../render/render";
 import { popoverContextId } from "./popover-root";
 
@@ -7,7 +7,7 @@ export const PopoverTrigger = component$((props: PropsOf<"button">) => {
   const panelId = `${context.localId}-panel`;
 
   const handleClick = sync$((e: PointerEvent, el: HTMLElement) => {
-    const isHover = el.dataset.hover === "true";
+    const isHover = el.getAttribute("ui-hover") === "true";
     const isPointerClick = e.pointerId !== -1;
 
     if (isPointerClick && isHover) {
@@ -17,13 +17,13 @@ export const PopoverTrigger = component$((props: PropsOf<"button">) => {
 
   return (
     <Render
-      data-hover={context.hover}
-      data-open={context.isOpen.value}
-      data-closed={!context.isOpen.value}
+      ui-hover={context.hover}
+      ui-open={context.isOpen.value}
+      ui-closed={!context.isOpen.value}
       internalRef={context.triggerRef}
       popovertarget={panelId}
       onClick$={[handleClick, props.onClick$]}
-      data-qds-popover-trigger
+      ui-qds-popover-trigger
       fallback="button"
       {...props}
     >

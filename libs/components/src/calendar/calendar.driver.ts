@@ -4,31 +4,31 @@
 
 // export function createTestDriver<T extends DriverLocator>(rootLocator: T) {
 //   const getRoot = () => {
-//     return rootLocator.locator("[data-qds-calendar-root]");
+//     return rootLocator.locator("[ui-qds-calendar-root]");
 //   };
 
 //   const getLabel = () => {
-//     return rootLocator.locator("[data-qds-calendar-label]");
+//     return rootLocator.locator("[ui-qds-calendar-label]");
 //   };
 
 //   const getDateField = () => {
-//     return rootLocator.locator("[data-qds-calendar-field]");
+//     return rootLocator.locator("[ui-qds-calendar-field]");
 //   };
 
 //   const getSegments = () => {
-//     return rootLocator.locator("[data-qds-date-input-segment]");
+//     return rootLocator.locator("[ui-qds-date-input-segment]");
 //   };
 
 //   const getYearSegment = () => {
-//     return rootLocator.locator("[data-qds-date-input-segment-year]");
+//     return rootLocator.locator("[ui-qds-date-input-segment-year]");
 //   };
 
 //   const getMonthSegment = () => {
-//     return rootLocator.locator("[data-qds-date-input-segment-month]");
+//     return rootLocator.locator("[ui-qds-date-input-segment-month]");
 //   };
 
 //   const getDaySegment = () => {
-//     return rootLocator.locator("[data-qds-date-input-segment-day]");
+//     return rootLocator.locator("[ui-qds-date-input-segment-day]");
 //   };
 
 //   const getSetValueButton = () => {
@@ -36,39 +36,39 @@
 //   };
 
 //   const getCalendarGrid = () => {
-//     return rootLocator.locator("[data-qds-calendar-grid]");
+//     return rootLocator.locator("[ui-qds-calendar-grid]");
 //   };
 
 //   const getCalendarGridDayButtons = () => {
-//     return rootLocator.locator("[data-qds-calendar-grid-day-button]");
+//     return rootLocator.locator("[ui-qds-calendar-grid-day-button]");
 //   };
 
 //   const getSelectedDayButton = () => {
-//     return rootLocator.locator("[data-qds-calendar-grid-day-button][data-selected]");
+//     return rootLocator.locator("[ui-qds-calendar-grid-day-button][ui-selected]");
 //   };
 
 //   const getTrigger = () => {
-//     return rootLocator.locator("[data-qds-calendar-trigger]");
+//     return rootLocator.locator("[ui-qds-calendar-trigger]");
 //   };
 
 //   const getCalendarTitle = () => {
-//     return rootLocator.locator("[data-qds-calendar-title]");
+//     return rootLocator.locator("[ui-qds-calendar-title]");
 //   };
 
 //   const getNextButton = () => {
-//     return rootLocator.locator("[data-qds-calendar-next]");
+//     return rootLocator.locator("[ui-qds-calendar-next]");
 //   };
 
 //   const getPreviousButton = () => {
-//     return rootLocator.locator("[data-qds-calendar-previous]");
+//     return rootLocator.locator("[ui-qds-calendar-previous]");
 //   };
 
 //   const getOpenStatus = () => {
-//     return rootLocator.locator("[data-qds-calendar-test-open-status]");
+//     return rootLocator.locator("[ui-qds-calendar-test-open-status]");
 //   };
 
 //   const getExternalToggle = () => {
-//     return rootLocator.locator("[data-qds-calendar-test-external-toggle]");
+//     return rootLocator.locator("[ui-qds-calendar-test-external-toggle]");
 //   };
 
 //   return {

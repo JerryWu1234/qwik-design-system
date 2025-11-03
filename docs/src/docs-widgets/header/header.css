@@ -1,9 +1,9 @@
 /* Disable anchor positioning on trigger */
-[data-mega-collapsible] {
+[ui-mega-collapsible] {
   anchor-name: none;
 }
 
-[data-mega-popover] {
+[ui-mega-popover] {
   /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
   position-anchor: none;
   position: fixed;
@@ -14,6 +14,6 @@
   margin: 0;
 }
 
-body:has([data-navbar-item][data-open]) [data-navbar-backdrop] {
+body:has([ui-navbar-item][ui-open]) [ui-navbar-backdrop] {
   opacity: 1;
 }

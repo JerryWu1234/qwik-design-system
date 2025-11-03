@@ -147,16 +147,16 @@ test("pagination controls are visible on render", async () => {
 test("first page is current on initial render", async () => {
   render(<Basic />);
 
-  await expect.element(Items.nth(0)).toHaveAttribute("data-current");
+  await expect.element(Items.nth(0)).toHaveAttribute("ui-current");
 });
 
 test("other pages are not current on initial render", async () => {
   render(<Basic />);
 
   // Only check visible items (pagination shows limited items based on ellipsis logic)
-  await expect.element(Items.nth(1)).not.toHaveAttribute("data-current");
+  await expect.element(Items.nth(1)).not.toHaveAttribute("ui-current");
   await expect.element(Items.nth(1)).not.toHaveAttribute("aria-current", "page");
-  await expect.element(Items.nth(2)).not.toHaveAttribute("data-current");
+  await expect.element(Items.nth(2)).not.toHaveAttribute("ui-current");
   await expect.element(Items.nth(2)).not.toHaveAttribute("aria-current", "page");
 });
 
@@ -164,9 +164,9 @@ test("selected page becomes current when clicked", async () => {
   render(<Basic />);
 
   // Click second visible page
-  await expect.element(Items.nth(1)).not.toHaveAttribute("data-current");
+  await expect.element(Items.nth(1)).not.toHaveAttribute("ui-current");
   await userEvent.click(Items.nth(1));
-  await expect.element(Items.nth(1)).toHaveAttribute("data-current");
+  await expect.element(Items.nth(1)).toHaveAttribute("ui-current");
 });
 
 test("last button navigates to last page", async () => {
@@ -180,7 +180,7 @@ test("last button navigates to last page", async () => {
   // We need to find which item is actually the last page
   const lastItem = Items.all();
   const lastIndex = lastItem.length - 1;
-  await expect.element(Items.nth(lastIndex)).toHaveAttribute("data-current");
+  await expect.element(Items.nth(lastIndex)).toHaveAttribute("ui-current");
 });
 
 test("first button navigates to first page", async () => {
@@ -191,7 +191,7 @@ test("first button navigates to first page", async () => {
 
   await userEvent.click(LastButton);
   await userEvent.click(FirstButton);
-  await expect.element(Items.nth(0)).toHaveAttribute("data-current");
+  await expect.element(Items.nth(0)).toHaveAttribute("ui-current");
 });
 
 test("default page is set correctly with bind:page", async () => {
@@ -211,7 +211,7 @@ test("next button increments page with custom per page", async () => {
   render(<PerPage />);
 
   await userEvent.click(NextButton);
-  await expect.element(Items.nth(1)).toHaveAttribute("data-current");
+  await expect.element(Items.nth(1)).toHaveAttribute("ui-current");
 });
 
 test("next button reaches last page after multiple clicks", async () => {
@@ -226,7 +226,7 @@ test("next button reaches last page after multiple clicks", async () => {
   await userEvent.click(NextButton);
   await userEvent.click(NextButton);
   await userEvent.click(NextButton);
-  await expect.element(Items.nth(9)).toHaveAttribute("data-current");
+  await expect.element(Items.nth(9)).toHaveAttribute("ui-current");
 });
 
 test("previous button decrements page from last", async () => {
@@ -234,7 +234,7 @@ test("previous button decrements page from last", async () => {
 
   await userEvent.click(LastButton);
   await userEvent.click(PrevButton);
-  await expect.element(Items.nth(8)).toHaveAttribute("data-current");
+  await expect.element(Items.nth(8)).toHaveAttribute("ui-current");
 });
 
 test("previous button reaches first page after multiple clicks", async () => {
@@ -250,7 +250,7 @@ test("previous button reaches first page after multiple clicks", async () => {
   await userEvent.click(PrevButton);
   await userEvent.click(PrevButton);
   await userEvent.click(PrevButton);
-  await expect.element(Items.nth(0)).toHaveAttribute("data-current");
+  await expect.element(Items.nth(0)).toHaveAttribute("ui-current");
 });
 
 test("currently active page has aria-current attribute", async () => {
@@ -321,7 +321,7 @@ test("disabled pagination does not respond to clicks", async () => {
 
   render(<DisabledPagination />);
 
-  await expect.element(Root).toHaveAttribute("data-disabled");
+  await expect.element(Root).toHaveAttribute("ui-disabled");
   await expect.element(Root).toHaveAttribute("aria-disabled", "true");
 });
 
@@ -340,7 +340,7 @@ test("keyboard navigation with arrow keys", async () => {
 
   // Press Space to activate the focused item
   await userEvent.keyboard("{Space}");
-  await expect.element(Items.nth(1)).toHaveAttribute("data-current");
+  await expect.element(Items.nth(1)).toHaveAttribute("ui-current");
 });
 
 test("home key navigates to first page", async () => {
@@ -348,7 +348,7 @@ test("home key navigates to first page", async () => {
 
   // Click on third page
   await userEvent.click(Items.nth(2));
-  await expect.element(Items.nth(2)).toHaveAttribute("data-current");
+  await expect.element(Items.nth(2)).toHaveAttribute("ui-current");
 
   // Focus and press Home
   await expect.element(Items.nth(2)).toBeVisible();
@@ -360,7 +360,7 @@ test("home key navigates to first page", async () => {
 
   // Press Space to activate the focused item
   await userEvent.keyboard("{Space}");
-  await expect.element(Items.nth(0)).toHaveAttribute("data-current");
+  await expect.element(Items.nth(0)).toHaveAttribute("ui-current");
 });
 
 test("end key navigates to last page", async () => {
@@ -368,7 +368,7 @@ test("end key navigates to last page", async () => {
 
   // Click first item to ensure something is selected
   await userEvent.click(Items.nth(0));
-  await expect.element(Items.nth(0)).toHaveAttribute("data-current");
+  await expect.element(Items.nth(0)).toHaveAttribute("ui-current");
 
   // Focus on first item
   focusElement(Items.nth(0));
@@ -382,5 +382,5 @@ test("end key navigates to last page", async () => {
   await userEvent.click(Items.nth(lastIndex));
 
   // Verify the last item is now current
-  await expect.element(Items.nth(lastIndex)).toHaveAttribute("data-current");
+  await expect.element(Items.nth(lastIndex)).toHaveAttribute("ui-current");
 });

@@ -49,7 +49,7 @@ export const ResizableHandle = component$<PublicResizableHandleProps>((props) =>
   } | null>(null);
 
   const getMinSize = $((element: HTMLElement) => {
-    return Number.parseInt(element.dataset.minSize || "0", 10);
+    return Number.parseInt(element.getAttribute("ui-min-size") || "0", 10);
   });
 
   const getContents = $(() => {
@@ -116,17 +116,19 @@ export const ResizableHandle = component$<PublicResizableHandleProps>((props) =>
     const sizeProps = await getSizeProperties();
     const sizes = await getContentSizes(contents, sizeProps);
 
-    const isPrevCollapsible = contents.prevContent.dataset.collapsible === "";
+    const isPrevCollapsible = contents.prevContent.getAttribute("ui-collapsible") === "";
 
     const newPrevSize = sizes.prevSize + delta;
     const newNextSize = sizes.nextSize - delta;
 
     if (isPrevCollapsible) {
-      const prevCollapsedSize = Number(contents.prevContent.dataset.collapsedSize);
-      const prevCollapseThreshold = Number(
-        contents.prevContent.dataset.collapseThreshold
+      const prevCollapsedSize = Number(
+        contents.prevContent.getAttribute("ui-collapsed-size")
       );
-      const isCollapsed = contents.prevContent.dataset.isCollapsed === "true";
+      const prevCollapseThreshold = Number(
+        contents.prevContent.getAttribute("ui-collapse-threshold")
+      );
+      const isCollapsed = contents.prevContent.getAttribute("ui-is-collapsed") === "true";
 
       if (!isCollapsed && newPrevSize <= sizes.prevMinSize) {
         totalDragDistance.value += delta;
@@ -139,7 +141,7 @@ export const ResizableHandle = component$<PublicResizableHandleProps>((props) =>
         newPrevSize <= sizes.prevMinSize &&
         Math.abs(totalDragDistance.value) > sizes.prevMinSize * prevCollapseThreshold
       ) {
-        contents.prevContent.dataset.isCollapsed = "true";
+        contents.prevContent.setAttribute("ui-is-collapsed", "true");
         contents.prevContent.style[sizeProps.minSizeProp] = `${prevCollapsedSize}px`;
         contents.prevContent.style[sizeProps.sizeProp] = `${prevCollapsedSize}px`;
         contents.nextContent.style[sizeProps.sizeProp] =
@@ -164,7 +166,7 @@ export const ResizableHandle = component$<PublicResizableHandleProps>((props) =>
           delta > 0 &&
           totalDragDistance.value > prevCollapsedSize * prevCollapseThreshold
         ) {
-          contents.prevContent.dataset.isCollapsed = "false";
+          contents.prevContent.setAttribute("ui-is-collapsed", "false");
           contents.prevContent.style[sizeProps.minSizeProp] = `${sizes.prevMinSize}px`;
           contents.prevContent.style[sizeProps.sizeProp] = `${sizes.prevMinSize}px`;
           contents.nextContent.style[sizeProps.sizeProp] =
@@ -317,13 +319,13 @@ export const ResizableHandle = component$<PublicResizableHandleProps>((props) =>
       {...props}
       ref={handleRef}
       // The identifier for the resizable handle component
-      data-qds-resizable-handle
+      ui-qds-resizable-handle
       // Indicates the orientation of the resizable handle (vertical or horizontal)
-      data-orientation={context.orientation.value}
+      ui-orientation={context.orientation.value}
       // Indicates whether the handle is currently being dragged
-      data-dragging={context.isDragging.value}
+      ui-dragging={context.isDragging.value}
       // Indicates whether the resizable handle is disabled
-      data-disabled={context.disabled.value}
+      ui-disabled={context.disabled.value}
       onPointerDown$={[onPointerDown$, props.onPointerDown$]}
       onPointerMove$={[onPointerMove$, props.onPointerMove$]}
       onPointerUp$={[onPointerUp$, props.onPointerUp$]}

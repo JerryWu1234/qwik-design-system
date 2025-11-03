@@ -318,14 +318,14 @@ test("modal root has data-qds-scope attribute", async () => {
   render(<Basic />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-qds-scope");
+  await expect.element(Root).toHaveAttribute("ui-qds-scope");
 });
 
 test("modal root has data-closed when closed", async () => {
   render(<Basic />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-closed");
+  await expect.element(Root).toHaveAttribute("ui-closed");
 });
 
 test("modal root does not have data-closed when open", async () => {
@@ -334,7 +334,7 @@ test("modal root does not have data-closed when open", async () => {
   await userEvent.click(Trigger);
   await expect.element(Content).toBeVisible();
 
-  await expect.element(Root).not.toHaveAttribute("data-closed");
+  await expect.element(Root).not.toHaveAttribute("ui-closed");
 });
 
 test("modal root has data-open when open", async () => {
@@ -343,28 +343,28 @@ test("modal root has data-open when open", async () => {
   await userEvent.click(Trigger);
   await expect.element(Content).toBeVisible();
 
-  await expect.element(Root).toHaveAttribute("data-open");
+  await expect.element(Root).toHaveAttribute("ui-open");
 });
 
 test("modal root does not have data-open when closed", async () => {
   render(<Basic />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-open");
+  await expect.element(Root).not.toHaveAttribute("ui-open");
 });
 
 test("modal root data-open updates when opened", async () => {
   render(<Basic />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-open");
-  await expect.element(Root).toHaveAttribute("data-closed");
+  await expect.element(Root).not.toHaveAttribute("ui-open");
+  await expect.element(Root).toHaveAttribute("ui-closed");
 
   await userEvent.click(Trigger);
   await expect.element(Content).toBeVisible();
 
-  await expect.element(Root).toHaveAttribute("data-open");
-  await expect.element(Root).not.toHaveAttribute("data-closed");
+  await expect.element(Root).toHaveAttribute("ui-open");
+  await expect.element(Root).not.toHaveAttribute("ui-closed");
 });
 
 test("modal root data-closed updates when closed", async () => {
@@ -373,14 +373,14 @@ test("modal root data-closed updates when closed", async () => {
   await userEvent.click(Trigger);
   await expect.element(Content).toBeVisible();
 
-  await expect.element(Root).toHaveAttribute("data-open");
-  await expect.element(Root).not.toHaveAttribute("data-closed");
+  await expect.element(Root).toHaveAttribute("ui-open");
+  await expect.element(Root).not.toHaveAttribute("ui-closed");
 
   await userEvent.click(CloseButton);
   await expect.element(Content).not.toBeVisible();
 
-  await expect.element(Root).not.toHaveAttribute("data-open");
-  await expect.element(Root).toHaveAttribute("data-closed");
+  await expect.element(Root).not.toHaveAttribute("ui-open");
+  await expect.element(Root).toHaveAttribute("ui-closed");
 });
 
 const ControlledModal = component$(() => {
@@ -411,20 +411,20 @@ test("modal root data attributes update with external state changes", async () =
   render(<ControlledModal />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-open");
-  await expect.element(Root).toHaveAttribute("data-closed");
+  await expect.element(Root).not.toHaveAttribute("ui-open");
+  await expect.element(Root).toHaveAttribute("ui-closed");
 
   await userEvent.click(page.getByTestId("external-toggle"));
   await expect.element(Content).toBeVisible();
 
-  await expect.element(Root).toHaveAttribute("data-open");
-  await expect.element(Root).not.toHaveAttribute("data-closed");
+  await expect.element(Root).toHaveAttribute("ui-open");
+  await expect.element(Root).not.toHaveAttribute("ui-closed");
 
   // Close the modal using the close button instead of external toggle
   // (external toggle is blocked by modal backdrop)
   await userEvent.click(CloseButton);
   await expect.element(Content).not.toBeVisible();
 
-  await expect.element(Root).not.toHaveAttribute("data-open");
-  await expect.element(Root).toHaveAttribute("data-closed");
+  await expect.element(Root).not.toHaveAttribute("ui-open");
+  await expect.element(Root).toHaveAttribute("ui-closed");
 });

@@ -6,7 +6,7 @@ import { CheckboxLabel } from "../checkbox/checkbox-label";
 export const ChecklistLabel = component$((props: PropsOf<typeof CheckboxLabel>) => {
   return (
     // Identifies the label element for the select all checkbox in the checklist
-    <CheckboxLabel data-qds-checklist-select-all-label {...props}>
+    <CheckboxLabel ui-qds-checklist-select-all-label {...props}>
       <Slot />
     </CheckboxLabel>
   );

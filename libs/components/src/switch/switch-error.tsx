@@ -29,9 +29,9 @@ export const SwitchError = component$<PropsOf<"div">>((props) => {
       id={errorId}
       role="alert"
       // The identifier for the switch error message element
-      data-qds-switch-error
+      ui-qds-switch-error
       // Controls the visibility of the error message
-      data-visible={context.hasError}
+      ui-visible={context.hasError}
       aria-hidden={!context.hasError}
     >
       <Slot />

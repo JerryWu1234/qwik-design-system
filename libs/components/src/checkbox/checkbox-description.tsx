@@ -26,7 +26,7 @@ export const CheckboxDescription = component$((props: PublicCheckboxDescriptionP
     <Render
       fallback="div"
       id={descriptionId}
-      data-qds-checkbox-description
+      ui-qds-checkbox-description
       {...props}
       internalRef={descriptionRef}
     >
