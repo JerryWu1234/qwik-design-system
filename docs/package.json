@@ -44,8 +44,7 @@
     "unified": "^11.0.4",
     "vite": "^7",
     "vite-plugin-image-optimizer": "^1.1.8",
-    "vite-tsconfig-paths": "^4.2.1",
-    "@qwik.dev/devtools": "0.2.1"
+    "vite-tsconfig-paths": "^4.2.1"
   },
   "dependencies": {
     "@stackblitz/sdk": "^1.11.0",

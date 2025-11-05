@@ -12,7 +12,6 @@ import { defineConfig, type UserConfig } from "vite";
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 import tsconfigPaths from "vite-tsconfig-paths";
 import pkg from "./package.json";
-import { qwikDevtools } from '@qwik.dev/devtools';
 
 type PkgDep = Record<string, string>;
 
@@ -54,8 +53,7 @@ export default defineConfig((): UserConfig => {
         webp: mainQuality,
         avif: mainQuality
       }),
-      tsconfigPaths(),
-      qwikDevtools()
+      tsconfigPaths()
     ],
     // This tells Vite which dependencies to pre-build in dev mode.
     optimizeDeps: {
