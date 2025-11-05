@@ -41,7 +41,7 @@ export const QRCodeRoot = component$<PublicRootProps>((props) => {
     <div
       {...props}
       // Root container element for the entire QR code component
-      data-qds-qr-code-root
+      ui-qds-qr-code-root
       role="img"
       aria-label={props["aria-label"] || `QR code for ${value.value}`}
     >

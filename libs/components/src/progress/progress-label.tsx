@@ -11,7 +11,7 @@ export const ProgressLabel = component$<ProgressLabelElement>((props) => {
   return (
     <Render
       fallback="span"
-      data-qds-progress-label
+      ui-qds-progress-label
       {...context.dataAttributesSig.value}
       {...labelProps}
     >

@@ -1,6 +1,6 @@
 {
   "name": "@qds.dev/ui",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Create a Qwik library",
   "main": "./lib/index.qwik.mjs",
   "qwik": "./lib/index.qwik.mjs",
@@ -36,7 +36,6 @@
     "rolldown": "1.0.0-beta.45",
     "typescript": "5.4.5",
     "uqr": "^0.1.2",
-    "vite-tsconfig-paths": "^4.2.1",
     "vitest-browser-qwik": "0.0.12"
   },
   "peerDependencies": {

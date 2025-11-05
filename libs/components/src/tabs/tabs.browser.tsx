@@ -321,13 +321,13 @@ test("ArrowUp loops from first to last tab in vertical orientation when loop is 
 test("horizontal orientation has correct data attribute", async () => {
   render(<Basic />);
 
-  await expect.element(Root).toHaveAttribute("data-orientation", "horizontal");
+  await expect.element(Root).toHaveAttribute("ui-orientation", "horizontal");
 });
 
 test("vertical orientation has correct data attribute", async () => {
   render(<Vertical />);
 
-  await expect.element(Root).toHaveAttribute("data-orientation", "vertical");
+  await expect.element(Root).toHaveAttribute("ui-orientation", "vertical");
 });
 
 test("external signal changes update selection", async () => {
@@ -383,13 +383,13 @@ test("onChange callback is called when tab changes", async () => {
 test("tabs with data-selected attribute", async () => {
   render(<Basic />);
 
-  await expect.element(Triggers.nth(0)).toHaveAttribute("data-selected");
-  await expect.element(Triggers.nth(1)).not.toHaveAttribute("data-selected");
+  await expect.element(Triggers.nth(0)).toHaveAttribute("ui-selected");
+  await expect.element(Triggers.nth(1)).not.toHaveAttribute("ui-selected");
 
   await userEvent.click(Triggers.nth(2));
 
-  await expect.element(Triggers.nth(0)).not.toHaveAttribute("data-selected");
-  await expect.element(Triggers.nth(2)).toHaveAttribute("data-selected");
+  await expect.element(Triggers.nth(0)).not.toHaveAttribute("ui-selected");
+  await expect.element(Triggers.nth(2)).toHaveAttribute("ui-selected");
 });
 
 test("tab list has correct role attribute", async () => {

@@ -1,5 +1,5 @@
 @layer qds {
-  [data-qds-resizable-root] {
+  [ui-qds-resizable-root] {
     display: flex;
     width: 100%;
     height: 100%;
@@ -7,24 +7,24 @@
     box-sizing: border-box;
   }
 
-  [data-qds-resizable-root][data-disabled] {
+  [ui-qds-resizable-root][ui-disabled] {
     pointer-events: none;
   }
 
-  [data-qds-resizable-root][data-orientation="horizontal"] {
+  [ui-qds-resizable-root][ui-orientation="horizontal"] {
     flex-direction: row;
   }
 
-  [data-qds-resizable-root][data-orientation="vertical"] {
+  [ui-qds-resizable-root][ui-orientation="vertical"] {
     flex-direction: column;
   }
 
   /* Prevent text selection during resize */
-  [data-qds-resizable-root][data-dragging="true"] {
+  [ui-qds-resizable-root][ui-dragging="true"] {
     user-select: none;
   }
 
-  [data-qds-resizable-content] {
+  [ui-qds-resizable-content] {
     position: relative;
     display: flex;
     box-sizing: border-box;
@@ -34,7 +34,7 @@
     isolation: isolate;
   }
 
-  [data-qds-resizable-handle] {
+  [ui-qds-resizable-handle] {
     position: relative;
     touch-action: none;
     user-select: none;
@@ -45,15 +45,15 @@
     background-color: #e0e0e0;
   }
 
-  [data-qds-resizable-root][data-orientation="horizontal"] [data-qds-resizable-handle] {
+  [ui-qds-resizable-root][ui-orientation="horizontal"] [ui-qds-resizable-handle] {
     cursor: col-resize;
   }
 
-  [data-qds-resizable-root][data-orientation="vertical"] [data-qds-resizable-handle] {
+  [ui-qds-resizable-root][ui-orientation="vertical"] [ui-qds-resizable-handle] {
     cursor: row-resize;
   }
 
-  [data-qds-resizable-handle][data-disabled] {
+  [ui-qds-resizable-handle][ui-disabled] {
     cursor: not-allowed;
     pointer-events: none;
   }

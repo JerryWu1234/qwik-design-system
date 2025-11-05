@@ -86,11 +86,11 @@ export const CollapsibleRoot = component$((props: CollapsibleRootProps) => {
     <Render
       id={itemId}
       fallback="div"
-      data-qds-collapsible
-      data-qds-scope
-      data-disabled={isDisabled.value}
-      data-open={context.isOpen.value}
-      data-closed={!context.isOpen.value}
+      ui-qds-collapsible
+      ui-qds-scope
+      ui-disabled={isDisabled.value}
+      ui-open={context.isOpen.value}
+      ui-closed={!context.isOpen.value}
       aria-live="polite"
       {...rest}
     >

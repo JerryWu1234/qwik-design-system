@@ -1,9 +1,9 @@
-[data-qds-otp-root] {
+[ui-qds-otp-root] {
   position: relative;
   pointer-events: none;
 }
 
-[data-qds-otp-hidden-input] {
+[ui-qds-otp-hidden-input] {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -26,14 +26,14 @@
   font-variant-numeric: tabular-nums;
 }
 
-[data-qds-otp-hidden-input][data-shift] {
+[ui-qds-otp-hidden-input][ui-shift] {
   width: calc(100% + 45px);
   clip-path: inset(0 45px 0 0);
 }
 
 /* iOS-specific adjustments */
 @supports (-webkit-touch-callout: none) {
-  [data-qds-otp-hidden-input] {
+  [ui-qds-otp-hidden-input] {
     letter-spacing: -0.6em !important;
     font-weight: 100 !important;
     font-stretch: ultra-condensed;
@@ -44,15 +44,15 @@
 }
 
 /* prevent selection highlighting on hidden input */
-[data-qds-otp-hidden-input]::selection {
+[ui-qds-otp-hidden-input]::selection {
   background: transparent !important;
   color: transparent !important;
   -webkit-text-fill-color: transparent !important;
 }
 
 /* autofill styles */
-[data-qds-otp-hidden-input]:autofill,
-[data-qds-otp-hidden-input]:-webkit-autofill {
+[ui-qds-otp-hidden-input]:autofill,
+[ui-qds-otp-hidden-input]:-webkit-autofill {
   background: transparent !important;
   color: transparent !important;
   border-color: transparent !important;
@@ -63,6 +63,6 @@
 }
 
 /* Enable pointer events on elements after the hidden input */
-[data-qds-otp-hidden-input] + * {
+[ui-qds-otp-hidden-input] + * {
   pointer-events: all !important;
 }

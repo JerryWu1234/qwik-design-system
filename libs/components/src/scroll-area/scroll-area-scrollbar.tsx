@@ -13,7 +13,7 @@ export const ScrollAreaScrollbar = component$<PublicScrollBarType>((props) => {
   const onTrackClick$ = $((e: MouseEvent) => {
     const target = e.target as HTMLElement;
     // Specifies the scrollbar orientation (vertical or horizontal)
-    const clickedOrientation = target.getAttribute("data-orientation");
+    const clickedOrientation = target.getAttribute("ui-orientation");
     const scrollbar =
       orientation === "vertical"
         ? context.verticalScrollbarRef.value
@@ -66,10 +66,10 @@ export const ScrollAreaScrollbar = component$<PublicScrollBarType>((props) => {
           : context.horizontalScrollbarRef
       }
       // The container element for the scrollbar
-      data-qds-scroll-area-scrollbar
-      data-orientation={orientation}
+      ui-qds-scroll-area-scrollbar
+      ui-orientation={orientation}
       // Indicates the visibility state of the scrollbar (visible or hidden)
-      data-state={shouldShow() ? "visible" : "hidden"}
+      ui-state={shouldShow() ? "visible" : "hidden"}
       onClick$={onTrackClick$}
     >
       <Slot />

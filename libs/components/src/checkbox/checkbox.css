@@ -1,5 +1,5 @@
 @layer qds {
-  [data-qds-checkbox-indicator] {
+  [ui-qds-checkbox-indicator] {
     user-select: none;
   }
 
@@ -16,7 +16,7 @@
    * - https://www.w3.org/WAI/WCAG21/Understanding/
    * - https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden
    */
-  [data-qds-checkbox-indicator][data-hidden] {
+  [ui-qds-checkbox-indicator][ui-hidden] {
     visibility: hidden;
   }
 }

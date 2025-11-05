@@ -1,15 +1,15 @@
 @layer qds {
-  [data-qds-radio-group-root][data-orientation="horizontal"] {
+  [ui-qds-radio-group-root][ui-orientation="horizontal"] {
     display: flex;
     flex-direction: row;
     align-items: center;
   }
 
-  [data-qds-indicator][data-hidden] {
+  [ui-qds-indicator][ui-hidden] {
     display: none;
   }
 
-  [data-qds-radio-group-error][data-visible="false"] {
+  [ui-qds-radio-group-error][ui-visible="false"] {
     display: none;
   }
 }

@@ -9,10 +9,10 @@ export const TabsList = component$((props: TabsListProps) => {
 
   return (
     <Render
-      data-qds-tabs-list
+      ui-qds-tabs-list
       role="tablist"
       fallback="div"
-      data-orientation={
+      ui-orientation={
         context.orientationSig.value === "vertical" ? "vertical" : "horizontal"
       }
       {...props}

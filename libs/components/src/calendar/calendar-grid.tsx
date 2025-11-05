@@ -77,7 +77,7 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
     const buttons = Array.from(gridBody.getElementsByTagName("button"));
     if (!(elFocus instanceof HTMLButtonElement)) return;
     const idx = buttons.indexOf(elFocus);
-    const currentDateValue = elFocus?.getAttribute("data-value");
+    const currentDateValue = elFocus?.getAttribute("ui-value");
     if (!currentDateValue || !isISODate(currentDateValue)) return;
     const currentDate = currentDateValue;
 
@@ -118,7 +118,7 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
     };
 
     const updateFocus = (newIdx: number, newDate: ISODate | null = null) => {
-      const dateValue = buttons[newIdx].getAttribute("data-value");
+      const dateValue = buttons[newIdx].getAttribute("ui-value");
       const validDateValue = dateValue && isISODate(dateValue) ? dateValue : null;
       const dateToSet = newDate ?? validDateValue;
       if (!dateToSet) return;
@@ -175,7 +175,7 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
 
       case "home": {
         const rowStartIndex = Math.floor(idx / 7) * 7;
-        const newDateValue = buttons[rowStartIndex].getAttribute("data-value");
+        const newDateValue = buttons[rowStartIndex].getAttribute("ui-value");
         if (!newDateValue || !isISODate(newDateValue)) break;
         const newDate = newDateValue;
         await handleMonthChange(newDate, context.monthToRender.value);
@@ -188,7 +188,7 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
           Math.ceil((idx + 1) / 7) * 7 - 1,
           buttons.length - 1
         );
-        const newDateValue = buttons[rowEndIndex].getAttribute("data-value");
+        const newDateValue = buttons[rowEndIndex].getAttribute("ui-value");
         if (!newDateValue || !isISODate(newDateValue)) break;
         const newDate = newDateValue;
         await handleMonthChange(newDate, context.monthToRender.value);
@@ -203,17 +203,17 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
   return (
     // The main calendar grid container
     <div
-      data-qds-calendar-grid
+      ui-qds-calendar-grid
       role="grid"
       {...divProps}
-      data-show-week-numbers={context.showWeekNumber ? "true" : "false"}
+      ui-show-week-numbers={context.showWeekNumber ? "true" : "false"}
     >
       {context.showDaysOfWeek && (
         // The header section of the calendar grid
         // biome-ignore lint/a11y/useFocusableInteractive: The header section contains no elements that a user needs to interact with or focus on.
-        <div data-qds-calendar-grid-header-row role="row">
+        <div ui-qds-calendar-grid-header-row role="row">
           {context.showWeekNumber && (
-            <div role="columnheader" data-qds-calendar-grid-header-cell>
+            <div role="columnheader" ui-qds-calendar-grid-header-cell>
               Wk
             </div>
           )}
@@ -223,7 +223,7 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
               role="columnheader"
               aria-label={day}
               // A cell in the calendar grid header
-              data-qds-calendar-grid-header-cell
+              ui-qds-calendar-grid-header-cell
             >
               {day.slice(0, 2).normalize("NFD").replace(/\p{M}/gu, "")}
             </div>
@@ -232,7 +232,7 @@ export const CalendarGrid = component$<PublicCalendarGridProps>((props) => {
       )}
       <div
         // The body section of the calendar grid
-        data-qds-calendar-grid-body
+        ui-qds-calendar-grid-body
         preventdefault:keydown
         onKeyDown$={[
           $(async (e: KeyboardEvent, target: HTMLDivElement) => {

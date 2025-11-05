@@ -58,11 +58,11 @@ export const ScrollAreaRoot = component$<PublicRootProps>((props) => {
       {...restProps}
       ref={rootRef}
       // The root container element for the scroll area component
-      data-qds-scroll-area-root
+      ui-qds-scroll-area-root
       // Defines the scrollbar visibility behavior (hover, scroll, auto, or always)
-      data-type={type}
+      ui-type={type}
       // Indicates whether the content exceeds the viewport dimensions
-      data-has-overflow={hasOverflow.value ? "" : undefined}
+      ui-has-overflow={hasOverflow.value ? "" : undefined}
       onMouseEnter$={onMouseEnter$}
       onMouseLeave$={onMouseLeave$}
     >

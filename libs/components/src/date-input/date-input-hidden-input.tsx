@@ -13,7 +13,7 @@ export const DateInputHiddenInput = component$(
         <input
           type="text"
           tabIndex={-1}
-          data-qds-date-input-hidden-input
+          ui-qds-date-input-hidden-input
           name={context.name ?? props.name ?? undefined}
           required={context.required ?? props.required ?? undefined}
           value={context.dateSig.value ?? props.value ?? undefined}

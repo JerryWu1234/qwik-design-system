@@ -3,7 +3,7 @@
  *
  * This script generates the complete qds.css file including:
  * - Layer ordering
- * - Custom variants for data attributes
+ * - Custom variants for ui attributes
  */
 
 import { writeFileSync } from "node:fs";
@@ -20,7 +20,7 @@ function generateCSS(): string {
   // 1. Layer ordering comes first
   sections.push(generateLayerOrder());
 
-  // 2. Custom variants for data attributes
+  // 2. Custom variants for ui attributes
   sections.push(generateAllVariants());
 
   // Join all sections with double newlines

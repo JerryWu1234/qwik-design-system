@@ -14,7 +14,7 @@ export const SwitchLabel = component$((props: PublicCheckboxLabelProps) => {
       {...props}
       id={labelId}
       // The identifier for the switch label element
-      data-qds-switch-label
+      ui-qds-switch-label
       for={triggerId}
     >
       <Slot />

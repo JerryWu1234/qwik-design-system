@@ -5,7 +5,7 @@
 
 // export function createTestDriver<T extends DriverLocator>(rootLocator: T) {
 //   const getRoot = () => {
-//     return rootLocator.locator("[data-qds-collapsible]");
+//     return rootLocator.locator("[ui-qds-collapsible]");
 //   };
 
 //   const getTrigger = () => {
@@ -13,7 +13,7 @@
 //   };
 
 //   const getContent = () => {
-//     return getRoot().locator("[data-qds-collapsible-content]");
+//     return getRoot().locator("[ui-qds-collapsible-content]");
 //   };
 
 //   const openCollapsible = async (key: OpenKeys | "click") => {

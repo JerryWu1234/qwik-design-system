@@ -30,12 +30,12 @@ export const CalendarGridDay = component$<PublicCalendarGridDayProps>(
             <div
               key={`${week.toString()}-${index}`}
               // Identifies a row in the calendar grid body
-              data-qds-calendar-grid-body-row
+              ui-qds-calendar-grid-body-row
               role="row"
             >
               {context.showWeekNumber && (
                 // Displays the week number in the calendar grid
-                <div role="rowheader" data-qds-calendar-grid-body-week-number>
+                <div role="rowheader" ui-qds-calendar-grid-body-week-number>
                   <span>
                     {(() => {
                       const validDay = week.find((day): day is string => day !== null);
@@ -57,14 +57,14 @@ export const CalendarGridDay = component$<PublicCalendarGridDayProps>(
                     // A cell in the calendar grid body, represented as a button
                     role="gridcell"
                     type="button"
-                    data-qds-calendar-grid-day-button
+                    ui-qds-calendar-grid-day-button
                     // Indicates if this date is the current date
-                    data-current={day === context.currentDate}
+                    ui-current={day === context.currentDate}
                     // Indicates if this date is currently selected
-                    data-selected={day === context.dateSig.value}
+                    ui-selected={day === context.dateSig.value}
                     aria-selected={day === context.dateSig.value ? "true" : undefined}
                     // Stores the date value for this calendar cell
-                    data-value={day}
+                    ui-value={day}
                     date-day-of-month={day.split("-")[2]}
                     aria-label={label}
                     disabled={disabled || context.disabledSig.value}

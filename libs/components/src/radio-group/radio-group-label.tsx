@@ -9,7 +9,7 @@ export const RadioGroupLabel = component$((props: PublicLabelProps) => {
   const labelId = `${context.localId}-label`;
 
   return (
-    <Render {...props} id={labelId} data-qds-radio-group-label fallback="span">
+    <Render {...props} id={labelId} ui-qds-radio-group-label fallback="span">
       <Slot />
     </Render>
   );

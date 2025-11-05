@@ -112,22 +112,22 @@ test("progress has loading state when not completed", async () => {
   render(<Basic />);
 
   await expect.element(Indicator).toBeInTheDocument();
-  await expect.element(Indicator).toHaveAttribute("data-progress", "loading");
-  await expect.element(Indicator).toHaveAttribute("data-value", "30");
+  await expect.element(Indicator).toHaveAttribute("ui-progress", "loading");
+  await expect.element(Indicator).toHaveAttribute("ui-value", "30");
 });
 
 test("progress has indeterminate state when value is null", async () => {
   render(<Indeterminate />);
 
   await expect.element(Indicator).toBeInTheDocument();
-  await expect.element(Indicator).toHaveAttribute("data-progress", "indeterminate");
+  await expect.element(Indicator).toHaveAttribute("ui-progress", "indeterminate");
 });
 
 test("progress has complete state when value is 100%", async () => {
   render(<Complete />);
 
   await expect.element(Indicator).toBeInTheDocument();
-  await expect.element(Indicator).toHaveAttribute("data-progress", "complete");
+  await expect.element(Indicator).toHaveAttribute("ui-progress", "complete");
 });
 
 // Tests - State
@@ -199,8 +199,8 @@ test("track contains the indicator", async () => {
 
 test("all components have proper data attributes", async () => {
   render(<Basic />);
-  await expect.element(Root).toHaveAttribute("data-qds-progress-root");
-  await expect.element(Label).toHaveAttribute("data-qds-progress-label");
-  await expect.element(Track).toHaveAttribute("data-qds-progress-track");
-  await expect.element(Indicator).toHaveAttribute("data-qds-progress-indicator");
+  await expect.element(Root).toHaveAttribute("ui-qds-progress-root");
+  await expect.element(Label).toHaveAttribute("ui-qds-progress-label");
+  await expect.element(Track).toHaveAttribute("ui-qds-progress-track");
+  await expect.element(Indicator).toHaveAttribute("ui-qds-progress-indicator");
 });

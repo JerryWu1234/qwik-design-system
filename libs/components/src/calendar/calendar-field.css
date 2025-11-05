@@ -1,9 +1,9 @@
 @layer qds {
-  [data-qds-calendar-field-input-root] {
+  [ui-qds-calendar-field-input-root] {
     position: relative;
   }
 
-  [data-qds-calendar-field-click-shield] {
+  [ui-qds-calendar-field-click-shield] {
     position: absolute;
     top: 0;
     left: 0;

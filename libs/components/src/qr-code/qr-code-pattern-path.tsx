@@ -16,5 +16,5 @@ export const QRCodePatternPath = component$((props: PropsOf<"path">) => {
   }, "");
 
   // SVG path element that renders the QR code pattern
-  return <path {...props} d={pathData} data-qds-qr-pattern-path />;
+  return <path {...props} d={pathData} ui-qds-qr-pattern-path />;
 });

@@ -9,7 +9,7 @@ export const RadioGroupDescription = component$((props: PublicDescriptionProps) 
   const descriptionId = `${context.localId}-description`;
 
   return (
-    <Render {...props} id={descriptionId} data-qds-radio-group-description fallback="div">
+    <Render {...props} id={descriptionId} ui-qds-radio-group-description fallback="div">
       <Slot />
     </Render>
   );

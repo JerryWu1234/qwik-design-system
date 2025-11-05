@@ -1,6 +1,6 @@
 {
   "name": "@qds.dev/tools",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "private": false,
   "description": "Tools and utilities for Qwik Design System",
   "type": "module",
@@ -34,16 +34,16 @@
     "build": "pnpm run build.lib & pnpm run build.types && pnpm generate.icon.types",
     "build.lib": "rolldown -c rolldown.config.ts",
     "build.types": "tsc --emitDeclarationOnly --outDir ./lib-types",
-    "generate.icon.types": "node src/generate-icon-types.ts"
+    "generate.icon.types": "node src/generate/icon-types.ts"
   },
   "devDependencies": {
     "@iconify/types": "^2",
-    "@iconify/utils": "^3.0.1",
     "magic-string": "^0.30.17",
     "rolldown": "1.0.0-beta.45",
     "vite": "^7.0.6"
   },
   "dependencies": {
+    "@iconify/utils": "^3.0.1",
     "@iconify/json": "^2.2.382",
     "@oxc-project/types": "^0.87.0",
     "oxc-parser": "^0.94.0",

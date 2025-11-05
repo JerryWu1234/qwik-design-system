@@ -88,9 +88,9 @@ export const RadioGroupItemTrigger = component$((props: PublicTriggerProps) => {
       {...restProps}
       internalRef={triggerRef}
       aria-checked={itemContext.isSelectedSig.value}
-      data-checked={itemContext.isSelectedSig.value}
-      data-qds-radio-group-trigger
-      data-disabled={isDisabledSig.value || undefined}
+      ui-checked={itemContext.isSelectedSig.value}
+      ui-qds-radio-group-trigger
+      ui-disabled={isDisabledSig.value || undefined}
       value={value}
       onClick$={[handleSelection$, props.onClick$]}
       onKeyDown$={[handleKeyDownSync$, handleKeyDown$, props.onKeyDown$]}

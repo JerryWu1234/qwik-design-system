@@ -52,7 +52,7 @@ export const DateInputRoot = component$<PublicDateInputRootProps>(
     });
 
     return (
-      <Render fallback="div" data-qds-date-input-root {...props}>
+      <Render fallback="div" ui-qds-date-input-root {...props}>
         <Slot />
       </Render>
     );

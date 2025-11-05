@@ -29,7 +29,7 @@ export const SwitchHiddenInput = component$((props: PublicHiddenInputProps) => {
         type="checkbox"
         tabIndex={-1}
         checked={context.checked.value}
-        data-qds-switch-hidden-input
+        ui-qds-switch-hidden-input
         required={context.required.value ?? required ?? undefined}
         value={context.value?.value ?? ""}
         name={context.name?.value}

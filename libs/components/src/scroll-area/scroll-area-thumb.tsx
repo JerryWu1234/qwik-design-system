@@ -57,7 +57,7 @@ export const ScrollAreaThumb = component$<PublicScrollAreaThumb>((props) => {
     if (!scrollbar) return;
     if (!viewport) return;
     if (!thumb) return;
-    const isVertical = scrollbar.getAttribute("data-orientation") === "vertical";
+    const isVertical = scrollbar.getAttribute("ui-orientation") === "vertical";
     e.preventDefault();
     if (isVertical) {
       const deltaY = e.clientY - dragData.value.startClientY;
@@ -85,9 +85,9 @@ export const ScrollAreaThumb = component$<PublicScrollAreaThumb>((props) => {
       {...props}
       ref={context.thumbRef}
       // The draggable thumb element within the scrollbar
-      data-qds-scroll-area-thumb
+      ui-qds-scroll-area-thumb
       // Indicates whether the thumb is currently being dragged
-      data-dragging={isDragging.value ? "" : undefined}
+      ui-dragging={isDragging.value ? "" : undefined}
       onMouseDown$={onDragStart$}
     />
   );

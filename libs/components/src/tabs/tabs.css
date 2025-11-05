@@ -1,10 +1,10 @@
 @layer qds {
-  [data-qds-tabs-list][data-orientation="vertical"] {
+  [ui-qds-tabs-list][ui-orientation="vertical"] {
     display: flex;
     flex-direction: column;
   }
 
-  [data-qds-tabs-root][data-orientation="vertical"] {
+  [ui-qds-tabs-root][ui-orientation="vertical"] {
     display: flex;
   }
 }

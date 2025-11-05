@@ -4,39 +4,39 @@
 
 // export function createTestDriver<T extends DriverLocator>(rootLocator: T) {
 //   const getRoot = () => {
-//     return rootLocator.locator("[data-qds-date-input-root]");
+//     return rootLocator.locator("[ui-qds-date-input-root]");
 //   };
 
 //   const getLabel = () => {
-//     return rootLocator.locator("[data-qds-date-input-label]");
+//     return rootLocator.locator("[ui-qds-date-input-label]");
 //   };
 
 //   const getDateField = () => {
-//     return rootLocator.locator("[data-qds-date-input-field]");
+//     return rootLocator.locator("[ui-qds-date-input-field]");
 //   };
 
 //   const getSegments = () => {
-//     return rootLocator.locator("[data-qds-date-input-segment]");
+//     return rootLocator.locator("[ui-qds-date-input-segment]");
 //   };
 
 //   const getYearSegment = () => {
-//     return rootLocator.locator("[data-qds-date-input-segment-year]");
+//     return rootLocator.locator("[ui-qds-date-input-segment-year]");
 //   };
 
 //   const getMonthSegment = () => {
-//     return rootLocator.locator("[data-qds-date-input-segment-month]");
+//     return rootLocator.locator("[ui-qds-date-input-segment-month]");
 //   };
 
 //   const getDaySegment = () => {
-//     return rootLocator.locator("[data-qds-date-input-segment-day]");
+//     return rootLocator.locator("[ui-qds-date-input-segment-day]");
 //   };
 
 //   const getHiddenInput = () => {
-//     return rootLocator.locator("[data-qds-date-input-hidden-input]");
+//     return rootLocator.locator("[ui-qds-date-input-hidden-input]");
 //   };
 
 //   const getError = () => {
-//     return rootLocator.locator("[data-qds-date-input-error]");
+//     return rootLocator.locator("[ui-qds-date-input-error]");
 //   };
 
 //   const getSubmitButton = () => {
@@ -65,37 +65,37 @@
 
 //   const getFirstEntry = () => {
 //     return rootLocator.locator(
-//       '[data-qds-date-input-field][data-qds-date-input-field-index="0"]'
+//       '[ui-qds-date-input-field][ui-qds-date-input-field-index="0"]'
 //     );
 //   };
 
 //   const getSecondEntry = () => {
 //     return rootLocator.locator(
-//       '[data-qds-date-input-field][data-qds-date-input-field-index="1"]'
+//       '[ui-qds-date-input-field][ui-qds-date-input-field-index="1"]'
 //     );
 //   };
 
 //   const getFirstYearSegment = () => {
-//     return getFirstEntry().locator("[data-qds-date-input-segment-year]");
+//     return getFirstEntry().locator("[ui-qds-date-input-segment-year]");
 //   };
 //   const getFirstMonthSegment = () => {
-//     return getFirstEntry().locator("[data-qds-date-input-segment-month]");
+//     return getFirstEntry().locator("[ui-qds-date-input-segment-month]");
 //   };
 //   const getFirstDaySegment = () => {
-//     return getFirstEntry().locator("[data-qds-date-input-segment-day]");
+//     return getFirstEntry().locator("[ui-qds-date-input-segment-day]");
 //   };
 //   const getFirstHiddenInput = () => {
 //     return getFirstEntry().locator('input[name="departure-date"]');
 //   };
 
 //   const getSecondYearSegment = () => {
-//     return getSecondEntry().locator("[data-qds-date-input-segment-year]");
+//     return getSecondEntry().locator("[ui-qds-date-input-segment-year]");
 //   };
 //   const getSecondMonthSegment = () => {
-//     return getSecondEntry().locator("[data-qds-date-input-segment-month]");
+//     return getSecondEntry().locator("[ui-qds-date-input-segment-month]");
 //   };
 //   const getSecondDaySegment = () => {
-//     return getSecondEntry().locator("[data-qds-date-input-segment-day]");
+//     return getSecondEntry().locator("[ui-qds-date-input-segment-day]");
 //   };
 //   const getSecondHiddenInput = () => {
 //     return getSecondEntry().locator('input[name="return-date"]');

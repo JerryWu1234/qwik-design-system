@@ -39,7 +39,7 @@ export const PaginationNext = component$(
     return (
       <button
         // Identifies the pagination next button element
-        data-qds-pagination-next
+        ui-qds-pagination-next
         type={type ?? "button"}
         {...props}
         disabled={isDisabled.value}

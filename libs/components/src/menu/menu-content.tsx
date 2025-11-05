@@ -72,7 +72,7 @@ export const MenuContent = component$<MenuContentProps>((props) => {
       ref={context.contentRef}
       role="menu"
       aria-labelledby={context.triggerId} // Labelled by the main trigger
-      data-qds-menu-content
+      ui-qds-menu-content
       {...props}
     >
       <Slot />

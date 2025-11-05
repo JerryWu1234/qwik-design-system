@@ -19,7 +19,7 @@ export const ProgressIndicator = component$<ProgressIndicatorElement>((props) =>
   return (
     <Render
       fallback="div"
-      data-qds-progress-indicator
+      ui-qds-progress-indicator
       style={{ transform: translateXSig.value }}
       title="progress_indicator"
       {...context.dataAttributesSig.value}

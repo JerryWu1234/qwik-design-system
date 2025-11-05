@@ -27,7 +27,7 @@ export const NavbarItemTrigger = component$((props: NavbarItemTriggerProps) => {
   });
 
   return (
-    <PopoverTrigger ref={triggerRef} data-index={index} {...props}>
+    <PopoverTrigger ref={triggerRef} ui-index={index} {...props}>
       <Slot />
     </PopoverTrigger>
   );

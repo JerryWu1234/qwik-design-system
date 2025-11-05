@@ -78,10 +78,10 @@ export const ProgressRoot = component$<ProgressProps & PropsOf<"div">>((props) =
 
   const dataAttributesSig = useComputed$(() => {
     return {
-      "data-progress": progressSig.value,
-      "data-value": valueSig.value ?? undefined,
-      "data-max": maxSig.value,
-      "data-min": minSig.value
+      "ui-progress": progressSig.value,
+      "ui-value": valueSig.value ?? undefined,
+      "ui-max": maxSig.value,
+      "ui-min": minSig.value
     };
   });
 
@@ -97,7 +97,7 @@ export const ProgressRoot = component$<ProgressProps & PropsOf<"div">>((props) =
   return (
     <Render
       fallback="div"
-      data-qds-progress-root
+      ui-qds-progress-root
       role="progressbar"
       aria-label="progress"
       aria-valuemax={maxSig.value}

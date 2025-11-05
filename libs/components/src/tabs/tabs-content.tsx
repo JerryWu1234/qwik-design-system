@@ -34,7 +34,7 @@ export const TabsContent = component$((props: TabsContentProps) => {
 
   return (
     <Render
-      data-qds-tabs-content
+      ui-qds-tabs-content
       role="tabpanel"
       fallback="div"
       hidden={!isVisibleSig.value}

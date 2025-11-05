@@ -35,7 +35,7 @@ export const CollapsibleContent = component$((props: CollapsibleContentProps) =>
       fallback="div"
       internalRef={context.contentRef}
       id={contentId}
-      data-qds-collapsible-content
+      ui-qds-collapsible-content
       hidden={hiddenPath.value}
       onBeforematch$={[handleBeforeMatch$, props.onBeforematch$]}
     >

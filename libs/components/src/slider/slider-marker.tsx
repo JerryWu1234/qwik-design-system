@@ -19,7 +19,7 @@ export const SliderMarker = component$((props: PublicMarkerProps) => {
       {...rest}
       fallback="div"
       // Individual marker element representing a specific value on the slider
-      data-qds-slider-marker
+      ui-qds-slider-marker
       style={{ left: `${markerPosition.value}%` }}
     >
       <Slot />

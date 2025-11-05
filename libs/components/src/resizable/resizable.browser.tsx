@@ -299,7 +299,7 @@ test("should not resize above maximum", async () => {
 test("vertical orientation should have correct attributes", async () => {
   render(<Vertical />);
 
-  await expect.element(Root).toHaveAttribute("data-orientation", "vertical");
+  await expect.element(Root).toHaveAttribute("ui-orientation", "vertical");
   await expect.element(Root).toHaveStyle({ flexDirection: "column" });
 });
 
@@ -335,7 +335,7 @@ test.skip("collapsible content should collapse below threshold", async () => {
   await expect.element(handle).toBeVisible();
 
   await dragHandleBy(handle, -110, 0);
-  await expect.element(content).toHaveAttribute("data-is-collapsed", "true");
+  await expect.element(content).toHaveAttribute("ui-is-collapsed", "true");
 });
 
 // TODO: Depends on collapse functionality being fixed
@@ -349,10 +349,10 @@ test.skip("collapsed content should expand when dragged", async () => {
   await expect.element(handle).toBeVisible();
 
   await dragHandleBy(handle, -110, 0);
-  await expect.element(content).toHaveAttribute("data-is-collapsed", "true");
+  await expect.element(content).toHaveAttribute("ui-is-collapsed", "true");
 
   await dragHandleBy(handle, 20, 0);
-  await expect.element(content).toHaveAttribute("data-is-collapsed", "false");
+  await expect.element(content).toHaveAttribute("ui-is-collapsed", "false");
 });
 
 test("arrow keys should resize by step", async () => {
@@ -464,7 +464,7 @@ test("disabled resizable should not resize on drag", async () => {
 
   await expect.element(content).toBeVisible();
   await expect.element(handle).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-disabled", "true");
+  await expect.element(Root).toHaveAttribute("ui-disabled", "true");
 
   const initialSize = getContentSize(content);
 

@@ -24,9 +24,9 @@ export const SliderTooltip = component$((props: PublicTooltipProps) => {
       {...rest}
       fallback="div"
       // Tooltip element displaying the current value of the associated thumb
-      data-qds-slider-tooltip
+      ui-qds-slider-tooltip
       // Specifies the placement position of the tooltip relative to the thumb
-      data-placement={placement}
+      ui-placement={placement}
       role="tooltip"
     >
       {tooltipValue.value}

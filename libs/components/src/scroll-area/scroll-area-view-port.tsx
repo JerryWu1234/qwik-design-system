@@ -36,7 +36,7 @@ export const ScrollAreaViewport = component$<PublicViewPortProps>((props) => {
     }
     if (verticalScrollbar) {
       const verticalThumb = verticalScrollbar.querySelector(
-        "[data-qds-scroll-area-thumb]"
+        "[ui-qds-scroll-area-thumb]"
       ) as HTMLElement;
       if (verticalThumb) {
         const scrollRatio =
@@ -47,7 +47,7 @@ export const ScrollAreaViewport = component$<PublicViewPortProps>((props) => {
     }
     if (horizontalScrollbar) {
       const horizontalThumb = horizontalScrollbar.querySelector(
-        "[data-qds-scroll-area-thumb]"
+        "[ui-qds-scroll-area-thumb]"
       ) as HTMLElement;
       if (horizontalThumb) {
         const scrollRatio =
@@ -100,7 +100,7 @@ export const ScrollAreaViewport = component$<PublicViewPortProps>((props) => {
     <div
       {...props}
       // The viewport container that wraps the scrollable content
-      data-qds-scroll-area-viewport
+      ui-qds-scroll-area-viewport
       onScroll$={[onScroll$, props.onScroll$]}
       onQdsoverflowcheck$={$(async () => {
         const viewport = context.viewportRef.value;
@@ -111,7 +111,7 @@ export const ScrollAreaViewport = component$<PublicViewPortProps>((props) => {
       window:onLoad$={
         context.type !== "scroll"
           ? sync$(() => {
-              const viewport = document.querySelector("[data-qds-scroll-area-viewport]");
+              const viewport = document.querySelector("[ui-qds-scroll-area-viewport]");
               if (viewport) {
                 const event = new CustomEvent("qdsoverflowcheck");
                 viewport.dispatchEvent(event);

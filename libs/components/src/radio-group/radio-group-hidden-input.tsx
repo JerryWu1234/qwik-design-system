@@ -19,7 +19,7 @@ export const RadioGroupHiddenInput = component$((props: PublicHiddenInputProps) 
         type="radio"
         tabIndex={-1}
         value={context.selectedValueSig.value}
-        data-qds-radio-group-hidden-input
+        ui-qds-radio-group-hidden-input
         required={context.required ?? required ?? undefined}
         checked={context.selectedValueSig.value !== undefined}
         name={context.localId}

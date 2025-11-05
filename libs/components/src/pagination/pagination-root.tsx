@@ -89,9 +89,9 @@ export const PaginationRoot = component$((props: PublicPaginationRootProps) => {
     <div
       {...rest}
       // Identifies the root pagination container element
-      data-qds-pagination-root
+      ui-qds-pagination-root
       // Indicates whether the pagination component is disabled
-      data-disabled={context.isDisabledSig.value ? "" : undefined}
+      ui-disabled={context.isDisabledSig.value ? "" : undefined}
       aria-disabled={context.isDisabledSig.value ? "true" : "false"}
     >
       <Slot />

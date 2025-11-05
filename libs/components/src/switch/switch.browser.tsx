@@ -201,7 +201,7 @@ test("should show error when required and submitted unchecked", async () => {
 
   await userEvent.click(SubmitButton);
 
-  await expect.element(Root).toHaveAttribute("data-error");
+  await expect.element(Root).toHaveAttribute("ui-error");
   await expect.element(Errors).toBeVisible();
   await expect.element(Errors).toHaveTextContent("This field is required");
 });
@@ -243,20 +243,20 @@ test("should set data-checked attribute when checked", async () => {
   render(<Basic />);
 
   await userEvent.click(Trigger);
-  await expect.element(Root).toHaveAttribute("data-checked");
+  await expect.element(Root).toHaveAttribute("ui-checked");
 });
 
 test("should set data-disabled attribute when disabled", async () => {
   render(<Basic disabled />);
 
-  await expect.element(Root).toHaveAttribute("data-disabled");
+  await expect.element(Root).toHaveAttribute("ui-disabled");
 });
 
 test("should be checked when checked prop is true", async () => {
   render(<Basic checked />);
 
   await expect.element(Root).toHaveAttribute("aria-checked", "true");
-  await expect.element(Root).toHaveAttribute("data-checked");
+  await expect.element(Root).toHaveAttribute("ui-checked");
 });
 
 test("should set aria-required when required prop is true", async () => {

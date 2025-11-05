@@ -73,8 +73,8 @@ test("popover trigger is visible", async () => {
 
 test("popover root has correct data attributes when closed", async () => {
   render(<Basic />);
-  await expect.element(Root).toHaveAttribute("data-closed");
-  await expect.element(Root).not.toHaveAttribute("data-open");
+  await expect.element(Root).toHaveAttribute("ui-closed");
+  await expect.element(Root).not.toHaveAttribute("ui-open");
 });
 
 test("clicking trigger opens popover", async () => {
@@ -97,8 +97,8 @@ test("popover root has correct data attributes when open", async () => {
   render(<Basic />);
 
   await userEvent.click(Trigger);
-  await expect.element(Root).toHaveAttribute("data-open");
-  await expect.element(Root).not.toHaveAttribute("data-closed");
+  await expect.element(Root).toHaveAttribute("ui-open");
+  await expect.element(Root).not.toHaveAttribute("ui-closed");
 });
 
 test("Enter key on trigger opens popover", async () => {

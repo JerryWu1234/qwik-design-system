@@ -362,59 +362,59 @@ test("collapsible root has data-qds-collapsible attribute", async () => {
   render(<Basic />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-qds-collapsible");
+  await expect.element(Root).toHaveAttribute("ui-qds-collapsible");
 });
 
 test("collapsible root has data-open when open", async () => {
   render(<Basic open />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-open");
+  await expect.element(Root).toHaveAttribute("ui-open");
 });
 
 test("collapsible root has data-closed when closed", async () => {
   render(<Basic />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-closed");
+  await expect.element(Root).toHaveAttribute("ui-closed");
 });
 
 test("collapsible root has data-disabled when disabled", async () => {
   render(<Basic disabled />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-disabled");
+  await expect.element(Root).toHaveAttribute("ui-disabled");
 });
 
 test("collapsible root does not have data-disabled when not disabled", async () => {
   render(<Basic />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-disabled");
+  await expect.element(Root).not.toHaveAttribute("ui-disabled");
 });
 
 test("collapsible root data-open updates when opened", async () => {
   render(<Basic />);
 
-  await expect.element(Root).not.toHaveAttribute("data-open");
-  await expect.element(Root).toHaveAttribute("data-closed");
+  await expect.element(Root).not.toHaveAttribute("ui-open");
+  await expect.element(Root).toHaveAttribute("ui-closed");
 
   await userEvent.click(Trigger);
 
-  await expect.element(Root).toHaveAttribute("data-open");
-  await expect.element(Root).not.toHaveAttribute("data-closed");
+  await expect.element(Root).toHaveAttribute("ui-open");
+  await expect.element(Root).not.toHaveAttribute("ui-closed");
 });
 
 test("collapsible root data-open updates when closed", async () => {
   render(<Basic open />);
 
-  await expect.element(Root).toHaveAttribute("data-open");
-  await expect.element(Root).not.toHaveAttribute("data-closed");
+  await expect.element(Root).toHaveAttribute("ui-open");
+  await expect.element(Root).not.toHaveAttribute("ui-closed");
 
   await userEvent.click(Trigger);
 
-  await expect.element(Root).not.toHaveAttribute("data-open");
-  await expect.element(Root).toHaveAttribute("data-closed");
+  await expect.element(Root).not.toHaveAttribute("ui-open");
+  await expect.element(Root).toHaveAttribute("ui-closed");
 });
 
 test("collapsible root has aria-live attribute", async () => {

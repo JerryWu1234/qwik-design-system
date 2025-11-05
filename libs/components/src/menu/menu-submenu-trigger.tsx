@@ -24,8 +24,8 @@ export const MenuSubmenuTrigger = component$<PublicMenuSubmenuTriggerProps>((pro
   return (
     <MenuItem
       closeOnSelect={false}
-      data-qds-menu-submenu-trigger
-      data-qds-menu-parent={submenuContext.parentContext?.contentId}
+      ui-qds-menu-submenu-trigger
+      ui-qds-menu-parent={submenuContext.parentContext?.contentId}
       aria-haspopup="menu"
       aria-controls={submenuContext.contentId}
       aria-expanded={submenuContext.isOpenSig.value}

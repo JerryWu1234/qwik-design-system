@@ -86,17 +86,17 @@ test("segments are in correct order for yyyy-mm-dd format", async () => {
   await expect.element(MonthSegment).toBeVisible();
   await expect.element(YearSegment).toBeVisible();
 
-  expect(YearSegment).toHaveAttribute("data-qds-date-input-segment-year");
-  expect(YearSegment).not.toHaveAttribute("data-qds-date-input-segment-month");
-  expect(YearSegment).not.toHaveAttribute("data-qds-date-input-segment-day");
+  expect(YearSegment).toHaveAttribute("ui-qds-date-input-segment-year");
+  expect(YearSegment).not.toHaveAttribute("ui-qds-date-input-segment-month");
+  expect(YearSegment).not.toHaveAttribute("ui-qds-date-input-segment-day");
 
-  expect(MonthSegment).toHaveAttribute("data-qds-date-input-segment-month");
-  expect(MonthSegment).not.toHaveAttribute("data-qds-date-input-segment-year");
-  expect(MonthSegment).not.toHaveAttribute("data-qds-date-input-segment-day");
+  expect(MonthSegment).toHaveAttribute("ui-qds-date-input-segment-month");
+  expect(MonthSegment).not.toHaveAttribute("ui-qds-date-input-segment-year");
+  expect(MonthSegment).not.toHaveAttribute("ui-qds-date-input-segment-day");
 
-  expect(DaySegment).toHaveAttribute("data-qds-date-input-segment-day");
-  expect(DaySegment).not.toHaveAttribute("data-qds-date-input-segment-year");
-  expect(DaySegment).not.toHaveAttribute("data-qds-date-input-segment-month");
+  expect(DaySegment).toHaveAttribute("ui-qds-date-input-segment-day");
+  expect(DaySegment).not.toHaveAttribute("ui-qds-date-input-segment-year");
+  expect(DaySegment).not.toHaveAttribute("ui-qds-date-input-segment-month");
 });
 
 test("segments display placeholder text when provided", async () => {
@@ -139,18 +139,23 @@ test("data entry moves focus to next segment", async () => {
 test("arrow keys move focus between segments", async () => {
   render(<Basic />);
 
+  await expect.element(YearSegment).toBeVisible();
   await userEvent.keyboard("{Tab}");
   await expect.element(YearSegment).toHaveFocus();
 
+  await expect.element(MonthSegment).toBeVisible();
   await userEvent.keyboard("{ArrowRight}");
   await expect.element(MonthSegment).toHaveFocus();
 
+  await expect.element(DaySegment).toBeVisible();
   await userEvent.keyboard("{ArrowRight}");
   await expect.element(DaySegment).toHaveFocus();
 
+  await expect.element(MonthSegment).toBeVisible();
   await userEvent.keyboard("{ArrowLeft}");
   await expect.element(MonthSegment).toHaveFocus();
 
+  await expect.element(YearSegment).toBeVisible();
   await userEvent.keyboard("{ArrowLeft}");
   await expect.element(YearSegment).toHaveFocus();
 });
@@ -182,20 +187,20 @@ test("segments are in correct order for dd.mm.yyyy format", async () => {
   await expect.element(MonthSegment).toBeVisible();
   await expect.element(YearSegment).toBeVisible();
 
-  expect(YearSegment).toHaveAttribute("data-qds-date-input-segment-year");
-  expect(YearSegment).not.toHaveAttribute("data-qds-date-input-segment-month");
-  expect(YearSegment).not.toHaveAttribute("data-qds-date-input-segment-day");
+  expect(YearSegment).toHaveAttribute("ui-qds-date-input-segment-year");
+  expect(YearSegment).not.toHaveAttribute("ui-qds-date-input-segment-month");
+  expect(YearSegment).not.toHaveAttribute("ui-qds-date-input-segment-day");
 
-  expect(MonthSegment).toHaveAttribute("data-qds-date-input-segment-month");
-  expect(MonthSegment).not.toHaveAttribute("data-qds-date-input-segment-year");
-  expect(MonthSegment).not.toHaveAttribute("data-qds-date-input-segment-day");
+  expect(MonthSegment).toHaveAttribute("ui-qds-date-input-segment-month");
+  expect(MonthSegment).not.toHaveAttribute("ui-qds-date-input-segment-year");
+  expect(MonthSegment).not.toHaveAttribute("ui-qds-date-input-segment-day");
 
-  expect(DaySegment).toHaveAttribute("data-qds-date-input-segment-day");
-  expect(DaySegment).not.toHaveAttribute("data-qds-date-input-segment-year");
-  expect(DaySegment).not.toHaveAttribute("data-qds-date-input-segment-month");
-  expect(DaySegment).toHaveAttribute("data-qds-date-input-segment-index", "0");
-  expect(MonthSegment).toHaveAttribute("data-qds-date-input-segment-index", "1");
-  expect(YearSegment).toHaveAttribute("data-qds-date-input-segment-index", "2");
+  expect(DaySegment).toHaveAttribute("ui-qds-date-input-segment-day");
+  expect(DaySegment).not.toHaveAttribute("ui-qds-date-input-segment-year");
+  expect(DaySegment).not.toHaveAttribute("ui-qds-date-input-segment-month");
+  expect(DaySegment).toHaveAttribute("ui-qds-date-input-segment-index", "0");
+  expect(MonthSegment).toHaveAttribute("ui-qds-date-input-segment-index", "1");
+  expect(YearSegment).toHaveAttribute("ui-qds-date-input-segment-index", "2");
 });
 
 const Default = component$((props: PropsOf<typeof DateInput.Root>) => {
@@ -218,9 +223,9 @@ test("segments match default format when no format specified", async () => {
   await expect.element(MonthSegment).toBeVisible();
   await expect.element(YearSegment).toBeVisible();
 
-  await expect.element(MonthSegment).toHaveAttribute("data-qds-date-input-segment-month");
-  await expect.element(DaySegment).toHaveAttribute("data-qds-date-input-segment-day");
-  await expect.element(YearSegment).toHaveAttribute("data-qds-date-input-segment-year");
+  await expect.element(MonthSegment).toHaveAttribute("ui-qds-date-input-segment-month");
+  await expect.element(DaySegment).toHaveAttribute("ui-qds-date-input-segment-day");
+  await expect.element(YearSegment).toHaveAttribute("ui-qds-date-input-segment-year");
 });
 
 const FormBasic = component$(() => {

@@ -652,102 +652,102 @@ test("checkbox root has data-qds-scope attribute", async () => {
   render(<BasicCheckbox />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-qds-scope");
+  await expect.element(Root).toHaveAttribute("ui-qds-scope");
 });
 
 test("checkbox root has data-checked when checked", async () => {
   render(<BasicCheckbox checked />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-checked");
+  await expect.element(Root).toHaveAttribute("ui-checked");
 });
 
 test("checkbox root does not have data-checked when unchecked", async () => {
   render(<BasicCheckbox />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-checked");
+  await expect.element(Root).not.toHaveAttribute("ui-checked");
 });
 
 test("checkbox root has data-disabled when disabled", async () => {
   render(<BasicCheckbox disabled />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-disabled");
+  await expect.element(Root).toHaveAttribute("ui-disabled");
 });
 
 test("checkbox root does not have data-disabled when not disabled", async () => {
   render(<BasicCheckbox />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-disabled");
+  await expect.element(Root).not.toHaveAttribute("ui-disabled");
 });
 
 test("checkbox root has data-mixed when in mixed state", async () => {
   render(<BasicCheckboxWithBindChecked isChecked="mixed" />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-mixed");
+  await expect.element(Root).toHaveAttribute("ui-mixed");
 });
 
 test("checkbox root does not have data-mixed when not in mixed state", async () => {
   render(<BasicCheckbox />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-mixed");
+  await expect.element(Root).not.toHaveAttribute("ui-mixed");
 });
 
 test("checkbox root data-checked updates when clicked", async () => {
   render(<BasicCheckbox />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).not.toHaveAttribute("data-checked");
+  await expect.element(Root).not.toHaveAttribute("ui-checked");
 
   await userEvent.click(Trigger);
 
-  await expect.element(Root).toHaveAttribute("data-checked");
+  await expect.element(Root).toHaveAttribute("ui-checked");
 });
 
 test("checkbox root data-checked updates when unchecked", async () => {
   render(<BasicCheckbox checked />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-checked");
+  await expect.element(Root).toHaveAttribute("ui-checked");
 
   await userEvent.click(Trigger);
 
-  await expect.element(Root).not.toHaveAttribute("data-checked");
+  await expect.element(Root).not.toHaveAttribute("ui-checked");
 });
 
 test("checkbox root data-disabled updates dynamically", async () => {
   render(<BasicCheckbox disabled isDisabled={true} />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-disabled");
+  await expect.element(Root).toHaveAttribute("ui-disabled");
 
   await userEvent.click(ToggleDisabledButton);
 
-  await expect.element(Root).not.toHaveAttribute("data-disabled");
+  await expect.element(Root).not.toHaveAttribute("ui-disabled");
 });
 
 test("checkbox root data-mixed transitions to data-checked when clicked", async () => {
   render(<BasicCheckboxWithBindChecked isChecked="mixed" />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-mixed");
-  await expect.element(Root).not.toHaveAttribute("data-checked");
+  await expect.element(Root).toHaveAttribute("ui-mixed");
+  await expect.element(Root).not.toHaveAttribute("ui-checked");
 
   await userEvent.click(Trigger);
 
-  await expect.element(Root).not.toHaveAttribute("data-mixed");
-  await expect.element(Root).toHaveAttribute("data-checked");
+  await expect.element(Root).not.toHaveAttribute("ui-mixed");
+  await expect.element(Root).toHaveAttribute("ui-checked");
 });
 
 test("checkbox root has all data attributes simultaneously", async () => {
   render(<BasicCheckbox checked disabled />);
 
   await expect.element(Root).toBeVisible();
-  await expect.element(Root).toHaveAttribute("data-qds-scope");
-  await expect.element(Root).toHaveAttribute("data-checked");
-  await expect.element(Root).toHaveAttribute("data-disabled");
+  await expect.element(Root).toHaveAttribute("ui-qds-scope");
+  await expect.element(Root).toHaveAttribute("ui-checked");
+  await expect.element(Root).toHaveAttribute("ui-disabled");
 });

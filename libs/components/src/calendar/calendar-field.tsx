@@ -25,17 +25,17 @@ export const CalendarField = component$(
     });
 
     return (
-      <DateInputRoot data-qds-calendar-field-input-root>
+      <DateInputRoot ui-qds-calendar-field-input-root>
         <DateInputField
           {...props}
           bind:date={context.dateSig}
           disabled={context.disabledSig.value || openCalendarOnClick}
-          data-qds-calendar-field
+          ui-qds-calendar-field
         >
           <Slot />
         </DateInputField>
         {openCalendarOnClick && (
-          <div data-qds-calendar-field-click-shield onClick$={handleClick$} />
+          <div ui-qds-calendar-field-click-shield onClick$={handleClick$} />
         )}
       </DateInputRoot>
     );

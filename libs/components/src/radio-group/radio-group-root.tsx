@@ -156,9 +156,9 @@ export const RadioGroupRoot = component$((props: PublicRootProps) => {
       fallback="div"
       internalRef={rootRef}
       role="radiogroup"
-      data-qds-radio-group-root
-      data-orientation={props.orientation || "vertical"}
-      data-disabled={isDisabledSig.value ? "" : undefined}
+      ui-qds-radio-group-root
+      ui-orientation={props.orientation || "vertical"}
+      ui-disabled={isDisabledSig.value ? "" : undefined}
       aria-disabled={isDisabledSig.value}
       aria-required={props.required}
       aria-invalid={computedIsError.value}

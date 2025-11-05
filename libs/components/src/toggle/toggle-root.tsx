@@ -66,11 +66,11 @@ export const ToggleRoot = component$((props: ToggleRootProps) => {
       fallback="button"
       onClick$={[handlePress$, props.onClick$]}
       disabled={isDisabledSig.value}
-      data-disabled={isDisabledSig.value}
+      ui-disabled={isDisabledSig.value}
       aria-disabled={isDisabledSig.value ? "true" : "false"}
-      data-pressed={isPressedSig.value}
+      ui-pressed={isPressedSig.value}
       aria-pressed={isPressedSig.value ? "true" : "false"}
-      data-qds-toggle-root
+      ui-qds-toggle-root
     >
       <Slot />
     </Render>

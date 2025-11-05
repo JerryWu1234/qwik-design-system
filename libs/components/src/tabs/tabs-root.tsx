@@ -86,9 +86,9 @@ export const TabsRoot = component$((props: TabsRootProps) => {
 
   return (
     <Render
-      data-qds-tabs-root
+      ui-qds-tabs-root
       fallback="div"
-      data-orientation={
+      ui-orientation={
         context.orientationSig.value === "vertical" ? "vertical" : "horizontal"
       }
       {...rest}

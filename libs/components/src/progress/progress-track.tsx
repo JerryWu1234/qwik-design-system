@@ -11,7 +11,7 @@ export const ProgressTrack = component$<ProgressTrackElement>((props) => {
   return (
     <Render
       fallback="div"
-      data-qds-progress-track
+      ui-qds-progress-track
       {...context.dataAttributesSig.value}
       {...trackProps}
     >

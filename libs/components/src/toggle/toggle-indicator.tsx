@@ -24,9 +24,9 @@ export const ToggleIndicator = component$((props: ToggleIndicatorProps) => {
     <Render
       {...rest}
       fallback="span"
-      data-disabled={context.isDisabledSig.value}
-      data-pressed={context.isPressedSig.value}
-      data-qds-toggle-indicator
+      ui-disabled={context.isDisabledSig.value}
+      ui-pressed={context.isPressedSig.value}
+      ui-qds-toggle-indicator
     >
       {isFallbackSig.value ? fallback : <Slot />}
     </Render>

@@ -116,80 +116,80 @@ test("default toggle can be clicked to be pressed", async () => {
   render(<Basic />);
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "false");
-  await expect.element(Root).not.toHaveAttribute("data-pressed");
+  await expect.element(Root).not.toHaveAttribute("ui-pressed");
 
   await userEvent.click(Root);
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "true");
-  await expect.element(Root).toHaveAttribute("data-pressed");
+  await expect.element(Root).toHaveAttribute("ui-pressed");
 });
 
 test("pressed toggle can be clicked to be unpressed", async () => {
   render(<InitialPressed />);
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "true");
-  await expect.element(Root).toHaveAttribute("data-pressed");
+  await expect.element(Root).toHaveAttribute("ui-pressed");
 
   await userEvent.click(Root);
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "false");
-  await expect.element(Root).not.toHaveAttribute("data-pressed");
+  await expect.element(Root).not.toHaveAttribute("ui-pressed");
 });
 
 test("toggle can be toggled with Space key", async () => {
   render(<Basic />);
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "false");
-  await expect.element(Root).not.toHaveAttribute("data-pressed");
+  await expect.element(Root).not.toHaveAttribute("ui-pressed");
 
   await expect.element(Root).toBeVisible();
   focusElement(Root);
   await userEvent.keyboard("{Space}");
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "true");
-  await expect.element(Root).toHaveAttribute("data-pressed");
+  await expect.element(Root).toHaveAttribute("ui-pressed");
 });
 
 test("pressed toggle can be unpressed with Space key", async () => {
   render(<InitialPressed />);
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "true");
-  await expect.element(Root).toHaveAttribute("data-pressed");
+  await expect.element(Root).toHaveAttribute("ui-pressed");
 
   await expect.element(Root).toBeVisible();
   focusElement(Root);
   await userEvent.keyboard("{Space}");
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "false");
-  await expect.element(Root).not.toHaveAttribute("data-pressed");
+  await expect.element(Root).not.toHaveAttribute("ui-pressed");
 });
 
 test("toggle can be toggled with Enter key", async () => {
   render(<Basic />);
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "false");
-  await expect.element(Root).not.toHaveAttribute("data-pressed");
+  await expect.element(Root).not.toHaveAttribute("ui-pressed");
 
   await expect.element(Root).toBeVisible();
   focusElement(Root);
   await userEvent.keyboard("{Enter}");
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "true");
-  await expect.element(Root).toHaveAttribute("data-pressed");
+  await expect.element(Root).toHaveAttribute("ui-pressed");
 });
 
 test("pressed toggle can be unpressed with Enter key", async () => {
   render(<InitialPressed />);
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "true");
-  await expect.element(Root).toHaveAttribute("data-pressed");
+  await expect.element(Root).toHaveAttribute("ui-pressed");
 
   await expect.element(Root).toBeVisible();
   focusElement(Root);
   await userEvent.keyboard("{Enter}");
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "false");
-  await expect.element(Root).not.toHaveAttribute("data-pressed");
+  await expect.element(Root).not.toHaveAttribute("ui-pressed");
 });
 
 test("toggle has type button attribute", async () => {
@@ -217,26 +217,26 @@ test("aria-pressed updates when toggled", async () => {
 test("data-pressed updates when state changes", async () => {
   render(<Basic />);
 
-  await expect.element(Root).not.toHaveAttribute("data-pressed");
+  await expect.element(Root).not.toHaveAttribute("ui-pressed");
 
   await userEvent.click(Root);
-  await expect.element(Root).toHaveAttribute("data-pressed");
+  await expect.element(Root).toHaveAttribute("ui-pressed");
 
   await userEvent.click(Root);
-  await expect.element(Root).not.toHaveAttribute("data-pressed");
+  await expect.element(Root).not.toHaveAttribute("ui-pressed");
 });
 
 test("external signal changes update toggle state", async () => {
   render(<WithSignal />);
 
   await expect.element(Root).toHaveAttribute("aria-pressed", "true");
-  await expect.element(Root).toHaveAttribute("data-pressed");
+  await expect.element(Root).toHaveAttribute("ui-pressed");
 
   await expect.element(page.getByText("true")).toBeVisible();
 
   await userEvent.click(page.getByTestId("toggle-signal"));
 
-  await expect.element(Root).not.toHaveAttribute("data-pressed");
+  await expect.element(Root).not.toHaveAttribute("ui-pressed");
   await expect.element(Root).toHaveAttribute("aria-pressed", "false");
 
   await expect.element(page.getByText("false")).toBeVisible();

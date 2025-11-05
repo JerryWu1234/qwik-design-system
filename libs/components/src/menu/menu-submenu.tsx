@@ -57,7 +57,7 @@ export const MenuSubmenu = component$<PublicMenuSubmenuProps>((props) => {
   return (
     <PopoverRoot
       bind:open={isOpenSig}
-      data-qds-menu-submenu
+      ui-qds-menu-submenu
       tabIndex={-1}
       ref={submenuRef}
       {...rest}

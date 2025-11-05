@@ -5,23 +5,23 @@
 
 // export function createTestDriver<T extends DriverLocator>(rootLocator: T) {
 //   const getRoot = () => {
-//     return rootLocator.locator("[data-qds-pagination-root]");
+//     return rootLocator.locator("[ui-qds-pagination-root]");
 //   };
 
 //   const getNextButton = () => {
-//     return getRoot().locator("[data-qds-pagination-next]").first();
+//     return getRoot().locator("[ui-qds-pagination-next]").first();
 //   };
 
 //   const getPrevButton = () => {
-//     return getRoot().locator("[data-qds-pagination-previous]").last();
+//     return getRoot().locator("[ui-qds-pagination-previous]").last();
 //   };
 
 //   const getLastButton = () => {
-//     return getRoot().locator("[data-qds-pagination-next]").last();
+//     return getRoot().locator("[ui-qds-pagination-next]").last();
 //   };
 
 //   const getFirstButton = () => {
-//     return getRoot().locator("[data-qds-pagination-previous]").first();
+//     return getRoot().locator("[ui-qds-pagination-previous]").first();
 //   };
 
 //   const getPageAtIndex = (index: number) => {
@@ -29,11 +29,11 @@
 //   };
 
 //   const getActivePage = () => {
-//     return getRoot().locator("[data-current]");
+//     return getRoot().locator("[ui-current]");
 //   };
 
 //   const getEllipsis = () => {
-//     return getRoot().locator("[data-qds-pagination-ellipsis]");
+//     return getRoot().locator("[ui-qds-pagination-ellipsis]");
 //   };
 
 //   return {

@@ -1,6 +1,67 @@
 # Changelog
 
 
+## v0.5.2...v2-ui-attrs
+
+[compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.5.2...v2-ui-attrs)
+
+### 🚀 Enhancements
+
+- Add back pkg pr new ([#350](https://github.com/kunai-consulting/qwik-design-system/pull/350))
+- Move all data attrs to ui ([3831917b](https://github.com/kunai-consulting/qwik-design-system/commit/3831917b))
+
+### 🩹 Fixes
+
+- Changelong ([#349](https://github.com/kunai-consulting/qwik-design-system/pull/349))
+
+### ❤️ Contributors
+
+- Thejackshelton-kunaico ([@thejackshelton-kunaico](https://github.com/thejackshelton-kunaico))
+
+## v0.5.2...v2-ui-attrs
+
+[compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.5.2...v2-ui-attrs)
+
+### 🚀 Enhancements
+
+- Add back pkg pr new ([#350](https://github.com/kunai-consulting/qwik-design-system/pull/350))
+
+### 🩹 Fixes
+
+- Changelong ([#349](https://github.com/kunai-consulting/qwik-design-system/pull/349))
+
+### ❤️ Contributors
+
+- Thejackshelton-kunaico ([@thejackshelton-kunaico](https://github.com/thejackshelton-kunaico))
+
+## v0.5.2...v2-ui-attrs
+
+[compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.5.2...v2-ui-attrs)
+
+### 🚀 Enhancements
+
+- Add back pkg pr new ([#350](https://github.com/kunai-consulting/qwik-design-system/pull/350))
+
+### 🩹 Fixes
+
+- Changelong ([#349](https://github.com/kunai-consulting/qwik-design-system/pull/349))
+
+### ❤️ Contributors
+
+- Thejackshelton-kunaico ([@thejackshelton-kunaico](https://github.com/thejackshelton-kunaico))
+
+## v0.5.1...v2-migration
+
+[compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.5.1...v2-migration)
+
+### 🚀 Enhancements
+
+- Mark utils as a dependencty ([#347](https://github.com/kunai-consulting/qwik-design-system/pull/347))
+
+### ❤️ Contributors
+
+- Thejackshelton-kunaico ([@thejackshelton-kunaico](https://github.com/thejackshelton-kunaico))
+
 ## v0.5.0...v2-migration
 
 [compare changes](https://github.com/kunai-consulting/qwik-design-system/compare/v0.5.0...v2-migration)

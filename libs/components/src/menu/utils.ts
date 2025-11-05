@@ -5,10 +5,10 @@ export function createMenuWalker(root: HTMLElement) {
   return document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
     acceptNode: (node: Element) => {
       // Only accept menu items that are enabled
-      if (!node.hasAttribute("data-qds-menu-item")) {
+      if (!node.hasAttribute("ui-qds-menu-item")) {
         return NodeFilter.FILTER_SKIP;
       }
-      if (node.hasAttribute("data-disabled") || node.hasAttribute("disabled")) {
+      if (node.hasAttribute("ui-disabled") || node.hasAttribute("disabled")) {
         return NodeFilter.FILTER_SKIP;
       }
       if (

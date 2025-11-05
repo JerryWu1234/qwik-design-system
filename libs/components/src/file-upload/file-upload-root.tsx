@@ -55,7 +55,7 @@ export const FileUploadRoot = component$<PublicRootProps>((props) => {
       fallback="div"
       {...rest}
       data-file-upload-root
-      data-disabled={isDisabled.value ? "" : undefined}
+      ui-disabled={isDisabled.value ? "" : undefined}
     >
       <Slot />
     </Render>

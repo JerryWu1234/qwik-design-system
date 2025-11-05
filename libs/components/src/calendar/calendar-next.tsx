@@ -20,7 +20,7 @@ export const CalendarNext = component$((props: PropsOf<"button">) => {
   return (
     <button
       // The next month navigation button
-      data-qds-calendar-next
+      ui-qds-calendar-next
       type="button"
       {...props}
       onClick$={[
