@@ -2,10 +2,7 @@
   "compilerOptions": {
     "module": "esnext",
     "target": "esnext",
-    "lib": [
-      "esnext",
-      "DOM"
-    ],
+    "lib": ["esnext", "DOM"],
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -18,15 +15,7 @@
     "declaration": true,
     "declarationDir": "lib-types",
     "emitDeclarationOnly": true,
-    "types": [
-      "node"
-    ]
+    "types": ["node"]
   },
-  "include": [
-    "vite/**/*",
-    "src/**/*",
-    "utils/**/*",
-    "rolldown/**/*",
-    "linter/**/*"
-  ]
+  "include": ["vite/**/*", "src/**/*", "utils/**/*", "rolldown/**/*", "linter/**/*"]
 }
